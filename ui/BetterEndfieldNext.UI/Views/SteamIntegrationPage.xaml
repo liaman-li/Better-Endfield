@@ -3,7 +3,7 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:controls="using:BetterEndfieldNext.UI.Controls">
-    <Border Padding="22" CornerRadius="12" BorderThickness="1"
+    <Border Padding="22,20" CornerRadius="16" BorderThickness="1.5"
         Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
         BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}">
         <StackPanel x:Name="SteamBody" Spacing="12">
@@ -18,10 +18,14 @@
             <CheckBox x:Name="AutoUpdateBox" HorizontalAlignment="Stretch" Content="BE 自动查询最新元数据，并在 Steam 退出后更新 ACF" Checked="PreferencesChanged" Unchecked="PreferencesChanged" />
             <CheckBox x:Name="AdministratorBox" HorizontalAlignment="Stretch" Content="以管理员身份启动 Steam（覆盖层兼容，可选）" Checked="PreferencesChanged" Unchecked="PreferencesChanged" />
             <TextBlock x:Name="AdministratorHint" Text="默认关闭。当前实测普通权限仍可记录时长和展示状态；游戏提权时，管理员启动有助于覆盖层和截图。" TextWrapping="Wrap" FontSize="12" Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
-            <TextBlock x:Name="ExitHint" Text="应用或移除配置前，请从 Steam 菜单选择“退出”。BE 会自动填写当前账号的启动选项，并保留原值供移除时恢复。" TextWrapping="Wrap" />
-            <TextBlock x:Name="MetadataText" Text="等待获取完整元数据。" TextWrapping="Wrap" />
-            <TextBlock x:Name="ClientText" TextWrapping="Wrap" FontSize="12" Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
-            <ProgressRing x:Name="BusyRing" Width="20" Height="20" IsActive="False" Visibility="Collapsed" HorizontalAlignment="Left" />
+            <Border Background="{ThemeResource SubTileBackgroundBrush}" CornerRadius="12" Padding="14,10">
+                <StackPanel Spacing="6">
+                    <TextBlock x:Name="ExitHint" Text="应用或移除配置前，请从 Steam 菜单选择“退出”。BE 会自动填写当前账号的启动选项，并保留原值供移除时恢复。" TextWrapping="Wrap" />
+                    <TextBlock x:Name="MetadataText" Text="等待获取完整元数据。" FontWeight="SemiBold" TextWrapping="Wrap" />
+                    <TextBlock x:Name="ClientText" TextWrapping="Wrap" FontSize="12" Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                    <ProgressRing x:Name="BusyRing" Width="20" Height="20" IsActive="False" Visibility="Collapsed" HorizontalAlignment="Left" />
+                </StackPanel>
+            </Border>
             <StackPanel x:Name="ActionPanel" Spacing="8">
                 <controls:WrapPanel HorizontalSpacing="8" VerticalSpacing="8">
                     <Button x:Name="FetchButton" Content="获取元数据" Click="Fetch_Click" />

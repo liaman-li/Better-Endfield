@@ -6,21 +6,336 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls" />
+
+                <!-- Merged AFTER XamlControlsResources so our ThemeDictionaries take precedence -->
+                <ResourceDictionary>
+                    <ResourceDictionary.ThemeDictionaries>
+                        <!-- 方案 B：鸢尾温室 (Iris Greenhouse) -->
+                        <ResourceDictionary x:Key="Light">
+                            <Color x:Key="SystemAccentColor">#FFD66853</Color>
+                            <Color x:Key="SystemAccentColorLight1">#FFE57E69</Color>
+                            <Color x:Key="SystemAccentColorLight2">#FFEE9683</Color>
+                            <Color x:Key="SystemAccentColorDark1">#FFC45545</Color>
+                            <Color x:Key="SystemAccentColorDark2">#FFB74B3B</Color>
+
+                            <CornerRadius x:Key="ControlCornerRadius">10</CornerRadius>
+                            <CornerRadius x:Key="OverlayCornerRadius">14</CornerRadius>
+                            <CornerRadius x:Key="NavigationViewItemCornerRadius">14</CornerRadius>
+                            <x:Double x:Key="ToggleSwitchPreContentMargin">0</x:Double>
+                            <x:Double x:Key="ToggleSwitchPostContentMargin">0</x:Double>
+
+                            <!-- L1 主底板渐变（底部微加深鸢尾燕麦底，确保左下角纯白选中胶囊与状态卡边界清晰） -->
+                            <LinearGradientBrush EndPoint="0,1" StartPoint="0,0" x:Key="ApplicationPageBackgroundThemeBrush">
+                                <GradientStop Color="#FFF8F6FA" Offset="0.0"/>
+                                <GradientStop Color="#FFF5F2F7" Offset="0.5"/>
+                                <GradientStop Color="#FFEAE6F2" Offset="1.0"/>
+                            </LinearGradientBrush>
+
+                            <!-- L1 底层 4 组莫奈柔光场（左栏无遮挡控制在 #70 并下移托底；右侧被白玉画布遮挡提亮至 #86~#8C） -->
+                            <RadialGradientBrush Center="0.14,0.56" GradientOrigin="0.14,0.56" MappingMode="RelativeToBoundingBox" RadiusX="0.34" RadiusY="0.68" x:Key="MonetGlowBrush1">
+                                <GradientStop Color="#70EEC99E" Offset="0.0"/>
+                                <GradientStop Color="#34F2D8B8" Offset="0.55"/>
+                                <GradientStop Color="#00F2D8B8" Offset="1.0"/>
+                            </RadialGradientBrush>
+                            <RadialGradientBrush Center="0.48,0.36" GradientOrigin="0.48,0.36" MappingMode="RelativeToBoundingBox" RadiusX="0.48" RadiusY="0.52" x:Key="MonetGlowBrush2">
+                                <GradientStop Color="#8AC8B9E8" Offset="0.0"/>
+                                <GradientStop Color="#44D8CEEF" Offset="0.55"/>
+                                <GradientStop Color="#00D8CEEF" Offset="1.0"/>
+                            </RadialGradientBrush>
+                            <RadialGradientBrush Center="0.82,0.60" GradientOrigin="0.82,0.60" MappingMode="RelativeToBoundingBox" RadiusX="0.46" RadiusY="0.50" x:Key="MonetGlowBrush3">
+                                <GradientStop Color="#8CA4D4C4" Offset="0.0"/>
+                                <GradientStop Color="#46BFE0D4" Offset="0.55"/>
+                                <GradientStop Color="#00BFE0D4" Offset="1.0"/>
+                            </RadialGradientBrush>
+                            <RadialGradientBrush Center="0.54,0.92" GradientOrigin="0.54,0.92" MappingMode="RelativeToBoundingBox" RadiusX="0.52" RadiusY="0.32" x:Key="MonetGlowBrush4">
+                                <GradientStop Color="#86F0B2A2" Offset="0.0"/>
+                                <GradientStop Color="#40F5C8BC" Offset="0.55"/>
+                                <GradientStop Color="#00F5C8BC" Offset="1.0"/>
+                            </RadialGradientBrush>
+
+                            <!-- L2 右侧大画布 -->
+                            <SolidColorBrush Color="#92FCFCFE" x:Key="ContentSheetBackgroundBrush"/>
+                            <SolidColorBrush Color="#EEFFFFFF" x:Key="ContentSheetBorderBrush"/>
+
+                            <!-- L3 功能主卡片 -->
+                            <SolidColorBrush Color="#DCFFFFFF" x:Key="CardBackgroundFillColorDefaultBrush"/>
+                            <SolidColorBrush Color="#F7FFFFFF" x:Key="CardStrokeColorDefaultBrush"/>
+                            <SolidColorBrush Color="#F7FFFFFF" x:Key="CardStrokeColorDefaultSolidBrush"/>
+
+                            <!-- L4 卡内无框输入块与次级块 -->
+                            <SolidColorBrush Color="#A8F1EFF6" x:Key="CardBackgroundFillColorSecondaryBrush"/>
+                            <SolidColorBrush Color="#A8F1EFF6" x:Key="SubTileBackgroundBrush"/>
+                            <SolidColorBrush Color="#CCEAE5F2" x:Key="SubTileHoverBackgroundBrush"/>
+                            <SolidColorBrush Color="#FF7C64B8" x:Key="SubTileFocusBorderBrush"/>
+                            <SolidColorBrush Color="#1C5B5768" x:Key="SubtleRowDividerBrush"/>
+                            <SolidColorBrush Color="#225B5768" x:Key="DividerStrokeColorDefaultBrush"/>
+
+                            <SolidColorBrush Color="#A8F1EFF6" x:Key="ControlFillColorDefaultBrush"/>
+                            <SolidColorBrush Color="#CCEAE5F2" x:Key="ControlFillColorSecondaryBrush"/>
+                            <SolidColorBrush Color="#FFE2DCEE" x:Key="ControlFillColorTertiaryBrush"/>
+                            <SolidColorBrush Color="#FFFFFFFF" x:Key="ControlFillColorInputActiveBrush"/>
+                            <SolidColorBrush Color="#D9EDEAF5" x:Key="ControlFillColorDisabledBrush"/>
+                            <SolidColorBrush Color="Transparent" x:Key="ControlStrokeColorDefaultBrush"/>
+                            <SolidColorBrush Color="Transparent" x:Key="ControlStrokeColorSecondaryBrush"/>
+                            <SolidColorBrush Color="Transparent" x:Key="ControlElevationBorderBrush"/>
+                            <SolidColorBrush Color="Transparent" x:Key="CircleElevationBorderBrush"/>
+
+                            <SolidColorBrush Color="#A8F1EFF6" x:Key="TextControlBackground"/>
+                            <SolidColorBrush Color="#CCEAE5F2" x:Key="TextControlBackgroundPointerOver"/>
+                            <SolidColorBrush Color="#FFFFFFFF" x:Key="TextControlBackgroundFocused"/>
+                            <SolidColorBrush Color="#D9EDEAF5" x:Key="TextControlBackgroundDisabled"/>
+                            <SolidColorBrush Color="#FF807990" x:Key="TextControlForegroundDisabled"/>
+                            <SolidColorBrush Color="#FF807990" x:Key="TextControlHeaderForegroundDisabled"/>
+                            <SolidColorBrush Color="Transparent" x:Key="TextControlBorderBrush"/>
+                            <SolidColorBrush Color="Transparent" x:Key="TextControlBorderBrushPointerOver"/>
+                            <SolidColorBrush Color="#FF7C64B8" x:Key="TextControlBorderBrushFocused"/>
+                            <SolidColorBrush Color="Transparent" x:Key="TextControlBorderBrushDisabled"/>
+                            <SolidColorBrush Color="Transparent" x:Key="TextControlElevationBorderBrush"/>
+                            <SolidColorBrush Color="#FF7C64B8" x:Key="TextControlElevationBorderFocusedBrush"/>
+
+                            <SolidColorBrush Color="#A8F1EFF6" x:Key="ComboBoxBackground"/>
+                            <SolidColorBrush Color="#CCEAE5F2" x:Key="ComboBoxBackgroundPointerOver"/>
+                            <SolidColorBrush Color="#FFFFFFFF" x:Key="ComboBoxBackgroundPressed"/>
+                            <SolidColorBrush Color="#D9EDEAF5" x:Key="ComboBoxBackgroundDisabled"/>
+                            <SolidColorBrush Color="#FF807990" x:Key="ComboBoxForegroundDisabled"/>
+                            <SolidColorBrush Color="#FF807990" x:Key="ComboBoxHeaderForegroundDisabled"/>
+                            <SolidColorBrush Color="Transparent" x:Key="ComboBoxBorderBrush"/>
+                            <SolidColorBrush Color="Transparent" x:Key="ComboBoxBorderBrushPointerOver"/>
+                            <SolidColorBrush Color="#FF7C64B8" x:Key="ComboBoxBorderBrushPressed"/>
+                            <SolidColorBrush Color="Transparent" x:Key="ComboBoxBorderBrushDisabled"/>
+
+                            <SolidColorBrush Color="#F5FFFFFF" x:Key="ButtonBackground"/>
+                            <SolidColorBrush Color="#FFFFFFFF" x:Key="ButtonBackgroundPointerOver"/>
+                            <SolidColorBrush Color="#CCEAE5F2" x:Key="ButtonBackgroundPressed"/>
+                            <SolidColorBrush Color="#D9EDEAF5" x:Key="ButtonBackgroundDisabled"/>
+                            <SolidColorBrush Color="#F7FFFFFF" x:Key="ButtonBorderBrush"/>
+                            <SolidColorBrush Color="#1C5B5768" x:Key="ButtonBorderBrushPointerOver"/>
+                            <SolidColorBrush Color="#265B5768" x:Key="ButtonBorderBrushPressed"/>
+                            <SolidColorBrush Color="#1E5B5768" x:Key="ButtonBorderBrushDisabled"/>
+                            <SolidColorBrush Color="#FF1B1922" x:Key="ButtonForeground"/>
+                            <SolidColorBrush Color="#FF807990" x:Key="ButtonForegroundDisabled"/>
+
+                            <!-- CheckBox 未勾选态清晰边框与底色（仅置于 Light 字典，防深色模式串色） -->
+                            <SolidColorBrush Color="#FF867E96" x:Key="CheckBoxCheckBackgroundStrokeUnchecked"/>
+                            <SolidColorBrush Color="#FF6E6680" x:Key="CheckBoxCheckBackgroundStrokeUncheckedPointerOver"/>
+                            <SolidColorBrush Color="#FF5B5768" x:Key="CheckBoxCheckBackgroundStrokeUncheckedPressed"/>
+                            <SolidColorBrush Color="#CCF1EFF6" x:Key="CheckBoxCheckBackgroundFillUnchecked"/>
+                            <SolidColorBrush Color="#E6EAE5F2" x:Key="CheckBoxCheckBackgroundFillUncheckedPointerOver"/>
+                            <SolidColorBrush Color="#FFE2DCEE" x:Key="CheckBoxCheckBackgroundFillUncheckedPressed"/>
+
+                            <!-- 导航选中胶囊与左下角状态卡 -->
+                            <SolidColorBrush Color="#FFFFFFFF" x:Key="NavSelectedPillBrush"/>
+                            <SolidColorBrush Color="#245B5768" x:Key="NavSelectedPillBorderBrush"/>
+                            <SolidColorBrush Color="#FFD66853" x:Key="NavSelectedIndicatorBrush"/>
+                            <SolidColorBrush Color="#E6FFFFFF" x:Key="StatusCardBackgroundBrush"/>
+                            <SolidColorBrush Color="#FFFFFFFF" x:Key="StatusCardBorderBrush"/>
+
+                            <SolidColorBrush Color="Transparent" x:Key="LayerFillColorDefaultBrush"/>
+                            <SolidColorBrush Color="Transparent" x:Key="LayerFillColorAltBrush"/>
+                            <SolidColorBrush Color="Transparent" x:Key="LayerOnMicaBaseAltFillColorDefaultBrush"/>
+                            <SolidColorBrush Color="Transparent" x:Key="LayerOnMicaBaseAltFillColorSecondaryBrush"/>
+                            <SolidColorBrush Color="Transparent" x:Key="LayerOnMicaBaseAltFillColorTertiaryBrush"/>
+                            <SolidColorBrush Color="Transparent" x:Key="LayerOnMicaBaseAltFillColorTransparentBrush"/>
+
+                            <SolidColorBrush Color="Transparent" x:Key="NavigationViewExpandedPaneBackground"/>
+                            <SolidColorBrush Color="#F2F0ECF7" x:Key="NavigationViewDefaultPaneBackground"/>
+                            <SolidColorBrush Color="Transparent" x:Key="NavigationViewTopPaneBackground"/>
+                            <SolidColorBrush Color="Transparent" x:Key="NavigationViewContentBackground"/>
+                            <SolidColorBrush Color="Transparent" x:Key="NavigationViewContentGridBorderBrush"/>
+
+                            <SolidColorBrush Color="#FFFFFFFF" x:Key="NavigationViewItemBackgroundSelected"/>
+                            <SolidColorBrush Color="#FFFFFFFF" x:Key="NavigationViewItemBackgroundSelectedPointerOver"/>
+                            <SolidColorBrush Color="#F5FFFFFF" x:Key="NavigationViewItemBackgroundSelectedPressed"/>
+                            <SolidColorBrush Color="#245B5768" x:Key="NavigationViewItemBorderBrushSelected"/>
+                            <SolidColorBrush Color="#335B5768" x:Key="NavigationViewItemBorderBrushSelectedPointerOver"/>
+                            <SolidColorBrush Color="#99FFFFFF" x:Key="NavigationViewItemBackgroundPointerOver"/>
+                            <SolidColorBrush Color="#B8FFFFFF" x:Key="NavigationViewItemBackgroundPressed"/>
+                            <SolidColorBrush Color="#FFD66853" x:Key="NavigationViewSelectionIndicatorForeground"/>
+                            <SolidColorBrush Color="#FF5B5768" x:Key="NavigationViewItemForeground"/>
+                            <SolidColorBrush Color="#FF1B1922" x:Key="NavigationViewItemForegroundPointerOver"/>
+                            <SolidColorBrush Color="#FF1B1922" x:Key="NavigationViewItemForegroundSelected"/>
+                            <SolidColorBrush Color="#FF1B1922" x:Key="NavigationViewItemForegroundSelectedPointerOver"/>
+
+                            <!-- 文字三级色阶（禁用前景统一 #FF807990，兼顾可读性与禁用区分度） -->
+                            <SolidColorBrush Color="#FF1B1922" x:Key="TextFillColorPrimaryBrush"/>
+                            <SolidColorBrush Color="#FF5B5768" x:Key="TextFillColorSecondaryBrush"/>
+                            <SolidColorBrush Color="#FF867E96" x:Key="TextFillColorTertiaryBrush"/>
+                            <SolidColorBrush Color="#FF807990" x:Key="TextFillColorDisabledBrush"/>
+                            <SolidColorBrush Color="#FF867E96" x:Key="CardTagTextBrush"/>
+
+                            <!-- 主强调色渐变 -->
+                            <LinearGradientBrush EndPoint="1,1" StartPoint="0,0" x:Key="AccentFillColorDefaultBrush">
+                                <GradientStop Color="#FFDE725C" Offset="0.0"/>
+                                <GradientStop Color="#FFC45545" Offset="1.0"/>
+                            </LinearGradientBrush>
+                            <LinearGradientBrush EndPoint="1,1" StartPoint="0,0" x:Key="AccentFillColorSecondaryBrush">
+                                <GradientStop Color="#FFE57E69" Offset="0.0"/>
+                                <GradientStop Color="#FFCD6050" Offset="1.0"/>
+                            </LinearGradientBrush>
+                            <LinearGradientBrush EndPoint="1,1" StartPoint="0,0" x:Key="AccentFillColorTertiaryBrush">
+                                <GradientStop Color="#FFD2654F" Offset="0.0"/>
+                                <GradientStop Color="#FFB74B3B" Offset="1.0"/>
+                            </LinearGradientBrush>
+
+                            <LinearGradientBrush EndPoint="1,1" StartPoint="0,0" x:Key="AccentButtonBackground">
+                                <GradientStop Color="#FFDE725C" Offset="0.0"/>
+                                <GradientStop Color="#FFC45545" Offset="1.0"/>
+                            </LinearGradientBrush>
+                            <LinearGradientBrush EndPoint="1,1" StartPoint="0,0" x:Key="AccentButtonBackgroundPointerOver">
+                                <GradientStop Color="#FFE57E69" Offset="0.0"/>
+                                <GradientStop Color="#FFCD6050" Offset="1.0"/>
+                            </LinearGradientBrush>
+                            <LinearGradientBrush EndPoint="1,1" StartPoint="0,0" x:Key="AccentButtonBackgroundPressed">
+                                <GradientStop Color="#FFD2654F" Offset="0.0"/>
+                                <GradientStop Color="#FFB74B3B" Offset="1.0"/>
+                            </LinearGradientBrush>
+                            <SolidColorBrush Color="#33FFFFFF" x:Key="AccentButtonBorderBrush"/>
+                            <SolidColorBrush Color="#FFFFFFFF" x:Key="AccentButtonForeground"/>
+                            <SolidColorBrush Color="#FFFFFFFF" x:Key="AccentButtonForegroundPointerOver"/>
+                            <SolidColorBrush Color="#FFFDF7F5" x:Key="AccentButtonForegroundPressed"/>
+                            <Color x:Key="AccentWarmShadowColor">#42D0604E</Color>
+
+                            <!-- 开关（严格遵循 WinUI 3 generic.xaml 模板契约：Off 动画态使用 <Color>，常态与 On 态使用 Brush） -->
+                            <LinearGradientBrush EndPoint="1,1" StartPoint="0,0" x:Key="ToggleSwitchFillOn">
+                                <GradientStop Color="#FFDE725C" Offset="0.0"/>
+                                <GradientStop Color="#FFC45545" Offset="1.0"/>
+                            </LinearGradientBrush>
+                            <LinearGradientBrush EndPoint="1,1" StartPoint="0,0" x:Key="ToggleSwitchFillOnPointerOver">
+                                <GradientStop Color="#FFE57E69" Offset="0.0"/>
+                                <GradientStop Color="#FFCD6050" Offset="1.0"/>
+                            </LinearGradientBrush>
+                            <LinearGradientBrush EndPoint="1,1" StartPoint="0,0" x:Key="ToggleSwitchFillOnPressed">
+                                <GradientStop Color="#FFD2654F" Offset="0.0"/>
+                                <GradientStop Color="#FFB74B3B" Offset="1.0"/>
+                            </LinearGradientBrush>
+                            <SolidColorBrush Color="#FFD8D3E6" x:Key="ToggleSwitchFillOnDisabled"/>
+                            <SolidColorBrush Color="Transparent" x:Key="ToggleSwitchStrokeOn"/>
+                            <SolidColorBrush Color="Transparent" x:Key="ToggleSwitchStrokeOnPointerOver"/>
+                            <SolidColorBrush Color="Transparent" x:Key="ToggleSwitchStrokeOnPressed"/>
+                            <SolidColorBrush Color="#245B5768" x:Key="ToggleSwitchStrokeOnDisabled"/>
+                            <SolidColorBrush Color="#FFFFFFFF" x:Key="ToggleSwitchKnobFillOn"/>
+                            <SolidColorBrush Color="#FFFFFFFF" x:Key="ToggleSwitchKnobFillOnPointerOver"/>
+                            <SolidColorBrush Color="#FFFFFFFF" x:Key="ToggleSwitchKnobFillOnPressed"/>
+                            <SolidColorBrush Color="#FFFFFFFF" x:Key="ToggleSwitchKnobFillOnDisabled"/>
+
+                            <SolidColorBrush Color="#FFDCD8E8" x:Key="ToggleSwitchFillOff"/>
+                            <Color x:Key="ToggleSwitchFillOffPointerOver">#FFD0CBE0</Color>
+                            <Color x:Key="ToggleSwitchFillOffPressed">#FFC4BED6</Color>
+                            <Color x:Key="ToggleSwitchFillOffDisabled">#FFE0DCEB</Color>
+                            <SolidColorBrush Color="#245B5768" x:Key="ToggleSwitchStrokeOff"/>
+                            <Color x:Key="ToggleSwitchStrokeOffPointerOver">#385B5768</Color>
+                            <Color x:Key="ToggleSwitchStrokeOffPressed">#485B5768</Color>
+                            <Color x:Key="ToggleSwitchStrokeOffDisabled">#245B5768</Color>
+                            <SolidColorBrush Color="#FFFFFFFF" x:Key="ToggleSwitchKnobFillOff"/>
+                            <SolidColorBrush Color="#FFFFFFFF" x:Key="ToggleSwitchKnobFillOffPointerOver"/>
+                            <SolidColorBrush Color="#FFFFFFFF" x:Key="ToggleSwitchKnobFillOffPressed"/>
+                            <SolidColorBrush Color="#FFFFFFFF" x:Key="ToggleSwitchKnobFillOffDisabled"/>
+
+                            <!-- 卡片右上角浅底胶囊徽章 -->
+                            <SolidColorBrush Color="#22D66853" x:Key="AccentBadgeBackgroundBrush"/>
+                            <SolidColorBrush Color="#FFB44637" x:Key="AccentBadgeForegroundBrush"/>
+                            <SolidColorBrush Color="#206E58AD" x:Key="AuxBadgeBackgroundBrush"/>
+                            <SolidColorBrush Color="#FF594592" x:Key="AuxBadgeForegroundBrush"/>
+                            <SolidColorBrush Color="#22D66853" x:Key="BadgePillBackgroundBrush"/>
+                            <SolidColorBrush Color="#FFB44637" x:Key="BadgePillForegroundBrush"/>
+
+                            <SolidColorBrush Color="#FFB44637" x:Key="SponsorForegroundBrush"/>
+                            <SolidColorBrush Color="#22D66853" x:Key="SponsorBackgroundBrush"/>
+                        </ResourceDictionary>
+
+                        <!-- Default 同时承担 Dark 模式与全局兜底，防止切换主题闪退 -->
+                        <ResourceDictionary x:Key="Default">
+                            <Color x:Key="SystemAccentColor">#FFE5836E</Color>
+                            <CornerRadius x:Key="ControlCornerRadius">10</CornerRadius>
+                            <CornerRadius x:Key="OverlayCornerRadius">14</CornerRadius>
+                            <CornerRadius x:Key="NavigationViewItemCornerRadius">14</CornerRadius>
+
+                            <SolidColorBrush Color="Transparent" x:Key="MonetGlowBrush1"/>
+                            <SolidColorBrush Color="Transparent" x:Key="MonetGlowBrush2"/>
+                            <SolidColorBrush Color="Transparent" x:Key="MonetGlowBrush3"/>
+                            <SolidColorBrush Color="Transparent" x:Key="MonetGlowBrush4"/>
+
+                            <SolidColorBrush Color="#CC1E1F24" x:Key="ContentSheetBackgroundBrush"/>
+                            <SolidColorBrush Color="#1AFFFFFF" x:Key="ContentSheetBorderBrush"/>
+                            <SolidColorBrush Color="#14FFFFFF" x:Key="SubTileBackgroundBrush"/>
+                            <SolidColorBrush Color="#1FFFFFFF" x:Key="SubTileHoverBackgroundBrush"/>
+                            <SolidColorBrush Color="#FFA68EE8" x:Key="SubTileFocusBorderBrush"/>
+                            <SolidColorBrush Color="#1CFFFFFF" x:Key="SubtleRowDividerBrush"/>
+                            <SolidColorBrush Color="#24FFFFFF" x:Key="DividerStrokeColorDefaultBrush"/>
+
+                            <SolidColorBrush Color="#1AFFFFFF" x:Key="NavSelectedPillBrush"/>
+                            <SolidColorBrush Color="#24FFFFFF" x:Key="NavSelectedPillBorderBrush"/>
+                            <SolidColorBrush Color="#FFE5836E" x:Key="NavSelectedIndicatorBrush"/>
+                            <SolidColorBrush Color="#B324262D" x:Key="StatusCardBackgroundBrush"/>
+                            <SolidColorBrush Color="#1AFFFFFF" x:Key="StatusCardBorderBrush"/>
+
+                            <SolidColorBrush Color="Transparent" x:Key="LayerFillColorDefaultBrush"/>
+                            <SolidColorBrush Color="Transparent" x:Key="LayerFillColorAltBrush"/>
+                            <SolidColorBrush Color="Transparent" x:Key="LayerOnMicaBaseAltFillColorDefaultBrush"/>
+                            <SolidColorBrush Color="Transparent" x:Key="NavigationViewDefaultPaneBackground"/>
+                            <SolidColorBrush Color="Transparent" x:Key="NavigationViewExpandedPaneBackground"/>
+                            <SolidColorBrush Color="Transparent" x:Key="NavigationViewContentBackground"/>
+                            <SolidColorBrush Color="Transparent" x:Key="NavigationViewContentGridBorderBrush"/>
+
+                            <SolidColorBrush Color="#99FFFFFF" x:Key="CardTagTextBrush"/>
+                            <Color x:Key="AccentWarmShadowColor">#33000000</Color>
+
+                            <SolidColorBrush Color="#2EE5836E" x:Key="AccentBadgeBackgroundBrush"/>
+                            <SolidColorBrush Color="#FFFFB4A2" x:Key="AccentBadgeForegroundBrush"/>
+                            <SolidColorBrush Color="#2E9D85E6" x:Key="AuxBadgeBackgroundBrush"/>
+                            <SolidColorBrush Color="#FFD1C2FF" x:Key="AuxBadgeForegroundBrush"/>
+                            <SolidColorBrush Color="#2EE5836E" x:Key="BadgePillBackgroundBrush"/>
+                            <SolidColorBrush Color="#FFFFB4A2" x:Key="BadgePillForegroundBrush"/>
+
+                            <SolidColorBrush Color="#FFFFB4A2" x:Key="SponsorForegroundBrush"/>
+                            <SolidColorBrush Color="#2EE5836E" x:Key="SponsorBackgroundBrush"/>
+
+                            <SolidColorBrush Color="#FF3A3642" x:Key="ToggleSwitchFillOff"/>
+                            <Color x:Key="ToggleSwitchFillOffPointerOver">#FF464250</Color>
+                            <Color x:Key="ToggleSwitchFillOffPressed">#FF524D5E</Color>
+                            <Color x:Key="ToggleSwitchFillOffDisabled">#FF2E2B36</Color>
+                            <SolidColorBrush Color="#40FFFFFF" x:Key="ToggleSwitchStrokeOff"/>
+                            <Color x:Key="ToggleSwitchStrokeOffPointerOver">#58FFFFFF</Color>
+                            <Color x:Key="ToggleSwitchStrokeOffPressed">#68FFFFFF</Color>
+                            <Color x:Key="ToggleSwitchStrokeOffDisabled">#28FFFFFF</Color>
+                        </ResourceDictionary>
+
+                        <ResourceDictionary x:Key="HighContrast">
+                            <SolidColorBrush Color="Transparent" x:Key="MonetGlowBrush1"/>
+                            <SolidColorBrush Color="Transparent" x:Key="MonetGlowBrush2"/>
+                            <SolidColorBrush Color="Transparent" x:Key="MonetGlowBrush3"/>
+                            <SolidColorBrush Color="Transparent" x:Key="MonetGlowBrush4"/>
+                            <SolidColorBrush Color="{ThemeResource SystemColorWindowColor}" x:Key="ContentSheetBackgroundBrush"/>
+                            <SolidColorBrush Color="{ThemeResource SystemColorWindowTextColor}" x:Key="ContentSheetBorderBrush"/>
+                            <SolidColorBrush Color="{ThemeResource SystemColorWindowColor}" x:Key="SubTileBackgroundBrush"/>
+                            <SolidColorBrush Color="{ThemeResource SystemColorWindowColor}" x:Key="SubTileHoverBackgroundBrush"/>
+                            <SolidColorBrush Color="{ThemeResource SystemColorHighlightColor}" x:Key="SubTileFocusBorderBrush"/>
+                            <SolidColorBrush Color="{ThemeResource SystemColorWindowTextColor}" x:Key="SubtleRowDividerBrush"/>
+                            <SolidColorBrush Color="{ThemeResource SystemColorWindowTextColor}" x:Key="DividerStrokeColorDefaultBrush"/>
+                            <SolidColorBrush Color="{ThemeResource SystemColorHighlightColor}" x:Key="NavSelectedPillBrush"/>
+                            <SolidColorBrush Color="{ThemeResource SystemColorWindowTextColor}" x:Key="NavSelectedPillBorderBrush"/>
+                            <SolidColorBrush Color="{ThemeResource SystemColorHighlightColor}" x:Key="NavSelectedIndicatorBrush"/>
+                            <SolidColorBrush Color="{ThemeResource SystemColorWindowColor}" x:Key="StatusCardBackgroundBrush"/>
+                            <SolidColorBrush Color="{ThemeResource SystemColorWindowTextColor}" x:Key="StatusCardBorderBrush"/>
+                            <SolidColorBrush Color="{ThemeResource SystemColorGrayTextColor}" x:Key="CardTagTextBrush"/>
+                            <Color x:Key="AccentWarmShadowColor">#00000000</Color>
+                            <SolidColorBrush Color="{ThemeResource SystemColorHighlightColor}" x:Key="AccentBadgeBackgroundBrush"/>
+                            <SolidColorBrush Color="{ThemeResource SystemColorHighlightTextColor}" x:Key="AccentBadgeForegroundBrush"/>
+                            <SolidColorBrush Color="{ThemeResource SystemColorHighlightColor}" x:Key="AuxBadgeBackgroundBrush"/>
+                            <SolidColorBrush Color="{ThemeResource SystemColorHighlightTextColor}" x:Key="AuxBadgeForegroundBrush"/>
+                            <SolidColorBrush Color="{ThemeResource SystemColorHighlightColor}" x:Key="BadgePillBackgroundBrush"/>
+                            <SolidColorBrush Color="{ThemeResource SystemColorHighlightTextColor}" x:Key="BadgePillForegroundBrush"/>
+                            <SolidColorBrush Color="{ThemeResource SystemColorButtonTextColor}" x:Key="SponsorForegroundBrush"/>
+                            <SolidColorBrush Color="{ThemeResource SystemColorButtonFaceColor}" x:Key="SponsorBackgroundBrush"/>
+                        </ResourceDictionary>
+                    </ResourceDictionary.ThemeDictionaries>
+
+                    <!-- 全局 CheckBox 隐式样式：20x20 复选框保持 5px 圆角方形，与圆形 RadioButton 区分并覆盖所有子页 -->
+                    <Style TargetType="CheckBox">
+                        <Setter Property="CornerRadius" Value="5" />
+                    </Style>
+                </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
-            <ResourceDictionary.ThemeDictionaries>
-                <ResourceDictionary x:Key="Light">
-                    <SolidColorBrush x:Key="SponsorForegroundBrush" Color="#FF4A2B18" />
-                    <SolidColorBrush x:Key="SponsorBackgroundBrush" Color="#FFFFCFA3" />
-                </ResourceDictionary>
-                <ResourceDictionary x:Key="Default">
-                    <SolidColorBrush x:Key="SponsorForegroundBrush" Color="#FFFFCFA3" />
-                    <SolidColorBrush x:Key="SponsorBackgroundBrush" Color="#FF4A2B18" />
-                </ResourceDictionary>
-                <ResourceDictionary x:Key="HighContrast">
-                    <SolidColorBrush x:Key="SponsorForegroundBrush" Color="{ThemeResource SystemColorButtonTextColor}" />
-                    <SolidColorBrush x:Key="SponsorBackgroundBrush" Color="{ThemeResource SystemColorButtonFaceColor}" />
-                </ResourceDictionary>
-            </ResourceDictionary.ThemeDictionaries>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

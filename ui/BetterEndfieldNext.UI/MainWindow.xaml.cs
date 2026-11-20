@@ -134,7 +134,19 @@ public sealed partial class MainWindow : Window
         RegisterReactiveControls(MainRoot);
         RegisterHotkeyControls(MainRoot);
         Title = "Better Endfield Next";
-        SystemBackdrop = new MicaBackdrop();
+        ExtendsContentIntoTitleBar = true;
+        try
+        {
+            var titleBar = AppWindow.TitleBar;
+            titleBar.ButtonBackgroundColor = Microsoft.UI.Colors.Transparent;
+            titleBar.ButtonInactiveBackgroundColor = Microsoft.UI.Colors.Transparent;
+            titleBar.ButtonForegroundColor = Windows.UI.Color.FromArgb(0xFF, 0x1F, 0x15, 0x0D);
+            titleBar.ButtonInactiveForegroundColor = Windows.UI.Color.FromArgb(0xFF, 0x87, 0x71, 0x5F);
+        }
+        catch
+        {
+            // Ignore titlebar customization fallback on older systems.
+        }
         TrySetWindowIcon();
         TryResizeWindow();
         CurrentVersionTextBlock.Text = $"版本 {UpdateService.CurrentVersion}";
@@ -3512,6 +3524,30 @@ public sealed partial class MainWindow : Window
     private void LogoThemeColorPicker_Loaded(object sender, RoutedEventArgs e)
     {
         UpdateColorPickerLabels();
+        UpdateLogoThemeColorPreview();
+    }
+
+    private void LogoThemeColorPicker_ColorChanged(ColorPicker sender, ColorChangedEventArgs args)
+    {
+        UpdateLogoThemeColorPreview();
+        ScheduleAutoSave();
+    }
+
+    private void UpdateLogoThemeColorPreview()
+    {
+        if (LogoThemeColorPicker == null) return;
+        var c = LogoThemeColorPicker.Color;
+        if (LogoThemeColorPreviewBorder != null)
+        {
+            LogoThemeColorPreviewBorder.Background = new SolidColorBrush(c);
+        }
+        if (LogoThemeColorHexTextBlock != null)
+        {
+            bool isZh = LocalizationService.Instance.IsChinese;
+            LogoThemeColorHexTextBlock.Text = isZh
+                ? $"#{c.R:X2}{c.G:X2}{c.B:X2} · 点击展开调色盘"
+                : $"#{c.R:X2}{c.G:X2}{c.B:X2} · Click to open palette";
+        }
     }
 
     private void UpdateColorPickerLabels()
@@ -3681,7 +3717,7 @@ public sealed partial class MainWindow : Window
     private void UpdateCrossfadePanel()
     {
         bool enabled = CrossfadeToggle.IsOn;
-        CrossfadeSettingsPanel.Opacity = enabled ? 1.0 : 0.55;
+        CrossfadeSettingsPanel.Opacity = enabled ? 1.0 : 0.88;
         LoopStartNumberBox.IsEnabled = enabled;
         LoopEndNumberBox.IsEnabled = enabled;
         CrossfadeDurationNumberBox.IsEnabled = enabled;
@@ -4083,9 +4119,12 @@ public sealed partial class MainWindow : Window
         RuntimeStatusTextBlock.Text = gameRunning
             ? (isZh ? "游戏正在运行" : "Game is running")
             : (isZh ? "游戏未运行" : "Game is not running");
+        bool gameReady = !string.IsNullOrWhiteSpace(GamePathBox?.Text) && File.Exists(GamePathBox.Text);
         RuntimeStatusIndicator.Fill = gameRunning
-            ? new SolidColorBrush(Microsoft.UI.Colors.LimeGreen)
-            : (Brush)Application.Current.Resources["TextFillColorSecondaryBrush"];
+            ? new SolidColorBrush(Windows.UI.Color.FromArgb(0xFF, 0x22, 0xB0, 0x7D))
+            : gameReady
+                ? new SolidColorBrush(Windows.UI.Color.FromArgb(0xFF, 0x96, 0x8E, 0xAD))
+                : new SolidColorBrush(Windows.UI.Color.FromArgb(0xFF, 0xB0, 0xA8, 0xC2));
 
         string logPath = ConfigurationService.GetLogPath(
             RuntimePathDiscoveryService.BundledInjectorPath);
@@ -4308,12 +4347,18 @@ public sealed partial class MainWindow : Window
         ModelVisualSectionHint.Text = isZh
             ? "主题色可与原登录演员或角色替换同时使用。"
             : "Theme color works with both original actors and custom replacements.";
-        LogoThemeToggle.Header = isZh ? "自定义 Logo 与色带主题色" : "Custom Logo & Ribbon Accent Theme";
-        LogoThemeToggle.OffContent = isZh ? "使用游戏原色" : "Use game default colors";
-        LogoThemeToggle.OnContent = isZh ? "使用所选颜色" : "Use selected accent color";
-        ModelReplacementToggle.Header = isZh ? "启用角色替换" : "Enable Character Replacement";
-        ModelReplacementToggle.OffContent = isZh ? "保持原登录演员" : "Keep original login actor";
-        ModelReplacementToggle.OnContent = isZh ? "使用下方角色与动画" : "Use custom character & animations";
+        LogoThemeRowTitle.Text = isZh ? "自定义 Logo 与色带主题色" : "Custom Logo & Ribbon Accent Theme";
+        LogoThemeRowHint.Text = isZh ? "覆盖登录界面色带与标志颜色" : "Override login screen ribbon and emblem colors";
+        LogoThemeToggle.Header = null;
+        LogoThemeToggle.OffContent = string.Empty;
+        LogoThemeToggle.OnContent = string.Empty;
+        LogoThemeColorFlyoutTitle.Text = isZh ? "主题强调色" : "Theme Accent Color";
+        UpdateLogoThemeColorPreview();
+        ModelReplacementRowTitle.Text = isZh ? "启用开屏角色替换" : "Enable Character Replacement";
+        ModelReplacementRowHint.Text = isZh ? "使用右侧指定角色与四阶段动作" : "Use custom character & 4-phase animations";
+        ModelReplacementToggle.Header = null;
+        ModelReplacementToggle.OffContent = string.Empty;
+        ModelReplacementToggle.OnContent = string.Empty;
         ModelCharacterSectionTitle.Text = isZh ? "角色与动作" : "Character & Action Sequence";
         ModelCharacterSectionHint.Text = isZh
             ? "角色使用自己的坐姿动画链，最后动作从该角色的已索引动画中选择。"
@@ -4336,15 +4381,21 @@ public sealed partial class MainWindow : Window
         ModelLoopSectionHint.Text = isZh
             ? "可遵循资源 LoopTime、强制覆盖非循环资源，或按自定义区间交叉混合。"
             : "Follow asset LoopTime, force loop non-looping clips, or blend custom crossfade intervals.";
-        FinalLoopToggle.Header = isZh ? "原生循环" : "Native Loop";
-        FinalLoopToggle.OffContent = isZh ? "播放一次并停在末帧" : "Play once & hold last frame";
-        FinalLoopToggle.OnContent = isZh ? "使用动画 LoopTime" : "Use clip LoopTime";
-        ForceLoopToggle.Header = isZh ? "强制循环" : "Force Loop";
-        ForceLoopToggle.OffContent = isZh ? "遵循资源原生标志" : "Follow native clip flag";
-        ForceLoopToggle.OnContent = isZh ? "强制忽略末帧停留" : "Force continuous looping";
-        CrossfadeToggle.Header = isZh ? "首尾交叉过渡" : "Crossfade Loop Transition";
-        CrossfadeToggle.OffContent = isZh ? "不混合" : "No blending";
-        CrossfadeToggle.OnContent = isZh ? "首尾平滑混合" : "Smooth head-to-tail crossfade";
+        FinalLoopRowTitle.Text = isZh ? "原生循环" : "Native Loop";
+        FinalLoopRowHint.Text = isZh ? "使用动画资源自带 LoopTime，否则停在末帧" : "Use clip LoopTime or hold last frame";
+        FinalLoopToggle.Header = null;
+        FinalLoopToggle.OffContent = string.Empty;
+        FinalLoopToggle.OnContent = string.Empty;
+        ForceLoopRowTitle.Text = isZh ? "强制循环" : "Force Loop";
+        ForceLoopRowHint.Text = isZh ? "强制覆盖非循环动画并忽略末帧停留" : "Force continuous looping on non-loop clips";
+        ForceLoopToggle.Header = null;
+        ForceLoopToggle.OffContent = string.Empty;
+        ForceLoopToggle.OnContent = string.Empty;
+        CrossfadeRowTitle.Text = isZh ? "首尾交叉过渡" : "Crossfade Loop Transition";
+        CrossfadeRowHint.Text = isZh ? "按自定义起止区间平滑交叉混合" : "Smooth head-to-tail custom interval crossfade";
+        CrossfadeToggle.Header = null;
+        CrossfadeToggle.OffContent = string.Empty;
+        CrossfadeToggle.OnContent = string.Empty;
         LoopStartNumberBox.Header = isZh ? "循环起点 (秒)" : "Loop Start (s)";
         LoopEndNumberBox.Header = isZh ? "循环终点 (秒)" : "Loop End (s)";
         CrossfadeDurationNumberBox.Header = isZh ? "混合时长 (秒)" : "Crossfade Duration (s)";

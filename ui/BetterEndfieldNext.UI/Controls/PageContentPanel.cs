@@ -3,9 +3,6 @@ using Microsoft.UI.Xaml.Controls;
 
 namespace BetterEndfieldNext.UI.Controls;
 
-// The host fills the scroll viewport; its content column stays on the left.
-// Capping a stretched StackPanel itself can offset it using its desired width
-// while arranging its children at the larger available width.
 public sealed class PageContentPanel : Grid
 {
     public double MaxContentWidth
@@ -18,8 +15,7 @@ public sealed class PageContentPanel : Grid
     {
         ColumnDefinitions.Add(new ColumnDefinition
         {
-            Width = new GridLength(1, GridUnitType.Star),
-            MaxWidth = 920
+            Width = new GridLength(1, GridUnitType.Star)
         });
     }
 }
