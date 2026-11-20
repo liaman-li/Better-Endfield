@@ -4668,7 +4668,7 @@ public sealed partial class MainWindow : Window
         ThemeItemDefault.Content = isZh ? "跟随系统" : "System Default";
         ThemeItemLight.Content = isZh ? "浅色" : "Light";
         ThemeItemDark.Content = isZh ? "深色" : "Dark";
-        ShortcutsSectionTitle.Text = isZh ? "桌面快捷方式" : "Desktop Shortcuts";
+        ShortcutsSectionTitle.Text = isZh ? "快捷入口与本地文件" : "Shortcuts & Local Files";
         AppShortcutTitleTextBlock.Text = "Better Endfield Next";
         AppShortcutHintTextBlock.Text = isZh
             ? "在桌面创建本控制器的启动入口。"

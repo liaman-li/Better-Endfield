@@ -21,6 +21,8 @@
                             <CornerRadius x:Key="ControlCornerRadius">10</CornerRadius>
                             <CornerRadius x:Key="OverlayCornerRadius">14</CornerRadius>
                             <CornerRadius x:Key="NavigationViewItemCornerRadius">14</CornerRadius>
+                            <Thickness x:Key="ComboBoxBorderThemeThickness">1</Thickness>
+                            <Thickness x:Key="ToggleSwitchTopHeaderMargin">0</Thickness>
                             <x:Double x:Key="ToggleSwitchPreContentMargin">0</x:Double>
                             <x:Double x:Key="ToggleSwitchPostContentMargin">0</x:Double>
 
@@ -87,10 +89,10 @@
                             <SolidColorBrush Color="#D9EDEAF5" x:Key="TextControlBackgroundDisabled"/>
                             <SolidColorBrush Color="#FF807990" x:Key="TextControlForegroundDisabled"/>
                             <SolidColorBrush Color="#FF807990" x:Key="TextControlHeaderForegroundDisabled"/>
-                            <SolidColorBrush Color="Transparent" x:Key="TextControlBorderBrush"/>
-                            <SolidColorBrush Color="Transparent" x:Key="TextControlBorderBrushPointerOver"/>
+                            <SolidColorBrush Color="#1E5B5768" x:Key="TextControlBorderBrush"/>
+                            <SolidColorBrush Color="#335B5768" x:Key="TextControlBorderBrushPointerOver"/>
                             <SolidColorBrush Color="#FF7C64B8" x:Key="TextControlBorderBrushFocused"/>
-                            <SolidColorBrush Color="Transparent" x:Key="TextControlBorderBrushDisabled"/>
+                            <SolidColorBrush Color="#145B5768" x:Key="TextControlBorderBrushDisabled"/>
                             <SolidColorBrush Color="Transparent" x:Key="TextControlElevationBorderBrush"/>
                             <SolidColorBrush Color="#FF7C64B8" x:Key="TextControlElevationBorderFocusedBrush"/>
 
@@ -100,10 +102,10 @@
                             <SolidColorBrush Color="#D9EDEAF5" x:Key="ComboBoxBackgroundDisabled"/>
                             <SolidColorBrush Color="#FF807990" x:Key="ComboBoxForegroundDisabled"/>
                             <SolidColorBrush Color="#FF807990" x:Key="ComboBoxHeaderForegroundDisabled"/>
-                            <SolidColorBrush Color="Transparent" x:Key="ComboBoxBorderBrush"/>
-                            <SolidColorBrush Color="Transparent" x:Key="ComboBoxBorderBrushPointerOver"/>
+                            <SolidColorBrush Color="#1E5B5768" x:Key="ComboBoxBorderBrush"/>
+                            <SolidColorBrush Color="#335B5768" x:Key="ComboBoxBorderBrushPointerOver"/>
                             <SolidColorBrush Color="#FF7C64B8" x:Key="ComboBoxBorderBrushPressed"/>
-                            <SolidColorBrush Color="Transparent" x:Key="ComboBoxBorderBrushDisabled"/>
+                            <SolidColorBrush Color="#145B5768" x:Key="ComboBoxBorderBrushDisabled"/>
 
                             <SolidColorBrush Color="#EBF3F1F8" x:Key="ButtonBackground"/>
                             <SolidColorBrush Color="#FFFFFFFF" x:Key="ButtonBackgroundPointerOver"/>
@@ -273,6 +275,10 @@
                             <CornerRadius x:Key="ControlCornerRadius">10</CornerRadius>
                             <CornerRadius x:Key="OverlayCornerRadius">14</CornerRadius>
                             <CornerRadius x:Key="NavigationViewItemCornerRadius">14</CornerRadius>
+                            <Thickness x:Key="ComboBoxBorderThemeThickness">1</Thickness>
+                            <Thickness x:Key="ToggleSwitchTopHeaderMargin">0</Thickness>
+                            <x:Double x:Key="ToggleSwitchPreContentMargin">0</x:Double>
+                            <x:Double x:Key="ToggleSwitchPostContentMargin">0</x:Double>
 
                             <SolidColorBrush Color="Transparent" x:Key="MonetGlowBrush1"/>
                             <SolidColorBrush Color="Transparent" x:Key="MonetGlowBrush2"/>
@@ -281,12 +287,32 @@
 
                             <SolidColorBrush Color="#CC1E1F24" x:Key="ContentSheetBackgroundBrush"/>
                             <SolidColorBrush Color="#1AFFFFFF" x:Key="ContentSheetBorderBrush"/>
+
+                            <!-- L3 功能主卡片（深色模式统一深灰半透卡片，防亮灰白底吃字） -->
+                            <SolidColorBrush Color="#B825272E" x:Key="CardBackgroundFillColorDefaultBrush"/>
+                            <SolidColorBrush Color="#1EFFFFFF" x:Key="CardStrokeColorDefaultBrush"/>
+                            <SolidColorBrush Color="#1EFFFFFF" x:Key="CardStrokeColorDefaultSolidBrush"/>
+                            <SolidColorBrush Color="#14FFFFFF" x:Key="CardBackgroundFillColorSecondaryBrush"/>
+
                             <SolidColorBrush Color="#14FFFFFF" x:Key="SubTileBackgroundBrush"/>
                             <SolidColorBrush Color="#1FFFFFFF" x:Key="SubTileHoverBackgroundBrush"/>
                             <SolidColorBrush Color="#FFA68EE8" x:Key="SubTileFocusBorderBrush"/>
                             <SolidColorBrush Color="#1CFFFFFF" x:Key="SubtleRowDividerBrush"/>
                             <SolidColorBrush Color="#1AFFFFFF" x:Key="SubtleDividerBrush"/>
                             <SolidColorBrush Color="#24FFFFFF" x:Key="DividerStrokeColorDefaultBrush"/>
+
+                            <!-- 深色模式输入框与下拉框：1px 极淡四周细边，保持 Elevation 透明不长底部粗线 -->
+                            <SolidColorBrush Color="Transparent" x:Key="ControlElevationBorderBrush"/>
+                            <SolidColorBrush Color="Transparent" x:Key="TextControlElevationBorderBrush"/>
+                            <SolidColorBrush Color="#FFE07A64" x:Key="TextControlElevationBorderFocusedBrush"/>
+                            <SolidColorBrush Color="#1CFFFFFF" x:Key="TextControlBorderBrush"/>
+                            <SolidColorBrush Color="#30FFFFFF" x:Key="TextControlBorderBrushPointerOver"/>
+                            <SolidColorBrush Color="#FFE07A64" x:Key="TextControlBorderBrushFocused"/>
+                            <SolidColorBrush Color="#12FFFFFF" x:Key="TextControlBorderBrushDisabled"/>
+                            <SolidColorBrush Color="#1CFFFFFF" x:Key="ComboBoxBorderBrush"/>
+                            <SolidColorBrush Color="#30FFFFFF" x:Key="ComboBoxBorderBrushPointerOver"/>
+                            <SolidColorBrush Color="#FFE07A64" x:Key="ComboBoxBorderBrushPressed"/>
+                            <SolidColorBrush Color="#12FFFFFF" x:Key="ComboBoxBorderBrushDisabled"/>
 
                             <!-- 深色模式次级按钮（清晰半透底+描边，不恢复输入框底灰线） -->
                             <SolidColorBrush Color="#1AFFFFFF" x:Key="ButtonBackground"/>
@@ -493,6 +519,71 @@
                     <!-- 全局 CheckBox 隐式样式：20x20 复选框保持 5px 圆角方形，与圆形 RadioButton 区分并覆盖所有子页 -->
                     <Style TargetType="CheckBox">
                         <Setter Property="CornerRadius" Value="5" />
+                    </Style>
+
+                    <!-- 全局公共排版与卡片样式（供 MainWindow 及各子 UserControl 动态响应亮暗主题） -->
+                    <Style x:Key="PageTitleStyle" TargetType="TextBlock">
+                        <Setter Property="FontSize" Value="24" />
+                        <Setter Property="FontWeight" Value="Bold" />
+                        <Setter Property="TextWrapping" Value="Wrap" />
+                    </Style>
+                    <Style x:Key="SectionTitleStyle" TargetType="TextBlock">
+                        <Setter Property="FontSize" Value="16" />
+                        <Setter Property="FontWeight" Value="Bold" />
+                        <Setter Property="TextWrapping" Value="Wrap" />
+                    </Style>
+                    <Style x:Key="FieldHintStyle" TargetType="TextBlock">
+                        <Setter Property="Foreground" Value="{ThemeResource TextFillColorSecondaryBrush}" />
+                        <Setter Property="FontSize" Value="12" />
+                        <Setter Property="TextWrapping" Value="Wrap" />
+                    </Style>
+                    <Style x:Key="SectionStyle" TargetType="Border">
+                        <Setter Property="Padding" Value="22,20" />
+                        <Setter Property="Background" Value="{ThemeResource CardBackgroundFillColorDefaultBrush}" />
+                        <Setter Property="BorderBrush" Value="{ThemeResource CardStrokeColorDefaultBrush}" />
+                        <Setter Property="BorderThickness" Value="1.5" />
+                        <Setter Property="CornerRadius" Value="18" />
+                    </Style>
+                    <Style x:Key="SettingsRowStyle" TargetType="Border">
+                        <Setter Property="Padding" Value="14,10" />
+                        <Setter Property="Background" Value="{ThemeResource SubTileBackgroundBrush}" />
+                        <Setter Property="BorderBrush" Value="Transparent" />
+                        <Setter Property="BorderThickness" Value="0" />
+                        <Setter Property="CornerRadius" Value="12" />
+                    </Style>
+                    <Style x:Key="PathButtonStyle" TargetType="Button">
+                        <Setter Property="Width" Value="40" />
+                        <Setter Property="Height" Value="34" />
+                        <Setter Property="Padding" Value="8" />
+                        <Setter Property="CornerRadius" Value="10" />
+                    </Style>
+
+                    <!-- 右置紧凑开关样式：保留 Header/OnContent/OffContent 数据供左侧绑定，自身仅渲染 40x20 胶囊本体 -->
+                    <Style x:Key="CompactToggleSwitchStyle" TargetType="ToggleSwitch">
+                        <Setter Property="MinWidth" Value="0" />
+                        <Setter Property="Margin" Value="0,0,-12,0" />
+                        <Setter Property="VerticalAlignment" Value="Center" />
+                        <Setter Property="HeaderTemplate">
+                            <Setter.Value>
+                                <DataTemplate>
+                                    <Grid Width="0" Height="0" Visibility="Collapsed" />
+                                </DataTemplate>
+                            </Setter.Value>
+                        </Setter>
+                        <Setter Property="OffContentTemplate">
+                            <Setter.Value>
+                                <DataTemplate>
+                                    <Grid Width="0" Height="0" Visibility="Collapsed" />
+                                </DataTemplate>
+                            </Setter.Value>
+                        </Setter>
+                        <Setter Property="OnContentTemplate">
+                            <Setter.Value>
+                                <DataTemplate>
+                                    <Grid Width="0" Height="0" Visibility="Collapsed" />
+                                </DataTemplate>
+                            </Setter.Value>
+                        </Setter>
                     </Style>
 
                     <!-- 第 2 波复用基础样式：顶部提示/警示横条容器 -->

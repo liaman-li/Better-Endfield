@@ -121,8 +121,7 @@ internal sealed class BemConverterWindow : Window
     {
         var content = new StackPanel { Spacing = 12 }; content.Children.Add(Text(title, 19));
         foreach (var e in elements) content.Children.Add(e);
-        return new Border { Child = content, Padding = new Thickness(18), CornerRadius = new CornerRadius(8), BorderThickness = new Thickness(1),
-            BorderBrush = (Brush)Application.Current.Resources["CardStrokeColorDefaultBrush"], Background = (Brush)Application.Current.Resources["CardBackgroundFillColorDefaultBrush"] };
+        return new Border { Child = content, Style = (Style)Application.Current.Resources["SectionStyle"], Padding = new Thickness(18) };
     }
     private static Border Card(Func<string> title, params UIElement[] elements)
     {

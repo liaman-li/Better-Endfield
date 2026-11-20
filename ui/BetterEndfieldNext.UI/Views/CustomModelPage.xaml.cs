@@ -602,7 +602,7 @@ public sealed partial class CustomModelPage : UserControl
                     }
                     RefreshAvailability(); _localizeCards.Add(RefreshAvailability); stack.Children.Add(expander);
                 }
-                PackageCards.Children.Add(new Border { Tag = p.TargetKey, Child = stack, Padding = new Thickness(16), CornerRadius = new CornerRadius(8), Background = (Microsoft.UI.Xaml.Media.Brush)Application.Current.Resources["CardBackgroundFillColorDefaultBrush"] });
+                PackageCards.Children.Add(new Border { Tag = p.TargetKey, Child = stack, Style = (Style)Application.Current.Resources["SectionStyle"], Padding = new Thickness(16), CornerRadius = new CornerRadius(14) });
             }
             ApplyCharacterFilter();
             UpdateBackfillButton();
