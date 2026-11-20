@@ -3714,6 +3714,28 @@ public sealed partial class MainWindow : Window
             $"Sit to walk: {character.SitToWalk.DisplayName}";
     }
 
+    private void CameraWorkspaceTabButton_Click(object sender, RoutedEventArgs e)
+    {
+        string tab = (sender as Button)?.Tag as string ?? "free";
+        CameraTabFreePanel.Visibility = tab == "free" ? Visibility.Visible : Visibility.Collapsed;
+        CameraTabMotionPanel.Visibility = tab == "motion" ? Visibility.Visible : Visibility.Collapsed;
+        CameraTabMmdPanel.Visibility = tab == "mmd" ? Visibility.Visible : Visibility.Collapsed;
+
+        // Ensure NumberBox controls inside newly visible tabs format their current Value into InputBox.Text
+        if (tab == "motion" && double.IsFinite(_freeCameraExtras.MotionSpeed))
+        {
+            MotionSpeedNumberBox.Text = _freeCameraExtras.MotionSpeed.ToString("0.########", System.Globalization.CultureInfo.InvariantCulture);
+        }
+
+        foreach (Button button in new[] { CameraTabFreeButton, CameraTabMotionButton, CameraTabMmdButton })
+        {
+            button.Style = (Style)Application.Current.Resources[
+                string.Equals(button.Tag as string, tab, StringComparison.Ordinal)
+                    ? "FilterPillSelectedButtonStyle"
+                    : "FilterPillButtonStyle"];
+        }
+    }
+
     private void UpdateCrossfadePanel()
     {
         bool enabled = CrossfadeToggle.IsOn;
@@ -4565,6 +4587,9 @@ public sealed partial class MainWindow : Window
         CameraPageDescriptionTextBlock.Text = isZh
             ? "自由控制游戏相机，并调整镜头相关的画面效果。各项默认关闭，修改后立即保存。"
             : "Free camera control and visual tuning. Disabled by default; changes apply immediately.";
+        CameraTabFreeButton.Content = isZh ? "自由视角与画面" : "Free Camera & Visuals";
+        CameraTabMotionButton.Content = isZh ? "运镜与 VMD" : "Camera Motion & VMD";
+        CameraTabMmdButton.Content = isZh ? "MMD 播放与作品库" : "MMD Playback & Library";
         CameraFreeInfoBar.Title = isZh ? "自由视角操作" : "Free Camera Controls";
         CameraFreeInfoBar.Message = isZh
             ? "按自由视角热键进入或退出，按时间冻结热键冻结或恢复世界。鼠标转向，方向键前后左右移动，PageUp/PageDown 升降，Shift 加速、Ctrl 减速；冻结时间后仍可移动。切换场景或主相机时会自动退出。"

@@ -3,71 +3,263 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:controls="using:BetterEndfieldNext.UI.Controls"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    <ScrollViewer VerticalScrollBarVisibility="Auto">
-        <StackPanel Spacing="18" Padding="24">
-            <TextBlock x:Name="PageTitle" Text="角色与武器 · BEM" FontSize="28" FontWeight="SemiBold" />
-            <TextBlock x:Name="PageIntro" Text="支持 BEM 1.0–1.5 模型包，管理角色、武器和技能形态。资源目标不重叠的模型包可以同时启用。" TextWrapping="Wrap" />
-            <StackPanel Orientation="Horizontal" Spacing="12">
-                <Button x:Name="ImportButton" Content="导入 BEM / ZIP" Click="Import_Click" />
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!-- Row 0: Fixed Page Header + Action Toolbar -->
+        <StackPanel Grid.Row="0" Padding="28,22,28,12" Spacing="12">
+            <StackPanel Spacing="4">
+                <TextBlock x:Name="PageTitle" Text="角色与武器 · BEM" Style="{StaticResource PageTitleStyle}" />
+                <TextBlock
+                    x:Name="PageIntro"
+                    Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                    Text="支持 BEM 1.0–1.5 模型包，管理角色、武器和技能形态。资源目标不重叠的模型包可以同时启用。"
+                    TextWrapping="Wrap" />
+            </StackPanel>
+            <controls:WrapPanel HorizontalSpacing="8" VerticalSpacing="8">
+                <Button x:Name="ImportButton" Content="导入 BEM / ZIP" Click="Import_Click" Style="{StaticResource AccentButtonStyle}" />
                 <Button x:Name="ConvertButton" Content="BEM 创作者工具…" Click="Convert_Click" />
                 <Button x:Name="ComposeButton" Content="组合已安装包" Click="Compose_Click" />
                 <Button x:Name="RefreshButton" Content="刷新" Click="Refresh_Click" />
                 <Button x:Name="PackageFolderButton" Content="打开模型文件夹" Click="OpenFolder_Click" />
                 <Button x:Name="DownloadModelsButton" Content="前往下载" Click="ModelSource_Click" Tag="https://discord.gg/F49akXaxy8" />
-            </StackPanel>
-            <Border x:Name="ModelDropArea" AllowDrop="True" Padding="20" CornerRadius="8"
-                    BorderThickness="1" BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
-                    Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
-                    DragOver="ModelDropArea_DragOver" DragLeave="ModelDropArea_DragLeave" Drop="ModelDropArea_Drop">
-                <Grid>
-                    <Border x:Name="ModelDropHighlight" Margin="-20" CornerRadius="8" BorderThickness="2"
-                            BorderBrush="{ThemeResource AccentFillColorDefaultBrush}" Visibility="Collapsed" IsHitTestVisible="False" />
-                    <StackPanel Spacing="6" HorizontalAlignment="Center">
-                        <TextBlock x:Name="ModelDropTitle" Text="将 BEM 或 ZIP 模型包拖到这里" FontSize="16" FontWeight="SemiBold" HorizontalAlignment="Center" TextWrapping="Wrap" />
-                        <TextBlock x:Name="ModelDropHint" Text="支持同时拖入多个文件，按顺序导入；ZIP 内可选择要导入的包。" Opacity="0.7" TextWrapping="Wrap" />
-                    </StackPanel>
-                </Grid>
-            </Border>
-            <Border Padding="16" CornerRadius="8" Background="{ThemeResource CardBackgroundFillColorDefaultBrush}" Visibility="Collapsed">
-                <StackPanel Spacing="8">
-                    <TextBlock x:Name="GetModelsTitle" Text="获取模型" FontSize="16" FontWeight="SemiBold" />
-                    <controls:WrapPanel HorizontalSpacing="12" VerticalSpacing="8">
-                        <Button x:Name="QuarkModelsButton" Content="夸克网盘" Click="ModelSource_Click" Tag="https://pan.quark.cn/s/97a9ca8f9bf2" />
-                        <Button x:Name="BaiduModelsButton" Content="百度网盘" Click="ModelSource_Click" Tag="https://pan.baidu.com/s/5ekaAiiLmZKXHZ7pHH0W-Vw" />
-                        <Button x:Name="KatfileModelsButton" Content="Katfile 网盘" Click="ModelSource_Click" Tag="https://katfile.biz/users/hydra405/" />
-                    </controls:WrapPanel>
-                </StackPanel>
-            </Border>
-            <Border Padding="16" CornerRadius="8" Background="{ThemeResource CardBackgroundFillColorDefaultBrush}">
-                <StackPanel Spacing="8">
-                    <ToggleSwitch x:Name="LodToggle" Header="锁定高精度 LOD" Toggled="Lod_Toggled" />
-                    <TextBlock x:Name="LodHint" TextWrapping="Wrap" />
-                    <ToggleSwitch x:Name="HotSwitchToggle" Header="实验：模型热切换" Toggled="Experiments_Toggled" />
-                    <TextBlock x:Name="HotSwitchHint" Text="开启后需重启游戏。之后切换包、外观、组件或应用滑条，在切换配队或重新打开详情时更新。会增加内存占用。" TextWrapping="Wrap" />
-                    <ToggleSwitch x:Name="CloneSupportToggle" Header="实验：克隆模型支持" Toggled="Experiments_Toggled" />
-                    <ToggleSwitch x:Name="ReleaseRetiredResourcesToggle" Header="实验：释放旧模型资源" Toggled="Experiments_Toggled" />
-                    <ToggleSwitch x:Name="FastLoadingToggle" Header="加载速度优先" Toggled="Experiments_Toggled" />
-                    <ToggleSwitch x:Name="SkipValidationToggle" Header="实验：关闭模型校验" Toggled="SkipValidation_Toggled" />
-                    <TextBlock x:Name="SkipValidationHint" Text="开启后会跳过兼容性和容量校验，可能导致游戏崩溃或模型错乱，风险自行承担。重启游戏后生效。" TextWrapping="Wrap" />
-                </StackPanel>
-            </Border>
-            <InfoBar x:Name="Status" IsOpen="False" IsClosable="True" />
-            <Border Padding="16" CornerRadius="8" Background="{ThemeResource CardBackgroundFillColorDefaultBrush}">
-                <StackPanel Spacing="8">
-                    <ToggleSwitch x:Name="ModelOverlayToggle" Header="模型悬浮窗" Toggled="OverlaySettings_Toggled" />
-                    <ToggleSwitch x:Name="ModelOverlayVisibleToggle" Header="进入游戏时显示" Toggled="OverlaySettings_Toggled" />
-                    <TextBox x:Name="ModelOverlayHotkeyBox" Header="显示／隐藏快捷键" Text="=" IsSpellCheckEnabled="False"
-                             PreviewKeyDown="ModelOverlayHotkey_PreviewKeyDown" TextChanged="ModelOverlayHotkey_TextChanged" />
-                </StackPanel>
-            </Border>
-            <ProgressRing x:Name="Busy" IsActive="False" Visibility="Collapsed" HorizontalAlignment="Left" />
-            <controls:WrapPanel HorizontalSpacing="12" VerticalSpacing="8">
-                <ComboBox x:Name="CharacterFilter" Header="按角色筛选" MinWidth="220" SelectionChanged="CharacterFilter_SelectionChanged" />
-                <Button x:Name="DisableAllButton" Content="关闭全部模型" VerticalAlignment="Bottom" Click="DisableAll_Click" />
-                <Button x:Name="BackfillBaselineButton" Content="补全版本信息" VerticalAlignment="Bottom" Click="BackfillBaseline_Click" />
             </controls:WrapPanel>
-            <TextBlock x:Name="EmptyHint" Text="尚未导入模型包。已有其他格式？打开转换窗口查看支持范围与缺少的资料。" TextWrapping="Wrap" />
-            <StackPanel x:Name="PackageCards" Spacing="12" />
         </StackPanel>
-    </ScrollViewer>
+
+        <!-- Row 1: Scrollable Body -->
+        <ScrollViewer
+            Grid.Row="1"
+            HorizontalScrollBarVisibility="Disabled"
+            VerticalScrollBarVisibility="Auto">
+            <controls:PageContentPanel Padding="28,4,28,28">
+                <StackPanel Spacing="16">
+                    <!-- Drag & Drop Import Zone -->
+                    <Border
+                        x:Name="ModelDropArea"
+                        AllowDrop="True"
+                        Padding="22,18"
+                        CornerRadius="16"
+                        BorderThickness="1.5"
+                        BorderBrush="{ThemeResource SubtleDividerBrush}"
+                        Background="{ThemeResource SubTileBackgroundBrush}"
+                        DragOver="ModelDropArea_DragOver"
+                        DragLeave="ModelDropArea_DragLeave"
+                        Drop="ModelDropArea_Drop">
+                        <Grid>
+                            <Border
+                                x:Name="ModelDropHighlight"
+                                Margin="-22,-18"
+                                CornerRadius="16"
+                                BorderThickness="2"
+                                BorderBrush="{ThemeResource AccentFillColorDefaultBrush}"
+                                Visibility="Collapsed"
+                                IsHitTestVisible="False" />
+                            <StackPanel Spacing="4" HorizontalAlignment="Center">
+                                <TextBlock
+                                    x:Name="ModelDropTitle"
+                                    Text="将 BEM 或 ZIP 模型包拖到这里"
+                                    FontSize="15"
+                                    FontWeight="Bold"
+                                    HorizontalAlignment="Center"
+                                    TextWrapping="Wrap" />
+                                <TextBlock
+                                    x:Name="ModelDropHint"
+                                    Text="支持同时拖入多个文件，按顺序导入；ZIP 内可选择要导入的包。"
+                                    Style="{StaticResource FieldHintStyle}"
+                                    HorizontalAlignment="Center"
+                                    TextWrapping="Wrap" />
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+
+                    <!-- Hidden legacy GetModels panel preserved for C# compatibility -->
+                    <Border Padding="16" CornerRadius="12" Background="{ThemeResource CardBackgroundFillColorDefaultBrush}" Visibility="Collapsed">
+                        <StackPanel Spacing="8">
+                            <TextBlock x:Name="GetModelsTitle" Text="获取模型" FontSize="16" FontWeight="SemiBold" />
+                            <controls:WrapPanel HorizontalSpacing="12" VerticalSpacing="8">
+                                <Button x:Name="QuarkModelsButton" Content="夸克网盘" Click="ModelSource_Click" Tag="https://pan.quark.cn/s/97a9ca8f9bf2" />
+                                <Button x:Name="BaiduModelsButton" Content="百度网盘" Click="ModelSource_Click" Tag="https://pan.baidu.com/s/5ekaAiiLmZKXHZ7pHH0W-Vw" />
+                                <Button x:Name="KatfileModelsButton" Content="Katfile 网盘" Click="ModelSource_Click" Tag="https://katfile.biz/users/hydra405/" />
+                            </controls:WrapPanel>
+                        </StackPanel>
+                    </Border>
+
+                    <InfoBar x:Name="Status" IsOpen="False" IsClosable="True" />
+                    <ProgressRing x:Name="Busy" IsActive="False" Visibility="Collapsed" HorizontalAlignment="Left" />
+
+                    <!-- Compact Side-by-Side Row: Left Collapsible Engine & Experimental Options + Right Model Overlay Card -->
+                    <Grid ColumnSpacing="18">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="6*" />
+                            <ColumnDefinition Width="5*" />
+                        </Grid.ColumnDefinitions>
+
+                        <!-- Left: Default-Collapsed Expander for 6 Engine/Experimental Switches -->
+                        <Expander
+                            Grid.Column="0"
+                            IsExpanded="False"
+                            VerticalAlignment="Top"
+                            HorizontalAlignment="Stretch"
+                            HorizontalContentAlignment="Stretch"
+                            CornerRadius="18"
+                            Padding="18,14"
+                            Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                            BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                            BorderThickness="1.5">
+                            <Expander.Header>
+                                <StackPanel Spacing="2" Padding="0,6">
+                                    <TextBlock x:Name="EngineOptionsExpanderTitle" Style="{StaticResource SectionTitleStyle}" FontSize="15" Text="渲染与实验性选项" />
+                                    <TextBlock x:Name="EngineOptionsExpanderHint" Style="{StaticResource FieldHintStyle}" Text="高精度 LOD、模型热切换与实验特性" TextWrapping="Wrap" />
+                                </StackPanel>
+                            </Expander.Header>
+                            <StackPanel Spacing="12">
+                                <Border Style="{StaticResource SettingsRowStyle}">
+                                    <StackPanel Spacing="6">
+                                        <Grid ColumnSpacing="12">
+                                            <Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
+                                            <TextBlock VerticalAlignment="Center" FontWeight="Bold" Text="{Binding Header, ElementName=LodToggle}" TextWrapping="Wrap" />
+                                            <ToggleSwitch x:Name="LodToggle" Grid.Column="1" Header="锁定高精度 LOD" Style="{StaticResource CompactToggleSwitchStyle}" Toggled="Lod_Toggled" />
+                                        </Grid>
+                                        <TextBlock x:Name="LodHint" Style="{StaticResource FieldHintStyle}" TextWrapping="Wrap" />
+                                    </StackPanel>
+                                </Border>
+
+                                <Grid ColumnSpacing="12" RowSpacing="10">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+
+                                    <Border Style="{StaticResource SettingsRowStyle}" Padding="12,8">
+                                        <Grid ColumnSpacing="8">
+                                            <Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
+                                            <TextBlock VerticalAlignment="Center" FontWeight="Bold" Text="{Binding Header, ElementName=FastLoadingToggle}" TextWrapping="Wrap" />
+                                            <ToggleSwitch x:Name="FastLoadingToggle" Grid.Column="1" Header="加载速度优先" Style="{StaticResource CompactToggleSwitchStyle}" Toggled="Experiments_Toggled" />
+                                        </Grid>
+                                    </Border>
+
+                                    <Border Grid.Column="1" Style="{StaticResource SettingsRowStyle}" Padding="12,8">
+                                        <Grid ColumnSpacing="8">
+                                            <Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
+                                            <TextBlock VerticalAlignment="Center" FontWeight="Bold" Text="{Binding Header, ElementName=CloneSupportToggle}" TextWrapping="Wrap" />
+                                            <ToggleSwitch x:Name="CloneSupportToggle" Grid.Column="1" Header="实验：克隆模型支持" Style="{StaticResource CompactToggleSwitchStyle}" Toggled="Experiments_Toggled" />
+                                        </Grid>
+                                    </Border>
+
+                                    <Border Grid.Row="1" Grid.ColumnSpan="2" Style="{StaticResource SettingsRowStyle}" Padding="12,8">
+                                        <Grid ColumnSpacing="8">
+                                            <Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
+                                            <TextBlock VerticalAlignment="Center" FontWeight="Bold" Text="{Binding Header, ElementName=ReleaseRetiredResourcesToggle}" TextWrapping="Wrap" />
+                                            <ToggleSwitch x:Name="ReleaseRetiredResourcesToggle" Grid.Column="1" Header="实验：释放旧模型资源" Style="{StaticResource CompactToggleSwitchStyle}" Toggled="Experiments_Toggled" />
+                                        </Grid>
+                                    </Border>
+                                </Grid>
+
+                                <Border Style="{StaticResource SettingsRowStyle}">
+                                    <StackPanel Spacing="6">
+                                        <Grid ColumnSpacing="12">
+                                            <Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
+                                            <TextBlock VerticalAlignment="Center" FontWeight="Bold" Text="{Binding Header, ElementName=HotSwitchToggle}" />
+                                            <ToggleSwitch x:Name="HotSwitchToggle" Grid.Column="1" Header="实验：模型热切换" Style="{StaticResource CompactToggleSwitchStyle}" Toggled="Experiments_Toggled" />
+                                        </Grid>
+                                        <TextBlock x:Name="HotSwitchHint" Style="{StaticResource FieldHintStyle}" Text="开启后需重启游戏。之后切换包、外观、组件或应用滑条，在切换配队或重新打开详情时更新。会增加内存占用。" TextWrapping="Wrap" />
+                                    </StackPanel>
+                                </Border>
+
+                                <Border Style="{StaticResource SettingsRowStyle}">
+                                    <StackPanel Spacing="6">
+                                        <Grid ColumnSpacing="12">
+                                            <Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
+                                            <TextBlock VerticalAlignment="Center" FontWeight="Bold" Text="{Binding Header, ElementName=SkipValidationToggle}" />
+                                            <ToggleSwitch x:Name="SkipValidationToggle" Grid.Column="1" Header="实验：关闭模型校验" Style="{StaticResource CompactToggleSwitchStyle}" Toggled="SkipValidation_Toggled" />
+                                        </Grid>
+                                        <TextBlock x:Name="SkipValidationHint" Style="{StaticResource FieldHintStyle}" Text="开启后会跳过兼容性和容量校验，可能导致游戏崩溃或模型错乱，风险自行承担。重启游戏后生效。" TextWrapping="Wrap" />
+                                    </StackPanel>
+                                </Border>
+                            </StackPanel>
+                        </Expander>
+
+                        <!-- Right: Compact Model Overlay Card -->
+                        <Border Grid.Column="1" Style="{StaticResource SectionStyle}" Padding="20,14" VerticalAlignment="Top">
+                            <StackPanel Spacing="10">
+                                <Grid ColumnSpacing="12" Padding="0,2">
+                                    <Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
+                                    <TextBlock VerticalAlignment="Center" FontSize="14" FontWeight="Bold" Text="{Binding Header, ElementName=ModelOverlayToggle}" />
+                                    <ToggleSwitch x:Name="ModelOverlayToggle" Grid.Column="1" Header="模型悬浮窗" Style="{StaticResource CompactToggleSwitchStyle}" Toggled="OverlaySettings_Toggled" />
+                                </Grid>
+                                <Border Height="1" Background="{ThemeResource SubtleDividerBrush}" />
+                                <Grid ColumnSpacing="12" Padding="0,2">
+                                    <Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
+                                    <TextBlock VerticalAlignment="Center" FontSize="14" FontWeight="Bold" Text="{Binding Header, ElementName=ModelOverlayVisibleToggle}" />
+                                    <ToggleSwitch x:Name="ModelOverlayVisibleToggle" Grid.Column="1" Header="进入游戏时显示" Style="{StaticResource CompactToggleSwitchStyle}" Toggled="OverlaySettings_Toggled" />
+                                </Grid>
+                                <Border Height="1" Background="{ThemeResource SubtleDividerBrush}" />
+                                <Grid ColumnSpacing="12" Padding="0,2">
+                                    <Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
+                                    <TextBlock VerticalAlignment="Center" FontSize="14" FontWeight="Bold" Text="{Binding Header, ElementName=ModelOverlayHotkeyBox}" />
+                                    <TextBox
+                                        x:Name="ModelOverlayHotkeyBox"
+                                        Grid.Column="1"
+                                        Width="120"
+                                        Header="显示／隐藏快捷键"
+                                        Text="="
+                                        IsSpellCheckEnabled="False"
+                                        PreviewKeyDown="ModelOverlayHotkey_PreviewKeyDown"
+                                        TextChanged="ModelOverlayHotkey_TextChanged">
+                                        <TextBox.HeaderTemplate>
+                                            <DataTemplate>
+                                                <Grid Width="0" Height="0" Visibility="Collapsed" />
+                                            </DataTemplate>
+                                        </TextBox.HeaderTemplate>
+                                    </TextBox>
+                                </Grid>
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+
+                    <!-- Primary Model Filter & Package List L3 Card -->
+                    <Border Style="{StaticResource SectionStyle}">
+                        <StackPanel Spacing="14">
+                            <Grid ColumnSpacing="12">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <ComboBox
+                                    x:Name="CharacterFilter"
+                                    Header="按角色筛选"
+                                    MinWidth="240"
+                                    MaxWidth="360"
+                                    HorizontalAlignment="Left"
+                                    SelectionChanged="CharacterFilter_SelectionChanged" />
+                                <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="8" VerticalAlignment="Bottom">
+                                    <Button x:Name="DisableAllButton" Content="关闭全部模型" Click="DisableAll_Click" />
+                                    <Button x:Name="BackfillBaselineButton" Content="补全版本信息" Click="BackfillBaseline_Click" />
+                                </StackPanel>
+                            </Grid>
+
+                            <Border Height="1" Background="{ThemeResource SubtleDividerBrush}" />
+
+                            <Border Style="{StaticResource HintBannerBorderStyle}" Visibility="{Binding Visibility, ElementName=EmptyHint}">
+                                <TextBlock
+                                    x:Name="EmptyHint"
+                                    Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                    Text="尚未导入模型包。已有其他格式？打开转换窗口查看支持范围与缺少的资料。"
+                                    TextWrapping="Wrap" />
+                            </Border>
+
+                            <StackPanel x:Name="PackageCards" Spacing="12" />
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+            </controls:PageContentPanel>
+        </ScrollViewer>
+    </Grid>
 </UserControl>

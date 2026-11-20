@@ -78,6 +78,8 @@ public sealed partial class CustomModelPage : UserControl
         DisableAllButton.Content = BemText.Get("关闭全部模型");
         BackfillBaselineButton.Content = BemText.Get("补全版本信息");
         bool chinese = LocalizationService.Instance.IsChinese;
+        EngineOptionsExpanderTitle.Text = chinese ? "渲染与实验性选项" : "Rendering & Experimental Options";
+        EngineOptionsExpanderHint.Text = chinese ? "高精度 LOD、模型热切换与实验特性" : "High-precision LOD, model hot-switching, and experimental features";
         ModelOverlayToggle.Header = chinese ? "模型悬浮窗" : "Model overlay";
         ModelOverlayVisibleToggle.Header = chinese ? "进入游戏时显示" : "Show at game start";
         ModelOverlayHotkeyBox.Header = chinese ? "显示／隐藏快捷键" : "Show/hide hotkey";

@@ -114,6 +114,10 @@ public sealed partial class GachaPage : UserControl
         StandardButton.Content = isZh ? "常驻池" : "Standard";
         BeginnerButton.Content = isZh ? "新手池" : "Beginner";
         OtherButton.Content = isZh ? "其他" : "Other";
+        EmptyStateTitleText.Text = isZh ? "当前卡池暂无寻访记录" : "No Gacha Records in Selected Pool";
+        EmptyStateHintText.Text = isZh
+            ? "启用寻访模块并在游戏登录后点击右上角「同步」，或直接「导入 JSON」历史记录。"
+            : "Enable the gacha module and click Sync after signing in, or Import JSON history directly.";
         SetStatusText();
     }
 
@@ -279,6 +283,7 @@ public sealed partial class GachaPage : UserControl
         }
         Records.Clear();
         foreach (GachaRecord item in source) Records.Add(item);
+        EmptyStatePanel.Visibility = Pools.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
     }
 
     private static GachaStarView CreateStarView(GachaSixStarResult star) => new()

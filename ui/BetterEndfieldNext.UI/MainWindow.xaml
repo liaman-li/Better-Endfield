@@ -406,9 +406,7 @@
                                                             <ToggleSwitch
                                                                 x:Name="LogoThemeToggle"
                                                                 Grid.Column="1"
-                                                                MinWidth="0"
-                                                                Margin="0,0,-8,0"
-                                                                VerticalAlignment="Center"
+                                                                Style="{StaticResource CompactToggleSwitchStyle}"
                                                                 OffContent=""
                                                                 OnContent="" />
                                                         </Grid>
@@ -436,7 +434,7 @@
                                                                         Height="28"
                                                                         CornerRadius="8"
                                                                         Background="#FFFFC928"
-                                                                        BorderBrush="#FFFFFFFF"
+                                                                        BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
                                                                         BorderThickness="1.5" />
                                                                     <StackPanel Grid.Column="1" VerticalAlignment="Center" Spacing="1">
                                                                         <TextBlock
@@ -499,9 +497,7 @@
                                                             <ToggleSwitch
                                                                 x:Name="ModelReplacementToggle"
                                                                 Grid.Column="1"
-                                                                MinWidth="0"
-                                                                Margin="0,0,-8,0"
-                                                                VerticalAlignment="Center"
+                                                                Style="{StaticResource CompactToggleSwitchStyle}"
                                                                 OffContent=""
                                                                 OnContent="" />
                                                         </Grid>
@@ -731,9 +727,7 @@
                                                                 <ToggleSwitch
                                                                     x:Name="FinalLoopToggle"
                                                                     Grid.Column="1"
-                                                                    MinWidth="0"
-                                                                    Margin="0,0,-8,0"
-                                                                    VerticalAlignment="Center"
+                                                                    Style="{StaticResource CompactToggleSwitchStyle}"
                                                                     OffContent=""
                                                                     OnContent="" />
                                                             </Grid>
@@ -760,9 +754,7 @@
                                                                 <ToggleSwitch
                                                                     x:Name="ForceLoopToggle"
                                                                     Grid.Column="1"
-                                                                    MinWidth="0"
-                                                                    Margin="0,0,-8,0"
-                                                                    VerticalAlignment="Center"
+                                                                    Style="{StaticResource CompactToggleSwitchStyle}"
                                                                     OffContent=""
                                                                     OnContent="" />
                                                             </Grid>
@@ -789,9 +781,7 @@
                                                                 <ToggleSwitch
                                                                     x:Name="CrossfadeToggle"
                                                                     Grid.Column="1"
-                                                                    MinWidth="0"
-                                                                    Margin="0,0,-8,0"
-                                                                    VerticalAlignment="Center"
+                                                                    Style="{StaticResource CompactToggleSwitchStyle}"
                                                                     OffContent=""
                                                                     OnContent=""
                                                                     Toggled="CrossfadeToggle_Toggled" />
@@ -1348,310 +1338,438 @@
                             </ScrollViewer>
                         </Grid>
 
-                        <ScrollViewer
+                        <Grid
                             x:Name="CombatPageScrollViewer"
-                            HorizontalScrollBarVisibility="Disabled"
-                            Visibility="Collapsed"
-                            VerticalScrollBarVisibility="Auto">
-                            <controls:PageContentPanel Padding="32,28,32,44">
-                            <StackPanel
-                                Spacing="28">
-                                <StackPanel Spacing="6">
-                                    <TextBlock x:Name="CombatPageTitleTextBlock" Style="{StaticResource PageTitleStyle}" Text="战斗数据" />
-                                    <TextBlock
-                                        x:Name="CombatPageDescriptionTextBlock"
-                                        Foreground="{ThemeResource TextFillColorSecondaryBrush}"
-                                        Text="记录战斗伤害并按角色、技能和伤害类型汇总。统计默认关闭，不会修改伤害计算。"
-                                        TextWrapping="Wrap" />
-                                    <ToggleSwitch
-                                        x:Name="CombatStatsToggle"
-                                        Margin="0,12,0,0"
-                                        Header="启用战斗数据统计"
-                                        OffContent="关闭"
-                                        OnContent="按快捷键记录" />
-                                </StackPanel>
+                            Visibility="Collapsed">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
 
-                                <Border Style="{StaticResource SectionStyle}">
+                            <!-- Row 0: Fixed Page Header -->
+                            <StackPanel Grid.Row="0" Padding="28,22,28,12" Spacing="4">
+                                <TextBlock x:Name="CombatPageTitleTextBlock" Style="{StaticResource PageTitleStyle}" Text="战斗数据" />
+                                <TextBlock
+                                    x:Name="CombatPageDescriptionTextBlock"
+                                    Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                    Text="记录战斗伤害并按角色、技能和伤害类型汇总。统计默认关闭，不会修改伤害计算。"
+                                    TextWrapping="Wrap" />
+                            </StackPanel>
+
+                            <!-- Row 1: Scrollable Body -->
+                            <ScrollViewer
+                                Grid.Row="1"
+                                HorizontalScrollBarVisibility="Disabled"
+                                VerticalScrollBarVisibility="Auto">
+                                <controls:PageContentPanel Padding="28,4,28,28">
                                     <StackPanel Spacing="16">
-                                        <StackPanel Spacing="4">
-                                            <TextBlock x:Name="CombatDisplaySectionTitle" Style="{StaticResource SectionTitleStyle}" Text="显示与快捷键" />
-                                            <TextBlock
-                                                x:Name="CombatDisplaySectionHint"
-                                                Style="{StaticResource FieldHintStyle}"
-                                                Text="F11 切换开始/停止记录，F12 切换悬浮窗；均可在下方修改。按住 Ctrl 并用鼠标左键拖动悬浮窗可调整位置。"
-                                                TextWrapping="Wrap" />
-                                        </StackPanel>
-                                        <ToggleSwitch
-                                            x:Name="HideDamageNumbersToggle"
-                                            Header="隐藏伤害数字"
-                                            OffContent="显示游戏数字"
-                                            OnContent="隐藏数字" />
-                                        <ToggleSwitch
-                                            x:Name="CombatOverlayToggle"
-                                            Header="显示战斗悬浮窗"
-                                            IsOn="True"
-                                            OffContent="不启动悬浮窗"
-                                            OnContent="随模块自动启动" />
-                                        <ToggleSwitch
-                                            x:Name="CombatOverlayVisibleToggle"
-                                            Header="悬浮窗初始可见性"
-                                            IsOn="True"
-                                            OffContent="启动后隐藏，按热键显示"
-                                            OnContent="启动后直接显示" />
-                                        <ToggleSwitch
-                                            x:Name="CombatRdpsDisplayToggle"
-                                            Header="悬浮窗与本地排行口径"
-                                            OffContent="DPS"
-                                            OnContent="rDPS"
-                                            Toggled="CombatRdpsDisplayToggle_Toggled" />
-                                        <Grid ColumnSpacing="12">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="*" />
-                                                <ColumnDefinition Width="*" />
-                                            </Grid.ColumnDefinitions>
-                                            <TextBox
-                                                x:Name="CombatToggleHotkeyBox"
-                                                Header="开始/停止记录快捷键"
-                                                Text="F11" />
-                                            <TextBox
-                                                x:Name="CombatOverlayHotkeyBox"
-                                                Grid.Column="1"
-                                                Header="显示/隐藏悬浮窗快捷键"
-                                                Text="F12" />
-                                        </Grid>
-                                    </StackPanel>
-                                </Border>
-
-                                <Border Style="{StaticResource SectionStyle}">
-                                    <StackPanel Spacing="16">
-                                        <StackPanel Spacing="4">
-                                            <TextBlock x:Name="CombatRecordSectionTitle" Style="{StaticResource SectionTitleStyle}" Text="记录方式" />
-                                            <TextBlock
-                                                x:Name="CombatRecordSectionHint"
-                                                Style="{StaticResource FieldHintStyle}"
-                                                Text="schema 11 仅保存可验证的操作与原子结果；64 位实例 ID 使用字符串保存，无法确定的归属明确标为未知。"
-                                                TextWrapping="Wrap" />
-                                        </StackPanel>
-                                        <ToggleSwitch
-                                            x:Name="AutoDungeonSessionToggle"
-                                            Header="自动记录"
-                                            OffContent="手动快捷键"
-                                            OnContent="进关卡自动开启 / 结算自动保存" />
-                                    </StackPanel>
-                                </Border>
-
-                                <Border Style="{StaticResource SectionStyle}">
-                                    <StackPanel Spacing="14">
-                                        <Grid>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="*" />
-                                                <ColumnDefinition Width="Auto" />
-                                            </Grid.ColumnDefinitions>
-                                            <StackPanel Spacing="4">
-                                                <TextBlock x:Name="CombatHistorySectionTitle" Style="{StaticResource SectionTitleStyle}" Text="历史统计" />
-                                                <TextBlock
-                                                    x:Name="CombatHistorySectionHint"
-                                                    Style="{StaticResource FieldHintStyle}"
-                                                    Text="默认显示最近三条；可按日期和参战角色筛选。"
-                                                    TextWrapping="Wrap" />
-                                            </StackPanel>
-                                            <StackPanel
-                                                Grid.Column="1"
-                                                Orientation="Horizontal"
-                                                Spacing="8">
-                                                <Button Click="OpenCombatAnalysisWebButton_Click">
-                                                    <StackPanel Orientation="Horizontal" Spacing="7">
-                                                        <SymbolIcon Symbol="Globe" />
-                                                        <TextBlock x:Name="CombatWebButtonTextBlock" Text="打开解析网页" />
-                                                    </StackPanel>
-                                                </Button>
-                                                <Button Click="OpenCombatRecordsFolderButton_Click">
-                                                    <StackPanel Orientation="Horizontal" Spacing="7">
-                                                        <SymbolIcon Symbol="Folder" />
-                                                        <TextBlock x:Name="CombatRecordsFolderButtonTextBlock" Text="记录文件夹" />
-                                                    </StackPanel>
-                                                </Button>
-                                                <Button
-                                                    x:Name="RefreshCombatSessionsButton"
-                                                    Click="RefreshCombatSessionsButton_Click">
-                                                    <StackPanel Orientation="Horizontal" Spacing="7">
-                                                        <SymbolIcon Symbol="Refresh" />
-                                                        <TextBlock x:Name="CombatRefreshButtonTextBlock" Text="刷新" />
-                                                    </StackPanel>
-                                                </Button>
-                                            </StackPanel>
-                                        </Grid>
-
-                                        <Grid ColumnSpacing="10">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="190" />
-                                                <ColumnDefinition Width="190" />
-                                                <ColumnDefinition Width="*" />
-                                            </Grid.ColumnDefinitions>
-                                            <CalendarDatePicker
-                                                x:Name="CombatFromDatePicker"
-                                                DateChanged="CombatDateFilter_DateChanged"
-                                                Header="开始日期"
-                                                PlaceholderText="不限" />
-                                            <CalendarDatePicker
-                                                x:Name="CombatToDatePicker"
-                                                Grid.Column="1"
-                                                DateChanged="CombatDateFilter_DateChanged"
-                                                Header="结束日期"
-                                                PlaceholderText="不限" />
-                                            <TextBlock
-                                                x:Name="CombatDateFilterHintTextBlock"
-                                                Grid.Column="2"
-                                                VerticalAlignment="Bottom"
-                                                Margin="0,0,0,8"
-                                                Style="{StaticResource FieldHintStyle}"
-                                                Text="日期范围两端均可留空。" />
-                                        </Grid>
-                                        <StackPanel Spacing="7">
-                                            <TextBlock
-                                                x:Name="CombatTeamFilterHintTextBlock"
-                                                Style="{StaticResource FieldHintStyle}"
-                                                Text="队伍角色（最多四个；记录需包含全部已选角色）" />
-                                            <Grid ColumnSpacing="8">
+                                        <!-- Top Master Switch L3 Card -->
+                                        <Border Style="{StaticResource SectionStyle}" Padding="22,16">
+                                            <Grid ColumnSpacing="12" Padding="0,2">
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="*" />
-                                                    <ColumnDefinition Width="*" />
-                                                    <ColumnDefinition Width="*" />
-                                                    <ColumnDefinition Width="*" />
+                                                    <ColumnDefinition Width="Auto" />
                                                 </Grid.ColumnDefinitions>
-                                                <ComboBox
-                                                    x:Name="CombatCharacterFilter1ComboBox"
-                                                    DisplayMemberPath="DisplayName"
-                                                    PlaceholderText="角色 1"
-                                                    SelectionChanged="CombatCharacterFilterComboBox_SelectionChanged" />
-                                                <ComboBox
-                                                    x:Name="CombatCharacterFilter2ComboBox"
+                                                <StackPanel Spacing="2" VerticalAlignment="Center">
+                                                    <TextBlock
+                                                        FontSize="14"
+                                                        FontWeight="Bold"
+                                                        Foreground="{ThemeResource TextFillColorPrimaryBrush}"
+                                                        Text="{Binding Header, ElementName=CombatStatsToggle}" />
+                                                    <TextBlock
+                                                        Style="{StaticResource FieldHintStyle}"
+                                                        Text="{Binding OnContent, ElementName=CombatStatsToggle}" />
+                                                </StackPanel>
+                                                <ToggleSwitch
+                                                    x:Name="CombatStatsToggle"
                                                     Grid.Column="1"
-                                                    DisplayMemberPath="DisplayName"
-                                                    PlaceholderText="角色 2"
-                                                    SelectionChanged="CombatCharacterFilterComboBox_SelectionChanged" />
-                                                <ComboBox
-                                                    x:Name="CombatCharacterFilter3ComboBox"
-                                                    Grid.Column="2"
-                                                    DisplayMemberPath="DisplayName"
-                                                    PlaceholderText="角色 3"
-                                                    SelectionChanged="CombatCharacterFilterComboBox_SelectionChanged" />
-                                                <ComboBox
-                                                    x:Name="CombatCharacterFilter4ComboBox"
-                                                    Grid.Column="3"
-                                                    DisplayMemberPath="DisplayName"
-                                                    PlaceholderText="角色 4"
-                                                    SelectionChanged="CombatCharacterFilterComboBox_SelectionChanged" />
+                                                    Header="启用战斗数据统计"
+                                                    OffContent="关闭"
+                                                    OnContent="按快捷键记录"
+                                                    Style="{StaticResource CompactToggleSwitchStyle}" />
                                             </Grid>
-                                        </StackPanel>
+                                        </Border>
 
-                                        <ListView
-                                            x:Name="CombatSessionsListView"
-                                            MaxHeight="520"
-                                            SelectionChanged="CombatSessionsListView_SelectionChanged"
-                                            SelectionMode="Single">
-                                            <ListView.ItemTemplate>
-                                                <DataTemplate>
-                                                    <Grid Padding="4,10" ColumnSpacing="14">
+                                        <!-- Upper 2-Column Compact Control Area -->
+                                        <Grid ColumnSpacing="18">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="6*" />
+                                                <ColumnDefinition Width="5*" />
+                                            </Grid.ColumnDefinitions>
+
+                                            <!-- Left Card: Display & Hotkeys -->
+                                            <Border Grid.Column="0" Style="{StaticResource SectionStyle}" VerticalAlignment="Top">
+                                                <StackPanel Spacing="12">
+                                                    <StackPanel Spacing="3">
+                                                        <TextBlock x:Name="CombatDisplaySectionTitle" Style="{StaticResource SectionTitleStyle}" Text="显示与快捷键" />
+                                                        <TextBlock
+                                                            x:Name="CombatDisplaySectionHint"
+                                                            Style="{StaticResource FieldHintStyle}"
+                                                            Text="F11 切换开始/停止记录，F12 切换悬浮窗；均可在下方修改。按住 Ctrl 并用鼠标左键拖动悬浮窗可调整位置。"
+                                                            TextWrapping="Wrap" />
+                                                    </StackPanel>
+
+                                                    <Border Height="1" Background="{ThemeResource SubtleDividerBrush}" />
+
+                                                    <Grid ColumnSpacing="12" Padding="0,2">
                                                         <Grid.ColumnDefinitions>
-                                                            <ColumnDefinition Width="154" />
                                                             <ColumnDefinition Width="*" />
-                                                            <ColumnDefinition Width="142" />
                                                             <ColumnDefinition Width="Auto" />
                                                         </Grid.ColumnDefinitions>
-                                                        <StackPanel Spacing="3">
-                                                            <TextBlock FontWeight="SemiBold" Text="{Binding DateText}" />
-                                                            <TextBlock
-                                                                Style="{StaticResource FieldHintStyle}"
-                                                                Text="{Binding CharacterSummary}"
-                                                                TextTrimming="CharacterEllipsis" />
+                                                        <StackPanel Spacing="2" VerticalAlignment="Center">
+                                                            <TextBlock FontSize="14" FontWeight="Bold" Foreground="{ThemeResource TextFillColorPrimaryBrush}" Text="{Binding Header, ElementName=HideDamageNumbersToggle}" />
+                                                            <TextBlock Style="{StaticResource FieldHintStyle}" Text="{Binding OnContent, ElementName=HideDamageNumbersToggle}" />
                                                         </StackPanel>
-                                                        <ItemsControl Grid.Column="1" ItemsSource="{Binding PreviewCharacters}">
-                                                            <ItemsControl.ItemsPanel>
-                                                                <ItemsPanelTemplate>
-                                                                    <StackPanel Orientation="Horizontal" Spacing="6" />
-                                                                </ItemsPanelTemplate>
-                                                            </ItemsControl.ItemsPanel>
-                                                            <ItemsControl.ItemTemplate>
-                                                                <DataTemplate>
-                                                                    <Border
-                                                                        Width="42"
-                                                                        Height="42"
-                                                                        Background="{ThemeResource CardBackgroundFillColorSecondaryBrush}"
-                                                                        BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
-                                                                        BorderThickness="1"
-                                                                        CornerRadius="21">
-                                                                        <Image Source="{Binding AvatarSource}" Stretch="UniformToFill" />
-                                                                    </Border>
-                                                                </DataTemplate>
-                                                            </ItemsControl.ItemTemplate>
-                                                        </ItemsControl>
-                                                        <StackPanel Grid.Column="2" HorizontalAlignment="Right" Spacing="2">
-                                                            <TextBlock
-                                                                HorizontalAlignment="Right"
-                                                                FontSize="18"
-                                                                FontWeight="SemiBold"
-                                                                Text="{Binding TotalDamageText}" />
-                                                            <TextBlock
-                                                                HorizontalAlignment="Right"
-                                                                Style="{StaticResource FieldHintStyle}"
-                                                                Text="{Binding Summary}" />
-                                                        </StackPanel>
-                                                        <Button
-                                                            Grid.Column="3"
-                                                            Width="36"
-                                                            Height="36"
-                                                            Padding="8"
-                                                            Click="DeleteCombatSessionButton_Click"
-                                                            Tag="{Binding}"
-                                                            ToolTipService.ToolTip="删除记录">
-                                                            <FontIcon Glyph="&#xE74D;" />
-                                                        </Button>
+                                                        <ToggleSwitch
+                                                            x:Name="HideDamageNumbersToggle"
+                                                            Grid.Column="1"
+                                                            Header="隐藏伤害数字"
+                                                            OffContent="显示游戏数字"
+                                                            OnContent="隐藏数字"
+                                                            Style="{StaticResource CompactToggleSwitchStyle}" />
                                                     </Grid>
-                                                </DataTemplate>
-                                            </ListView.ItemTemplate>
-                                        </ListView>
-                                        <Button
-                                            x:Name="ExpandCombatSessionsButton"
-                                            HorizontalAlignment="Center"
-                                            Click="ExpandCombatSessionsButton_Click"
-                                            Visibility="Collapsed" />
-                                        <TextBlock
-                                            x:Name="CombatSessionsEmptyTextBlock"
-                                            Style="{StaticResource FieldHintStyle}"
-                                            Text="没有符合筛选条件的战斗统计。"
-                                            Visibility="Collapsed" />
-                                    </StackPanel>
-                                </Border>
 
-                                <Border Style="{StaticResource SectionStyle}">
-                                    <StackPanel Spacing="14">
-                                        <Grid>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="*" />
-                                                <ColumnDefinition Width="Auto" />
-                                            </Grid.ColumnDefinitions>
-                                            <StackPanel Spacing="4">
-                                                <TextBlock x:Name="CombatSelectedSessionSectionTitle" Style="{StaticResource SectionTitleStyle}" Text="记录明细" />
-                                                <TextBlock
-                                                    x:Name="CombatSelectedSessionTextBlock"
-                                                    Style="{StaticResource FieldHintStyle}"
-                                                    Text="选择一条记录查看。" />
-                                            </StackPanel>
-                                            <Button
-                                                x:Name="AnalyzeCombatSessionButton"
-                                                Grid.Column="1"
-                                                VerticalAlignment="Top"
-                                                Click="AnalyzeCombatSessionButton_Click"
-                                                IsEnabled="False"
-                                                Style="{StaticResource AccentButtonStyle}">
-                                                <StackPanel Orientation="Horizontal" Spacing="7">
-                                                    <SymbolIcon Symbol="Globe" />
-                                                    <TextBlock x:Name="AnalyzeCombatSessionButtonTextBlock" Text="在网页中解析" />
+                                                    <Border Height="1" Background="{ThemeResource SubtleDividerBrush}" />
+
+                                                    <Grid ColumnSpacing="12" Padding="0,2">
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="*" />
+                                                            <ColumnDefinition Width="Auto" />
+                                                        </Grid.ColumnDefinitions>
+                                                        <StackPanel Spacing="2" VerticalAlignment="Center">
+                                                            <TextBlock FontSize="14" FontWeight="Bold" Foreground="{ThemeResource TextFillColorPrimaryBrush}" Text="{Binding Header, ElementName=CombatOverlayToggle}" />
+                                                            <TextBlock Style="{StaticResource FieldHintStyle}" Text="{Binding OnContent, ElementName=CombatOverlayToggle}" />
+                                                        </StackPanel>
+                                                        <ToggleSwitch
+                                                            x:Name="CombatOverlayToggle"
+                                                            Grid.Column="1"
+                                                            Header="显示战斗悬浮窗"
+                                                            IsOn="True"
+                                                            OffContent="不启动悬浮窗"
+                                                            OnContent="随模块自动启动"
+                                                            Style="{StaticResource CompactToggleSwitchStyle}" />
+                                                    </Grid>
+
+                                                    <Border Height="1" Background="{ThemeResource SubtleDividerBrush}" />
+
+                                                    <Grid ColumnSpacing="12" Padding="0,2">
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="*" />
+                                                            <ColumnDefinition Width="Auto" />
+                                                        </Grid.ColumnDefinitions>
+                                                        <StackPanel Spacing="2" VerticalAlignment="Center">
+                                                            <TextBlock FontSize="14" FontWeight="Bold" Foreground="{ThemeResource TextFillColorPrimaryBrush}" Text="{Binding Header, ElementName=CombatOverlayVisibleToggle}" />
+                                                            <TextBlock Style="{StaticResource FieldHintStyle}" Text="{Binding OnContent, ElementName=CombatOverlayVisibleToggle}" />
+                                                        </StackPanel>
+                                                        <ToggleSwitch
+                                                            x:Name="CombatOverlayVisibleToggle"
+                                                            Grid.Column="1"
+                                                            Header="悬浮窗初始可见性"
+                                                            IsOn="True"
+                                                            OffContent="启动后隐藏，按热键显示"
+                                                            OnContent="启动后直接显示"
+                                                            Style="{StaticResource CompactToggleSwitchStyle}" />
+                                                    </Grid>
+
+                                                    <Border Height="1" Background="{ThemeResource SubtleDividerBrush}" />
+
+                                                    <Grid ColumnSpacing="12" Padding="0,2">
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="*" />
+                                                            <ColumnDefinition Width="Auto" />
+                                                        </Grid.ColumnDefinitions>
+                                                        <StackPanel Spacing="2" VerticalAlignment="Center">
+                                                            <TextBlock FontSize="14" FontWeight="Bold" Foreground="{ThemeResource TextFillColorPrimaryBrush}" Text="{Binding Header, ElementName=CombatRdpsDisplayToggle}" />
+                                                            <TextBlock Style="{StaticResource FieldHintStyle}" Text="切换 DPS / rDPS 统计口径" />
+                                                        </StackPanel>
+                                                        <ToggleSwitch
+                                                            x:Name="CombatRdpsDisplayToggle"
+                                                            Grid.Column="1"
+                                                            Header="悬浮窗与本地排行口径"
+                                                            OffContent="DPS"
+                                                            OnContent="rDPS"
+                                                            Style="{StaticResource CompactToggleSwitchStyle}"
+                                                            Toggled="CombatRdpsDisplayToggle_Toggled" />
+                                                    </Grid>
+
+                                                    <Border Height="1" Background="{ThemeResource SubtleDividerBrush}" />
+
+                                                    <Grid ColumnSpacing="12">
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="*" />
+                                                            <ColumnDefinition Width="*" />
+                                                        </Grid.ColumnDefinitions>
+                                                        <TextBox
+                                                            x:Name="CombatToggleHotkeyBox"
+                                                            Header="开始/停止记录快捷键"
+                                                            Text="F11" />
+                                                        <TextBox
+                                                            x:Name="CombatOverlayHotkeyBox"
+                                                            Grid.Column="1"
+                                                            Header="显示/隐藏悬浮窗快捷键"
+                                                            Text="F12" />
+                                                    </Grid>
                                                 </StackPanel>
-                                            </Button>
+                                            </Border>
+
+                                            <!-- Right Card: Recording Mode -->
+                                            <Border Grid.Column="1" Style="{StaticResource SectionStyle}" VerticalAlignment="Top">
+                                                <StackPanel Spacing="14">
+                                                    <StackPanel Spacing="3">
+                                                        <TextBlock x:Name="CombatRecordSectionTitle" Style="{StaticResource SectionTitleStyle}" Text="记录方式" />
+                                                        <TextBlock
+                                                            x:Name="CombatRecordSectionHint"
+                                                            Style="{StaticResource FieldHintStyle}"
+                                                            Text="schema 11 仅保存可验证的操作与原子结果；64 位实例 ID 使用字符串保存，无法确定的归属明确标为未知。"
+                                                            TextWrapping="Wrap" />
+                                                    </StackPanel>
+                                                    <Border Height="1" Background="{ThemeResource SubtleDividerBrush}" />
+                                                    <Grid ColumnSpacing="12" Padding="0,2">
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="*" />
+                                                            <ColumnDefinition Width="Auto" />
+                                                        </Grid.ColumnDefinitions>
+                                                        <StackPanel Spacing="2" VerticalAlignment="Center">
+                                                            <TextBlock FontSize="14" FontWeight="Bold" Foreground="{ThemeResource TextFillColorPrimaryBrush}" Text="{Binding Header, ElementName=AutoDungeonSessionToggle}" />
+                                                            <TextBlock Style="{StaticResource FieldHintStyle}" Text="{Binding OnContent, ElementName=AutoDungeonSessionToggle}" />
+                                                        </StackPanel>
+                                                        <ToggleSwitch
+                                                            x:Name="AutoDungeonSessionToggle"
+                                                            Grid.Column="1"
+                                                            Header="自动记录"
+                                                            OffContent="手动快捷键"
+                                                            OnContent="进关卡自动开启 / 结算自动保存"
+                                                            Style="{StaticResource CompactToggleSwitchStyle}" />
+                                                    </Grid>
+                                                </StackPanel>
+                                            </Border>
                                         </Grid>
-                                        <StackPanel MinHeight="560" Spacing="10">
+
+                                        <!-- Lower Full-Width Card 1: Combat History -->
+                                        <Border Style="{StaticResource SectionStyle}">
+                                            <StackPanel Spacing="14">
+                                                <Grid ColumnSpacing="12">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*" />
+                                                        <ColumnDefinition Width="Auto" />
+                                                    </Grid.ColumnDefinitions>
+                                                    <StackPanel Spacing="3">
+                                                        <TextBlock x:Name="CombatHistorySectionTitle" Style="{StaticResource SectionTitleStyle}" Text="历史统计" />
+                                                        <TextBlock
+                                                            x:Name="CombatHistorySectionHint"
+                                                            Style="{StaticResource FieldHintStyle}"
+                                                            Text="默认显示最近三条；可按日期和参战角色筛选。"
+                                                            TextWrapping="Wrap" />
+                                                    </StackPanel>
+                                                    <StackPanel
+                                                        Grid.Column="1"
+                                                        VerticalAlignment="Top"
+                                                        Orientation="Horizontal"
+                                                        Spacing="8">
+                                                        <Button Click="OpenCombatAnalysisWebButton_Click">
+                                                            <StackPanel Orientation="Horizontal" Spacing="7">
+                                                                <SymbolIcon Symbol="Globe" />
+                                                                <TextBlock x:Name="CombatWebButtonTextBlock" Text="打开解析网页" />
+                                                            </StackPanel>
+                                                        </Button>
+                                                        <Button Click="OpenCombatRecordsFolderButton_Click">
+                                                            <StackPanel Orientation="Horizontal" Spacing="7">
+                                                                <SymbolIcon Symbol="Folder" />
+                                                                <TextBlock x:Name="CombatRecordsFolderButtonTextBlock" Text="记录文件夹" />
+                                                            </StackPanel>
+                                                        </Button>
+                                                        <Button
+                                                            x:Name="RefreshCombatSessionsButton"
+                                                            Click="RefreshCombatSessionsButton_Click">
+                                                            <StackPanel Orientation="Horizontal" Spacing="7">
+                                                                <SymbolIcon Symbol="Refresh" />
+                                                                <TextBlock x:Name="CombatRefreshButtonTextBlock" Text="刷新" />
+                                                            </StackPanel>
+                                                        </Button>
+                                                    </StackPanel>
+                                                </Grid>
+
+                                                <Border Style="{StaticResource SettingsRowStyle}" Padding="14,12">
+                                                    <StackPanel Spacing="10">
+                                                        <Grid ColumnSpacing="10">
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="190" />
+                                                                <ColumnDefinition Width="190" />
+                                                                <ColumnDefinition Width="*" />
+                                                            </Grid.ColumnDefinitions>
+                                                            <CalendarDatePicker
+                                                                x:Name="CombatFromDatePicker"
+                                                                HorizontalAlignment="Stretch"
+                                                                DateChanged="CombatDateFilter_DateChanged"
+                                                                Header="开始日期"
+                                                                PlaceholderText="不限" />
+                                                            <CalendarDatePicker
+                                                                x:Name="CombatToDatePicker"
+                                                                Grid.Column="1"
+                                                                HorizontalAlignment="Stretch"
+                                                                DateChanged="CombatDateFilter_DateChanged"
+                                                                Header="结束日期"
+                                                                PlaceholderText="不限" />
+                                                            <TextBlock
+                                                                x:Name="CombatDateFilterHintTextBlock"
+                                                                Grid.Column="2"
+                                                                VerticalAlignment="Bottom"
+                                                                Margin="4,0,0,8"
+                                                                Style="{StaticResource FieldHintStyle}"
+                                                                Text="日期范围两端均可留空。" />
+                                                        </Grid>
+                                                        <StackPanel Spacing="6">
+                                                            <TextBlock
+                                                                x:Name="CombatTeamFilterHintTextBlock"
+                                                                Style="{StaticResource FieldHintStyle}"
+                                                                Text="队伍角色（最多四个；记录需包含全部已选角色）" />
+                                                            <Grid ColumnSpacing="8">
+                                                                <Grid.ColumnDefinitions>
+                                                                    <ColumnDefinition Width="*" />
+                                                                    <ColumnDefinition Width="*" />
+                                                                    <ColumnDefinition Width="*" />
+                                                                    <ColumnDefinition Width="*" />
+                                                                </Grid.ColumnDefinitions>
+                                                                <ComboBox
+                                                                    x:Name="CombatCharacterFilter1ComboBox"
+                                                                    HorizontalAlignment="Stretch"
+                                                                    DisplayMemberPath="DisplayName"
+                                                                    PlaceholderText="角色 1"
+                                                                    SelectionChanged="CombatCharacterFilterComboBox_SelectionChanged" />
+                                                                <ComboBox
+                                                                    x:Name="CombatCharacterFilter2ComboBox"
+                                                                    Grid.Column="1"
+                                                                    HorizontalAlignment="Stretch"
+                                                                    DisplayMemberPath="DisplayName"
+                                                                    PlaceholderText="角色 2"
+                                                                    SelectionChanged="CombatCharacterFilterComboBox_SelectionChanged" />
+                                                                <ComboBox
+                                                                    x:Name="CombatCharacterFilter3ComboBox"
+                                                                    Grid.Column="2"
+                                                                    HorizontalAlignment="Stretch"
+                                                                    DisplayMemberPath="DisplayName"
+                                                                    PlaceholderText="角色 3"
+                                                                    SelectionChanged="CombatCharacterFilterComboBox_SelectionChanged" />
+                                                                <ComboBox
+                                                                    x:Name="CombatCharacterFilter4ComboBox"
+                                                                    Grid.Column="3"
+                                                                    HorizontalAlignment="Stretch"
+                                                                    DisplayMemberPath="DisplayName"
+                                                                    PlaceholderText="角色 4"
+                                                                    SelectionChanged="CombatCharacterFilterComboBox_SelectionChanged" />
+                                                            </Grid>
+                                                        </StackPanel>
+                                                    </StackPanel>
+                                                </Border>
+
+                                                <ListView
+                                                    x:Name="CombatSessionsListView"
+                                                    MaxHeight="520"
+                                                    SelectionChanged="CombatSessionsListView_SelectionChanged"
+                                                    SelectionMode="Single">
+                                                    <ListView.ItemTemplate>
+                                                        <DataTemplate>
+                                                            <Grid Padding="4,10" ColumnSpacing="14">
+                                                                <Grid.ColumnDefinitions>
+                                                                    <ColumnDefinition Width="154" />
+                                                                    <ColumnDefinition Width="*" />
+                                                                    <ColumnDefinition Width="142" />
+                                                                    <ColumnDefinition Width="Auto" />
+                                                                </Grid.ColumnDefinitions>
+                                                                <StackPanel Spacing="3">
+                                                                    <TextBlock FontWeight="SemiBold" Text="{Binding DateText}" />
+                                                                    <TextBlock
+                                                                        Style="{StaticResource FieldHintStyle}"
+                                                                        Text="{Binding CharacterSummary}"
+                                                                        TextTrimming="CharacterEllipsis" />
+                                                                </StackPanel>
+                                                                <ItemsControl Grid.Column="1" ItemsSource="{Binding PreviewCharacters}">
+                                                                    <ItemsControl.ItemsPanel>
+                                                                        <ItemsPanelTemplate>
+                                                                            <StackPanel Orientation="Horizontal" Spacing="6" />
+                                                                        </ItemsPanelTemplate>
+                                                                    </ItemsControl.ItemsPanel>
+                                                                    <ItemsControl.ItemTemplate>
+                                                                        <DataTemplate>
+                                                                            <Border
+                                                                                Width="42"
+                                                                                Height="42"
+                                                                                Background="{ThemeResource CardBackgroundFillColorSecondaryBrush}"
+                                                                                BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                                                                                BorderThickness="1"
+                                                                                CornerRadius="21">
+                                                                                <Image Source="{Binding AvatarSource}" Stretch="UniformToFill" />
+                                                                            </Border>
+                                                                        </DataTemplate>
+                                                                    </ItemsControl.ItemTemplate>
+                                                                </ItemsControl>
+                                                                <StackPanel Grid.Column="2" HorizontalAlignment="Right" Spacing="2">
+                                                                    <TextBlock
+                                                                        HorizontalAlignment="Right"
+                                                                        FontSize="18"
+                                                                        FontWeight="SemiBold"
+                                                                        Text="{Binding TotalDamageText}" />
+                                                                    <TextBlock
+                                                                        HorizontalAlignment="Right"
+                                                                        Style="{StaticResource FieldHintStyle}"
+                                                                        Text="{Binding Summary}" />
+                                                                </StackPanel>
+                                                                <Button
+                                                                    Grid.Column="3"
+                                                                    Width="36"
+                                                                    Height="36"
+                                                                    Padding="8"
+                                                                    Click="DeleteCombatSessionButton_Click"
+                                                                    Tag="{Binding}"
+                                                                    ToolTipService.ToolTip="删除记录">
+                                                                    <FontIcon Glyph="&#xE74D;" />
+                                                                </Button>
+                                                            </Grid>
+                                                        </DataTemplate>
+                                                    </ListView.ItemTemplate>
+                                                </ListView>
+                                                <Button
+                                                    x:Name="ExpandCombatSessionsButton"
+                                                    HorizontalAlignment="Center"
+                                                    Click="ExpandCombatSessionsButton_Click"
+                                                    Visibility="Collapsed" />
+                                                <TextBlock
+                                                    x:Name="CombatSessionsEmptyTextBlock"
+                                                    Style="{StaticResource FieldHintStyle}"
+                                                    Text="没有符合筛选条件的战斗统计。"
+                                                    Visibility="Collapsed" />
+                                            </StackPanel>
+                                        </Border>
+
+                                        <!-- Lower Full-Width Card 2: Session Breakdown -->
+                                        <Border Style="{StaticResource SectionStyle}">
+                                            <StackPanel Spacing="14">
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*" />
+                                                        <ColumnDefinition Width="Auto" />
+                                                    </Grid.ColumnDefinitions>
+                                                    <StackPanel Spacing="4">
+                                                        <TextBlock x:Name="CombatSelectedSessionSectionTitle" Style="{StaticResource SectionTitleStyle}" Text="记录明细" />
+                                                        <TextBlock
+                                                            x:Name="CombatSelectedSessionTextBlock"
+                                                            Style="{StaticResource FieldHintStyle}"
+                                                            Text="选择一条记录查看。" />
+                                                    </StackPanel>
+                                                    <Button
+                                                        x:Name="AnalyzeCombatSessionButton"
+                                                        Grid.Column="1"
+                                                        VerticalAlignment="Top"
+                                                        Click="AnalyzeCombatSessionButton_Click"
+                                                        IsEnabled="False"
+                                                        Style="{StaticResource AccentButtonStyle}">
+                                                        <StackPanel Orientation="Horizontal" Spacing="7">
+                                                            <SymbolIcon Symbol="Globe" />
+                                                            <TextBlock x:Name="AnalyzeCombatSessionButtonTextBlock" Text="在网页中解析" />
+                                                        </StackPanel>
+                                                    </Button>
+                                                </Grid>
+                                                <StackPanel MinHeight="420" Spacing="10">
                                                     <ItemsControl
                                                         x:Name="CombatCategoryLegendItemsControl"
                                                         HorizontalAlignment="Stretch">
@@ -1677,63 +1795,64 @@
                                                         x:Name="CombatCharacterBreakdownListView"
                                                         MaxHeight="520"
                                                         SelectionMode="None">
-                                                    <ListView.ItemTemplate>
-                                                        <DataTemplate>
-                                                            <Grid Padding="0,9" ColumnSpacing="14">
-                                                                <Grid.ColumnDefinitions>
-                                                                    <ColumnDefinition Width="54" />
-                                                                    <ColumnDefinition Width="*" />
-                                                                    <ColumnDefinition Width="120" />
-                                                                </Grid.ColumnDefinitions>
-                                                                <Border
-                                                                    Width="48"
-                                                                    Height="48"
-                                                                    Background="{ThemeResource CardBackgroundFillColorSecondaryBrush}"
-                                                                    CornerRadius="24">
-                                                                    <Image Source="{Binding AvatarSource}" Stretch="UniformToFill" />
-                                                                </Border>
-                                                                <StackPanel Grid.Column="1" Spacing="5">
-                                                                    <TextBlock FontSize="15" FontWeight="SemiBold" Text="{Binding DisplayName}" />
-                                                                    <ItemsControl ItemsSource="{Binding Segments}">
-                                                                        <ItemsControl.ItemsPanel>
-                                                                            <ItemsPanelTemplate>
-                                                                                <StackPanel Orientation="Horizontal" />
-                                                                            </ItemsPanelTemplate>
-                                                                        </ItemsControl.ItemsPanel>
-                                                                        <ItemsControl.ItemTemplate>
-                                                                            <DataTemplate>
-                                                                                <Border
-                                                                                    Width="{Binding Width}"
-                                                                                    Height="8"
-                                                                                    Background="{Binding Brush}"
-                                                                                    ToolTipService.ToolTip="{Binding ToolTip}" />
-                                                                            </DataTemplate>
-                                                                        </ItemsControl.ItemTemplate>
-                                                                    </ItemsControl>
-                                                                    <TextBlock Style="{StaticResource FieldHintStyle}" Text="{Binding HitSummary}" />
-                                                                </StackPanel>
-                                                                <TextBlock
-                                                                    Grid.Column="2"
-                                                                    HorizontalAlignment="Right"
-                                                                    VerticalAlignment="Top"
-                                                                    FontSize="17"
-                                                                    FontWeight="SemiBold"
-                                                                    Text="{Binding DamageText}" />
-                                                            </Grid>
-                                                        </DataTemplate>
-                                                    </ListView.ItemTemplate>
+                                                        <ListView.ItemTemplate>
+                                                            <DataTemplate>
+                                                                <Grid Padding="0,9" ColumnSpacing="14">
+                                                                    <Grid.ColumnDefinitions>
+                                                                        <ColumnDefinition Width="54" />
+                                                                        <ColumnDefinition Width="*" />
+                                                                        <ColumnDefinition Width="120" />
+                                                                    </Grid.ColumnDefinitions>
+                                                                    <Border
+                                                                        Width="48"
+                                                                        Height="48"
+                                                                        Background="{ThemeResource CardBackgroundFillColorSecondaryBrush}"
+                                                                        CornerRadius="24">
+                                                                        <Image Source="{Binding AvatarSource}" Stretch="UniformToFill" />
+                                                                    </Border>
+                                                                    <StackPanel Grid.Column="1" Spacing="5">
+                                                                        <TextBlock FontSize="15" FontWeight="SemiBold" Text="{Binding DisplayName}" />
+                                                                        <ItemsControl ItemsSource="{Binding Segments}">
+                                                                            <ItemsControl.ItemsPanel>
+                                                                                <ItemsPanelTemplate>
+                                                                                    <StackPanel Orientation="Horizontal" />
+                                                                                </ItemsPanelTemplate>
+                                                                            </ItemsControl.ItemsPanel>
+                                                                            <ItemsControl.ItemTemplate>
+                                                                                <DataTemplate>
+                                                                                    <Border
+                                                                                        Width="{Binding Width}"
+                                                                                        Height="8"
+                                                                                        Background="{Binding Brush}"
+                                                                                        ToolTipService.ToolTip="{Binding ToolTip}" />
+                                                                                </DataTemplate>
+                                                                            </ItemsControl.ItemTemplate>
+                                                                        </ItemsControl>
+                                                                        <TextBlock Style="{StaticResource FieldHintStyle}" Text="{Binding HitSummary}" />
+                                                                    </StackPanel>
+                                                                    <TextBlock
+                                                                        Grid.Column="2"
+                                                                        HorizontalAlignment="Right"
+                                                                        VerticalAlignment="Top"
+                                                                        FontSize="17"
+                                                                        FontWeight="SemiBold"
+                                                                        Text="{Binding DamageText}" />
+                                                                </Grid>
+                                                            </DataTemplate>
+                                                        </ListView.ItemTemplate>
                                                     </ListView>
-                                        </StackPanel>
-                                        <TextBlock
-                                            x:Name="CombatBreakdownEmptyTextBlock"
-                                            Style="{StaticResource FieldHintStyle}"
-                                            Text="当前记录没有可显示的角色明细。"
-                                            Visibility="Collapsed" />
+                                                </StackPanel>
+                                                <TextBlock
+                                                    x:Name="CombatBreakdownEmptyTextBlock"
+                                                    Style="{StaticResource FieldHintStyle}"
+                                                    Text="当前记录没有可显示的角色明细。"
+                                                    Visibility="Collapsed" />
+                                            </StackPanel>
+                                        </Border>
                                     </StackPanel>
-                                </Border>
-                            </StackPanel>
-                            </controls:PageContentPanel>
-                        </ScrollViewer>
+                                </controls:PageContentPanel>
+                            </ScrollViewer>
+                        </Grid>
 
                         <Grid
                             x:Name="UiPageScrollViewer"
@@ -2138,15 +2257,17 @@
                             </ScrollViewer>
                         </Grid>
 
-                        <ScrollViewer
+                        <Grid
                             x:Name="CameraPageScrollViewer"
-                            HorizontalScrollBarVisibility="Disabled"
-                            Visibility="Collapsed"
-                            VerticalScrollBarVisibility="Auto">
-                            <controls:PageContentPanel Padding="32,28,32,44">
-                            <StackPanel
-                                Spacing="28">
-                                <StackPanel Spacing="6">
+                            Visibility="Collapsed">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+
+                            <!-- Row 0: Fixed Page Header + Segmented Pill Tab Bar -->
+                            <StackPanel Grid.Row="0" Padding="28,22,28,8" Spacing="12">
+                                <StackPanel Spacing="4">
                                     <TextBlock x:Name="CameraPageTitleTextBlock" Style="{StaticResource PageTitleStyle}" Text="相机增强" />
                                     <TextBlock
                                         x:Name="CameraPageDescriptionTextBlock"
@@ -2154,519 +2275,836 @@
                                         Text="自由控制游戏相机，并调整镜头相关的画面效果。各项默认关闭，修改后立即保存。"
                                         TextWrapping="Wrap" />
                                 </StackPanel>
-
-                                <InfoBar
-                                    x:Name="CameraFreeInfoBar"
-                                    IsClosable="False"
-                                    IsOpen="True"
-                                    Message="启用后按设置的热键进入或退出。鼠标转向，方向键前后左右移动，PageUp/PageDown 升降，Shift 加速、Ctrl 减速；冻结时间后仍可移动。切换场景或主相机时会自动退出。"
-                                    Severity="Informational"
-                                    Title="自由视角操作" />
-
-                                <Border Style="{StaticResource SectionStyle}">
-                                    <StackPanel Spacing="18">
-                                        <StackPanel Spacing="4">
-                                            <TextBlock x:Name="CameraFreeSectionTitle" Style="{StaticResource SectionTitleStyle}" Text="自由视角" />
-                                            <TextBlock
-                                                x:Name="CameraFreeSectionHint"
-                                                Style="{StaticResource FieldHintStyle}"
-                                                Text="进入时捕获主相机的位置、朝向和视野，退出后恢复原值。自由视角期间位置和朝向都由模块控制，不受时间冻结影响。"
-                                                TextWrapping="Wrap" />
-                                        </StackPanel>
-                                        <ToggleSwitch
-                                            x:Name="FreeCameraToggle"
-                                            Header="启用自由视角功能"
-                                            OffContent="关闭"
-                                            OnContent="允许热键切换"
-                                            Toggled="CameraEnhancementToggle_Toggled" />
-                                        <ToggleSwitch
-                                            x:Name="FreeCameraFollowCharacterToggle"
-                                            Header="自由镜头跟随人物移动"
-                                            OffContent="固定世界位置"
-                                            OnContent="保持相对位置，可手动调整"
-                                            Toggled="CameraEnhancementToggle_Toggled" />
-                                        <TextBlock
-                                            x:Name="FreeCameraFollowHint"
-                                            Style="{StaticResource FieldHintStyle}"
-                                            Text="手动自由视角中跟随人物平移，保持镜头方向。切人、传送后重新建立参考；运镜播放时暂停跟随。"
-                                            TextWrapping="Wrap" />
-                                        <ToggleSwitch
-                                            x:Name="PauseGameInFreeCameraToggle"
-                                            Header="启用时间冻结功能"
-                                            OffContent="不冻结世界"
-                                            OnContent="允许热键冻结"
-                                            Toggled="CameraEnhancementToggle_Toggled" />
-                                        <TextBox
-                                            x:Name="PauseWorldHotkeyBox"
-                                            Header="时间冻结热键"
-                                            LostFocus="PauseWorldHotkeyBox_LostFocus"
-                                            MaxLength="8"
-                                            PlaceholderText="例如 8、F8、NUMPAD8"
-                                            Text="8" />
-                                        <Grid ColumnSpacing="12" RowSpacing="12">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="*" />
-                                                <ColumnDefinition Width="*" />
-                                            </Grid.ColumnDefinitions>
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="Auto" />
-                                                <RowDefinition Height="Auto" />
-                                            </Grid.RowDefinitions>
-                                            <NumberBox
-                                                x:Name="FreeCameraMovementSpeedNumberBox"
-                                                Grid.Column="1"
-                                                Header="移动速度"
-                                                Minimum="0.1"
-                                                Maximum="100"
-                                                SmallChange="0.5"
-                                                SpinButtonPlacementMode="Compact"
-                                                Value="5"
-                                                ValueChanged="CameraEnhancementNumberBox_ValueChanged" />
-                                            <TextBox
-                                                x:Name="FreeCameraHotkeyBox"
-                                                Header="自由视角热键"
-                                                LostFocus="FreeCameraHotkeyBox_LostFocus"
-                                                MaxLength="8"
-                                                PlaceholderText="例如 9、F9、NUMPAD9"
-                                                Text="9" />
-                                            <NumberBox
-                                                x:Name="FreeCameraFieldOfViewNumberBox"
-                                                Grid.Row="1"
-                                                Header="视野（FOV）"
-                                                Minimum="20"
-                                                Maximum="120"
-                                                SmallChange="1"
-                                                SpinButtonPlacementMode="Compact"
-                                                Value="60"
-                                                ValueChanged="CameraEnhancementNumberBox_ValueChanged" />
-                                        </Grid>
-                                        <ToggleSwitch
-                                            x:Name="GlobalFovToggle"
-                                            Header="修改全局视野"
-                                            OffContent="使用游戏视野"
-                                            OnContent="覆盖普通主相机视野"
-                                            Toggled="CameraEnhancementToggle_Toggled" />
-                                        <NumberBox
-                                            x:Name="GlobalFieldOfViewNumberBox"
-                                            Header="全局视野（FOV）"
-                                            Minimum="5"
-                                            Maximum="150"
-                                            SmallChange="1"
-                                            SpinButtonPlacementMode="Compact"
-                                            Value="60"
-                                            ValueChanged="CameraEnhancementNumberBox_ValueChanged" />
-                                        <TextBlock
-                                            x:Name="GlobalFovHint"
-                                            Style="{StaticResource FieldHintStyle}"
-                                            Text="作用于普通主相机。自由视角和导入运镜保留各自的视野；关闭后随游戏下一次相机更新恢复。"
-                                            TextWrapping="Wrap" />
-                                    </StackPanel>
-                                </Border>
-
-                                <Border Style="{StaticResource SectionStyle}">
-                                    <StackPanel Spacing="18">
-                                        <StackPanel Spacing="4">
-                                            <TextBlock x:Name="CameraMotionSectionTitle" Style="{StaticResource SectionTitleStyle}" Text="运镜与镜头导入" />
-                                            <TextBlock
-                                                x:Name="CameraMotionSectionHint"
-                                                Style="{StaticResource FieldHintStyle}"
-                                                Text="自由视角中可用。小键盘（不需要开启 NumLock）：7/9 滚转，8 复位，1/3 缩放视野，2 开始/停止运镜，0 记录关键帧，. 播放关键帧。滚轮也可缩放视野。清空、保存、读取关键帧在 MMD 悬浮窗里。"
-                                                TextWrapping="Wrap" />
-                                        </StackPanel>
-                                        <ToggleSwitch
-                                            x:Name="FreeCameraMouseLookToggle"
-                                            Header="鼠标转向"
-                                            OffContent="关闭"
-                                            OnContent="自由视角中用鼠标转动镜头"
-                                            IsOn="True"
-                                            Toggled="CameraEnhancementToggle_Toggled" />
-                                        <ToggleSwitch
-                                            x:Name="FreeCameraInvertYToggle"
-                                            Header="反转鼠标上下"
-                                            OffContent="不反转"
-                                            OnContent="反转"
-                                            Toggled="CameraEnhancementToggle_Toggled" />
-                                        <Grid ColumnSpacing="12" RowSpacing="12">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="*" />
-                                                <ColumnDefinition Width="*" />
-                                            </Grid.ColumnDefinitions>
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="Auto" />
-                                                <RowDefinition Height="Auto" />
-                                                <RowDefinition Height="Auto" />
-                                                <RowDefinition Height="Auto" />
-                                            </Grid.RowDefinitions>
-                                            <NumberBox
-                                                x:Name="FreeCameraMouseSensitivityNumberBox"
-                                                Header="鼠标灵敏度（度/像素）"
-                                                Minimum="0.01"
-                                                Maximum="2"
-                                                SmallChange="0.01"
-                                                SpinButtonPlacementMode="Compact"
-                                                Value="0.1"
-                                                ValueChanged="CameraEnhancementNumberBox_ValueChanged" />
-                                            <NumberBox
-                                                x:Name="FreeCameraSmoothingNumberBox"
-                                                Grid.Column="1"
-                                                Header="镜头平滑（%，0 为关闭）"
-                                                Minimum="0"
-                                                Maximum="95"
-                                                SmallChange="5"
-                                                SpinButtonPlacementMode="Compact"
-                                                Value="30"
-                                                ValueChanged="CameraEnhancementNumberBox_ValueChanged" />
-                                            <ComboBox
-                                                x:Name="MotionPresetComboBox"
-                                                Grid.Row="1"
-                                                HorizontalAlignment="Stretch"
-                                                Header="运镜类型"
-                                                SelectedIndex="0"
-                                                SelectionChanged="MotionPresetComboBox_SelectionChanged">
-                                                <ComboBoxItem Content="环绕角色" />
-                                                <ComboBoxItem Content="推拉变焦（希区柯克）" />
-                                                <ComboBoxItem Content="升降（看向角色）" />
-                                                <ComboBoxItem Content="横向平移" />
-                                            </ComboBox>
-                                            <NumberBox
-                                                x:Name="MotionSpeedNumberBox"
-                                                Grid.Row="1"
-                                                Grid.Column="1"
-                                                Header="推拉/升降/平移速度（米/秒，可为负）"
-                                                Minimum="-20"
-                                                Maximum="20"
-                                                SmallChange="0.1"
-                                                SpinButtonPlacementMode="Compact"
-                                                Value="1"
-                                                ValueChanged="CameraEnhancementNumberBox_ValueChanged" />
-                                            <NumberBox
-                                                x:Name="OrbitSpeedNumberBox"
-                                                Grid.Row="2"
-                                                Header="环绕速度（度/秒，负数反向）"
-                                                Minimum="-180"
-                                                Maximum="180"
-                                                SmallChange="5"
-                                                SpinButtonPlacementMode="Compact"
-                                                Value="20"
-                                                ValueChanged="CameraEnhancementNumberBox_ValueChanged" />
-                                            <NumberBox
-                                                x:Name="MotionDurationNumberBox"
-                                                Grid.Row="2"
-                                                Grid.Column="1"
-                                                Header="运镜时长（秒，0 为不限）"
-                                                Minimum="0"
-                                                Maximum="600"
-                                                SmallChange="1"
-                                                SpinButtonPlacementMode="Compact"
-                                                Value="0"
-                                                ValueChanged="CameraEnhancementNumberBox_ValueChanged" />
-                                            <NumberBox
-                                                x:Name="MotionTargetHeightNumberBox"
-                                                Grid.Row="3"
-                                                Header="注视点高度（米，相对角色脚底）"
-                                                Minimum="-5"
-                                                Maximum="5"
-                                                SmallChange="0.1"
-                                                SpinButtonPlacementMode="Compact"
-                                                Value="1.2"
-                                                ValueChanged="CameraEnhancementNumberBox_ValueChanged" />
-                                            <NumberBox
-                                                x:Name="KeyframeSegmentNumberBox"
-                                                Grid.Row="3"
-                                                Grid.Column="1"
-                                                Header="关键帧间隔（秒）"
-                                                Minimum="0.2"
-                                                Maximum="60"
-                                                SmallChange="0.5"
-                                                SpinButtonPlacementMode="Compact"
-                                                Value="3"
-                                                ValueChanged="CameraEnhancementNumberBox_ValueChanged" />
-                                        </Grid>
-                                        <ToggleSwitch
-                                            x:Name="KeyframeLoopToggle"
-                                            Header="关键帧循环播放"
-                                            OffContent="播放一次（首尾缓动）"
-                                            OnContent="循环播放"
-                                            Toggled="CameraEnhancementToggle_Toggled" />
-                                        <Grid ColumnSpacing="12">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="*" />
-                                                <ColumnDefinition Width="Auto" />
-                                            </Grid.ColumnDefinitions>
-                                            <TextBox
-                                                x:Name="VmdCameraFileBox"
-                                                Header="VMD 镜头文件"
-                                                LostFocus="VmdCameraFileBox_LostFocus"
-                                                PlaceholderText="选择 MMD 镜头 .vmd 文件" />
-                                            <Button
-                                                x:Name="VmdCameraBrowseButton"
-                                                Grid.Column="1"
-                                                VerticalAlignment="Bottom"
-                                                Click="VmdCameraBrowseButton_Click"
-                                                Content="浏览" />
-                                        </Grid>
-                                        <Grid ColumnSpacing="12" RowSpacing="12">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="*" />
-                                                <ColumnDefinition Width="*" />
-                                            </Grid.ColumnDefinitions>
-                                            <NumberBox
-                                                x:Name="VmdCameraScaleNumberBox"
-                                                Header="VMD 缩放（米/MMD 单位）"
-                                                Minimum="0.001"
-                                                Maximum="10"
-                                                SmallChange="0.005"
-                                                SpinButtonPlacementMode="Compact"
-                                                Value="0.07"
-                                                ValueChanged="CameraEnhancementNumberBox_ValueChanged" />
-                                            <NumberBox
-                                                x:Name="VmdCameraFovBiasNumberBox"
-                                                Grid.Column="1"
-                                                Header="VMD 视野修正（度）"
-                                                Minimum="-60"
-                                                Maximum="60"
-                                                SmallChange="1"
-                                                SpinButtonPlacementMode="Compact"
-                                                Value="5"
-                                                ValueChanged="CameraEnhancementNumberBox_ValueChanged" />
-                                        </Grid>
-                                        <ToggleSwitch
-                                            x:Name="VmdCameraLoopToggle"
-                                            Header="VMD 镜头循环播放"
-                                            OffContent="播放一次"
-                                            OnContent="循环播放"
-                                            Toggled="CameraEnhancementToggle_Toggled" />
-                                    </StackPanel>
-                                </Border>
-
-                                <Border Style="{StaticResource SectionStyle}">
-                                    <StackPanel Spacing="18">
-                                        <StackPanel Spacing="4">
-                                            <TextBlock x:Name="MmdSectionTitle" Style="{StaticResource SectionTitleStyle}" Text="MMD 播放与作品库" />
-                                            <TextBlock
-                                                x:Name="MmdSectionHint"
-                                                Style="{StaticResource FieldHintStyle}"
-                                                Text="动作、镜头和音乐共用一个时钟。小键盘：Enter 播放/暂停，+ 停止，4/6 后退/前进，5 切换镜头（VMD/自由/游戏），- 显示/隐藏悬浮窗。VMD 镜头不需要开启自由视角（切到“自由”模式才需要）；音乐通过音乐模块播放（不需要 OmniMix）。"
-                                                TextWrapping="Wrap" />
-                                        </StackPanel>
-                                        <ToggleSwitch
-                                            x:Name="MmdEnabledToggle"
-                                            Header="启用 MMD 播放"
-                                            OffContent="关闭"
-                                            OnContent="用小键盘和悬浮窗控制"
-                                            Toggled="CameraEnhancementToggle_Toggled" />
-                                        <Grid ColumnSpacing="12" RowSpacing="12">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="*" />
-                                                <ColumnDefinition Width="*" />
-                                            </Grid.ColumnDefinitions>
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="Auto" />
-                                                <RowDefinition Height="Auto" />
-                                                <RowDefinition Height="Auto" />
-                                                <RowDefinition Height="Auto" />
-                                            </Grid.RowDefinitions>
-                                                <ToggleSwitch
-                                                    x:Name="MmdBodyToggle"
-                                                    Header="身体动作"
-                                                    OffContent="关闭"
-                                                    OnContent="开启"
-                                                    Toggled="CameraEnhancementToggle_Toggled" />
-                                                <ToggleSwitch
-                                                    x:Name="MmdTerrainToggle"
-                                                    Grid.Column="1"
-                                                    Header="地形贴合（实验）"
-                                                    OffContent="关闭"
-                                                    OnContent="开启"
-                                                    Toggled="CameraEnhancementToggle_Toggled" />
-                                                <ToggleSwitch
-                                                    x:Name="MmdFaceToggle"
-                                                    Grid.Row="1"
-                                                    Header="表情"
-                                                    OffContent="关闭"
-                                                    OnContent="开启"
-                                                    Toggled="CameraEnhancementToggle_Toggled" />
-                                                <ToggleSwitch
-                                                    x:Name="MmdMusicToggle"
-                                                    Grid.Row="1"
-                                                    Grid.Column="1"
-                                                    Header="音乐"
-                                                    OffContent="不播放"
-                                                    OnContent="通过音乐模块播放"
-                                                    IsOn="True"
-                                                    Toggled="CameraEnhancementToggle_Toggled" />
-                                                <ToggleSwitch
-                                                    x:Name="MmdOverlayToggle"
-                                                    Grid.Row="2"
-                                                    Header="悬浮窗"
-                                                    OffContent="关闭"
-                                                    OnContent="小键盘 - 显示/隐藏"
-                                                    IsOn="True"
-                                                    Toggled="CameraEnhancementToggle_Toggled" />
-                                                <ToggleSwitch
-                                                    x:Name="MmdOverlayVisibleToggle"
-                                                    Grid.Row="2"
-                                                    Grid.Column="1"
-                                                    Header="进入游戏时显示悬浮窗"
-                                                    OffContent="隐藏"
-                                                    OnContent="显示"
-                                                    Toggled="CameraEnhancementToggle_Toggled" />
-                                                <ToggleSwitch
-                                                    x:Name="MmdLoopToggle"
-                                                    Grid.Row="3"
-                                                    Header="循环播放"
-                                                    OffContent="播放一次"
-                                                    OnContent="循环"
-                                                    Toggled="CameraEnhancementToggle_Toggled" />
-                                        </Grid>
-                                        <Border Style="{StaticResource SettingsRowStyle}">
-                                            <StackPanel Spacing="12">
-                                                <StackPanel Spacing="3">
-                                                    <TextBlock x:Name="MmdHotkeysTitle" Style="{StaticResource SectionTitleStyle}" FontSize="16" Text="MMD 快捷键" />
-                                                    <TextBlock x:Name="MmdHotkeysHint" Style="{StaticResource FieldHintStyle}" Text="点击输入框后直接按下按键，可使用 Ctrl、Alt、Shift、Win 组合键；修改会自动保存。" TextWrapping="Wrap" />
-                                                </StackPanel>
-                                                <Grid ColumnSpacing="12" RowSpacing="10">
-                                                    <Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="*" /><ColumnDefinition Width="*" /></Grid.ColumnDefinitions>
-                                                    <Grid.RowDefinitions><RowDefinition Height="Auto" /><RowDefinition Height="Auto" /><RowDefinition Height="Auto" /><RowDefinition Height="Auto" /><RowDefinition Height="Auto" /></Grid.RowDefinitions>
-                                                    <TextBox x:Name="MmdPlayHotkeyBox" Header="播放/暂停" Text="NUMPAD_ENTER" />
-                                                    <TextBox x:Name="MmdStopHotkeyBox" Grid.Column="1" Header="停止" Text="ADD" />
-                                                    <TextBox x:Name="MmdCameraModeHotkeyBox" Grid.Column="2" Header="镜头模式" Text="NUMPAD5" />
-                                                    <TextBox x:Name="MmdSeekBackHotkeyBox" Grid.Row="1" Header="后退" Text="NUMPAD4" />
-                                                    <TextBox x:Name="MmdSeekForwardHotkeyBox" Grid.Row="1" Grid.Column="1" Header="前进" Text="NUMPAD6" />
-                                                    <TextBox x:Name="MmdOverlayHotkeyBox" Grid.Row="1" Grid.Column="2" Header="悬浮窗" Text="SUBTRACT" />
-                                                    <TextBox x:Name="MmdMotionHotkeyBox" Grid.Row="2" Header="运镜" Text="NUMPAD2" />
-                                                    <TextBox x:Name="MmdRollLeftHotkeyBox" Grid.Row="2" Grid.Column="1" Header="左滚转" Text="NUMPAD7" />
-                                                    <TextBox x:Name="MmdRollRightHotkeyBox" Grid.Row="2" Grid.Column="2" Header="右滚转" Text="NUMPAD9" />
-                                                    <TextBox x:Name="MmdFovWideHotkeyBox" Grid.Row="3" Header="放大视野" Text="NUMPAD1" />
-                                                    <TextBox x:Name="MmdFovNarrowHotkeyBox" Grid.Row="3" Grid.Column="1" Header="缩小视野" Text="NUMPAD3" />
-                                                    <TextBox x:Name="MmdViewResetHotkeyBox" Grid.Row="3" Grid.Column="2" Header="视野复位" Text="NUMPAD8" />
-                                                    <TextBox x:Name="MmdKeyframeAddHotkeyBox" Grid.Row="4" Header="记录机位" Text="NUMPAD0" />
-                                                    <TextBox x:Name="MmdKeyframePlayHotkeyBox" Grid.Row="4" Grid.Column="1" Header="播放机位" Text="DECIMAL" />
-                                                    <TextBox x:Name="MmdKeyframeClearHotkeyBox" Grid.Row="4" Grid.Column="2" Header="清空机位" Text="NONE" />
-                                                </Grid>
-                                                <Grid ColumnSpacing="12" RowSpacing="10">
-                                                    <Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="*" /><ColumnDefinition Width="*" /></Grid.ColumnDefinitions>
-                                                    <Grid.RowDefinitions><RowDefinition Height="Auto" /><RowDefinition Height="Auto" /></Grid.RowDefinitions>
-                                                    <TextBox x:Name="MmdVmdPlayHotkeyBox" Header="VMD 镜头" Text="NONE" />
-                                                    <TextBox x:Name="MmdVmdMotionHotkeyBox" Grid.Column="1" Header="身体动作" Text="NONE" />
-                                                    <TextBox x:Name="MmdVmdMotionPauseHotkeyBox" Grid.Column="2" Header="动作暂停" Text="NONE" />
-                                                    <TextBox x:Name="MmdVmdMotionStopHotkeyBox" Grid.Row="1" Header="动作停止" Text="NONE" />
-                                                    <TextBox x:Name="MmdKeyframeSaveHotkeyBox" Grid.Row="1" Grid.Column="1" Header="保存机位" Text="NONE" />
-                                                    <TextBox x:Name="MmdKeyframeLoadHotkeyBox" Grid.Row="1" Grid.Column="2" Header="读取机位" Text="NONE" />
-                                                </Grid>
-                                            </StackPanel>
-                                        </Border>
-                                        <StackPanel Spacing="4">
-                                            <ComboBox
-                                                x:Name="MmdClothComboBox"
-                                                Header="衣物物理"
-                                                HorizontalAlignment="Stretch"
-                                                SelectedIndex="0"
-                                                SelectionChanged="MmdClothComboBox_SelectionChanged">
-                                                <ComboBoxItem Content="稳定（推荐）：完整模拟，不被原动作拉回" />
-                                                <ComboBoxItem Content="游戏原样：不做处理" />
-                                                <ComboBoxItem Content="冻结：关闭模拟，衣物随身体硬动" />
-                                            </ComboBox>
-                                            <TextBlock
-                                                x:Name="MmdClothHint"
-                                                Style="{StaticResource FieldHintStyle}"
-                                                Text="作用于衣服、头发和尾巴的游戏物理，每位跳舞的队员各自处理，停止播放后恢复原设置。在下次开始播放时生效。碰撞体仍是游戏原值，大幅度动作可能穿模。"
-                                                TextWrapping="Wrap" />
-                                        </StackPanel>
-                                        <Grid ColumnSpacing="12">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="*" />
-                                                <ColumnDefinition Width="*" />
-                                                <ColumnDefinition Width="*" />
-                                            </Grid.ColumnDefinitions>
-                                                <NumberBox
-                                                    x:Name="MmdMotionScaleNumberBox"
-                                                    Header="位移幅度（%）"
-                                                    Minimum="5"
-                                                    Maximum="500"
-                                                    SmallChange="5"
-                                                    SpinButtonPlacementMode="Compact"
-                                                    Value="100"
-                                                    ValueChanged="CameraEnhancementNumberBox_ValueChanged" />
-                                                <NumberBox
-                                                    x:Name="MmdMusicGainNumberBox"
-                                                    Grid.Column="1"
-                                                    Header="音乐音量（%）"
-                                                    Minimum="0"
-                                                    Maximum="200"
-                                                    SmallChange="5"
-                                                    SpinButtonPlacementMode="Compact"
-                                                    Value="100"
-                                                    ValueChanged="CameraEnhancementNumberBox_ValueChanged" />
-                                                <NumberBox
-                                                    x:Name="MmdSeekNumberBox"
-                                                    Grid.Column="2"
-                                                    Header="快进/快退（秒）"
-                                                    Minimum="0.5"
-                                                    Maximum="60"
-                                                    SmallChange="1"
-                                                    SpinButtonPlacementMode="Compact"
-                                                    Value="5"
-                                                    ValueChanged="CameraEnhancementNumberBox_ValueChanged" />
-                                        </Grid>
-                                        <StackPanel Spacing="4">
-                                            <TextBlock x:Name="MmdLibraryTitle" Style="{StaticResource SectionTitleStyle}" FontSize="16" Text="作品库" />
-                                            <TextBlock
-                                                x:Name="MmdLibraryHint"
-                                                Style="{StaticResource FieldHintStyle}"
-                                                Text="导入时会把文件复制到软件目录下的 mmd 文件夹，悬浮窗直接从这里读取。"
-                                                TextWrapping="Wrap" />
-                                            <TextBlock
-                                                x:Name="MmdLibraryPathTextBlock"
-                                                Style="{StaticResource FieldHintStyle}"
-                                                IsTextSelectionEnabled="True"
-                                                TextWrapping="Wrap" />
-                                        </StackPanel>
-                                        <ListView
-                                            x:Name="MmdWorksListView"
-                                            Height="200"
-                                            BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
-                                            BorderThickness="1"
-                                            CornerRadius="6"
-                                            SelectionMode="Single" />
-                                        <TextBlock
-                                            x:Name="MmdDefaultWorkTextBlock"
-                                            Style="{StaticResource FieldHintStyle}"
-                                            TextWrapping="Wrap" />
-                                        <StackPanel Orientation="Horizontal" Spacing="8">
-                                            <Button x:Name="MmdImportButton" Click="MmdImportButton_Click" Content="导入作品" Style="{StaticResource AccentButtonStyle}" />
-                                            <Button x:Name="MmdSetDefaultButton" Click="MmdSetDefaultButton_Click" Content="设为默认" />
-                                            <Button x:Name="MmdOffsetButton" Click="MmdOffsetButton_Click" Content="音乐偏移" />
-                                            <Button x:Name="MmdDeleteButton" Click="MmdDeleteButton_Click" Content="删除" />
-                                            <Button x:Name="MmdOpenFolderButton" Click="MmdOpenFolderButton_Click" Content="打开文件夹" />
-                                            <Button x:Name="MmdRefreshButton" Click="MmdRefreshButton_Click" Content="刷新" />
-                                        </StackPanel>
-                                    </StackPanel>
-                                </Border>
-
-
-
-                                <Border Style="{StaticResource SectionStyle}">
-                                    <StackPanel Spacing="16">
-                                        <StackPanel Spacing="4">
-                                            <TextBlock x:Name="CameraVisualSectionTitle" Style="{StaticResource SectionTitleStyle}" Text="镜头画面" />
-                                            <TextBlock
-                                                x:Name="CameraVisualSectionHint"
-                                                Style="{StaticResource FieldHintStyle}"
-                                                Text="调用游戏自身的清理逻辑，移除镜头贴近角色时出现的半透明虚化。"
-                                                TextWrapping="Wrap" />
-                                        </StackPanel>
-                                        <ToggleSwitch
-                                            x:Name="DisableDitherToggle"
-                                            Header="移除角色近距离虚化"
-                                            OffContent="保留原效果"
-                                            OnContent="关闭虚化"
-                                            Toggled="CameraEnhancementToggle_Toggled" />
-                                    </StackPanel>
-                                </Border>
+                                <StackPanel Orientation="Horizontal" Spacing="10">
+                                    <Button
+                                        x:Name="CameraTabFreeButton"
+                                        Tag="free"
+                                        Content="自由视角与画面"
+                                        Click="CameraWorkspaceTabButton_Click"
+                                        Style="{StaticResource FilterPillSelectedButtonStyle}" />
+                                    <Button
+                                        x:Name="CameraTabMotionButton"
+                                        Tag="motion"
+                                        Content="运镜与 VMD"
+                                        Click="CameraWorkspaceTabButton_Click"
+                                        Style="{StaticResource FilterPillButtonStyle}" />
+                                    <Button
+                                        x:Name="CameraTabMmdButton"
+                                        Tag="mmd"
+                                        Content="MMD 播放与作品库"
+                                        Click="CameraWorkspaceTabButton_Click"
+                                        Style="{StaticResource FilterPillButtonStyle}" />
+                                </StackPanel>
+                                <Border Height="1" Margin="0,2,0,0" Background="{ThemeResource SubtleDividerBrush}" />
                             </StackPanel>
-                            </controls:PageContentPanel>
-                        </ScrollViewer>
+
+                            <!-- Row 1: Scrollable Workspace Area -->
+                            <ScrollViewer
+                                Grid.Row="1"
+                                HorizontalScrollBarVisibility="Disabled"
+                                VerticalScrollBarVisibility="Auto">
+                                <controls:PageContentPanel Padding="28,8,28,28">
+                                    <Grid>
+                                        <!-- Tab 1: 自由视角与画面 -->
+                                        <StackPanel x:Name="CameraTabFreePanel" Spacing="16" Visibility="Visible">
+                                            <!-- Keep InfoBar instance for C# localization binding while rendering with HintBannerBorderStyle -->
+                                            <InfoBar
+                                                x:Name="CameraFreeInfoBar"
+                                                IsClosable="False"
+                                                IsOpen="True"
+                                                Message="启用后按设置的热键进入或退出。鼠标转向，方向键前后左右移动，PageUp/PageDown 升降，Shift 加速、Ctrl 减速；冻结时间后仍可移动。切换场景或主相机时会自动退出。"
+                                                Severity="Informational"
+                                                Title="自由视角操作"
+                                                Visibility="Collapsed" />
+
+                                            <Border Style="{StaticResource HintBannerBorderStyle}">
+                                                <Grid ColumnSpacing="10">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="Auto" />
+                                                        <ColumnDefinition Width="*" />
+                                                    </Grid.ColumnDefinitions>
+                                                    <Border
+                                                        VerticalAlignment="Top"
+                                                        Padding="10,3"
+                                                        CornerRadius="8"
+                                                        Background="{ThemeResource AuxBadgeBackgroundBrush}">
+                                                        <TextBlock
+                                                            FontSize="11"
+                                                            FontWeight="Bold"
+                                                            Foreground="{ThemeResource AuxBadgeForegroundBrush}"
+                                                            Text="{Binding Title, ElementName=CameraFreeInfoBar}" />
+                                                    </Border>
+                                                    <TextBlock
+                                                        Grid.Column="1"
+                                                        VerticalAlignment="Center"
+                                                        FontSize="12"
+                                                        Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                                        Text="{Binding Message, ElementName=CameraFreeInfoBar}"
+                                                        TextWrapping="Wrap" />
+                                                </Grid>
+                                            </Border>
+
+                                            <Grid ColumnSpacing="18">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="6*" />
+                                                    <ColumnDefinition Width="5*" />
+                                                </Grid.ColumnDefinitions>
+
+                                                <!-- Left Card: Free Camera -->
+                                                <Border Grid.Column="0" Style="{StaticResource SectionStyle}" VerticalAlignment="Top">
+                                                    <StackPanel Spacing="14">
+                                                        <StackPanel Spacing="3">
+                                                            <TextBlock x:Name="CameraFreeSectionTitle" Style="{StaticResource SectionTitleStyle}" Text="自由视角" />
+                                                            <TextBlock
+                                                                x:Name="CameraFreeSectionHint"
+                                                                Style="{StaticResource FieldHintStyle}"
+                                                                Text="进入时捕获主相机的位置、朝向和视野，退出后恢复原值。自由视角期间位置和朝向都由模块控制，不受时间冻结影响。"
+                                                                TextWrapping="Wrap" />
+                                                        </StackPanel>
+
+                                                        <Border Height="1" Background="{ThemeResource SubtleDividerBrush}" />
+
+                                                        <Grid ColumnSpacing="12" Padding="0,2">
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="*" />
+                                                                <ColumnDefinition Width="Auto" />
+                                                            </Grid.ColumnDefinitions>
+                                                            <StackPanel Spacing="2" VerticalAlignment="Center">
+                                                                <TextBlock FontSize="14" FontWeight="Bold" Foreground="{ThemeResource TextFillColorPrimaryBrush}" Text="{Binding Header, ElementName=FreeCameraToggle}" />
+                                                                <TextBlock Style="{StaticResource FieldHintStyle}" Text="{Binding OnContent, ElementName=FreeCameraToggle}" />
+                                                            </StackPanel>
+                                                            <ToggleSwitch
+                                                                x:Name="FreeCameraToggle"
+                                                                Grid.Column="1"
+                                                                Header="启用自由视角功能"
+                                                                OffContent="关闭"
+                                                                OnContent="允许热键切换"
+                                                                Style="{StaticResource CompactToggleSwitchStyle}"
+                                                                Toggled="CameraEnhancementToggle_Toggled" />
+                                                        </Grid>
+
+                                                        <Border Height="1" Background="{ThemeResource SubtleDividerBrush}" />
+
+                                                        <Grid ColumnSpacing="12" Padding="0,2">
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="*" />
+                                                                <ColumnDefinition Width="Auto" />
+                                                            </Grid.ColumnDefinitions>
+                                                            <StackPanel Spacing="2" VerticalAlignment="Center">
+                                                                <TextBlock FontSize="14" FontWeight="Bold" Foreground="{ThemeResource TextFillColorPrimaryBrush}" Text="{Binding Header, ElementName=FreeCameraFollowCharacterToggle}" />
+                                                                <TextBlock
+                                                                    x:Name="FreeCameraFollowHint"
+                                                                    Style="{StaticResource FieldHintStyle}"
+                                                                    Text="手动自由视角中跟随人物平移，保持镜头方向。切人、传送后重新建立参考；运镜播放时暂停跟随。"
+                                                                    TextWrapping="Wrap" />
+                                                            </StackPanel>
+                                                            <ToggleSwitch
+                                                                x:Name="FreeCameraFollowCharacterToggle"
+                                                                Grid.Column="1"
+                                                                Header="自由镜头跟随人物移动"
+                                                                OffContent="固定世界位置"
+                                                                OnContent="保持相对位置，可手动调整"
+                                                                Style="{StaticResource CompactToggleSwitchStyle}"
+                                                                Toggled="CameraEnhancementToggle_Toggled" />
+                                                        </Grid>
+
+                                                        <Border Height="1" Background="{ThemeResource SubtleDividerBrush}" />
+
+                                                        <Grid ColumnSpacing="12" Padding="0,2">
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="*" />
+                                                                <ColumnDefinition Width="Auto" />
+                                                            </Grid.ColumnDefinitions>
+                                                            <StackPanel Spacing="2" VerticalAlignment="Center">
+                                                                <TextBlock FontSize="14" FontWeight="Bold" Foreground="{ThemeResource TextFillColorPrimaryBrush}" Text="{Binding Header, ElementName=PauseGameInFreeCameraToggle}" />
+                                                                <TextBlock Style="{StaticResource FieldHintStyle}" Text="{Binding OnContent, ElementName=PauseGameInFreeCameraToggle}" />
+                                                            </StackPanel>
+                                                            <ToggleSwitch
+                                                                x:Name="PauseGameInFreeCameraToggle"
+                                                                Grid.Column="1"
+                                                                Header="启用时间冻结功能"
+                                                                OffContent="不冻结世界"
+                                                                OnContent="允许热键冻结"
+                                                                Style="{StaticResource CompactToggleSwitchStyle}"
+                                                                Toggled="CameraEnhancementToggle_Toggled" />
+                                                        </Grid>
+
+                                                        <Border Height="1" Background="{ThemeResource SubtleDividerBrush}" />
+
+                                                        <Grid ColumnSpacing="12" RowSpacing="12">
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="*" />
+                                                                <ColumnDefinition Width="*" />
+                                                            </Grid.ColumnDefinitions>
+                                                            <Grid.RowDefinitions>
+                                                                <RowDefinition Height="Auto" />
+                                                                <RowDefinition Height="Auto" />
+                                                            </Grid.RowDefinitions>
+                                                            <TextBox
+                                                                x:Name="FreeCameraHotkeyBox"
+                                                                Header="自由视角热键"
+                                                                LostFocus="FreeCameraHotkeyBox_LostFocus"
+                                                                MaxLength="8"
+                                                                PlaceholderText="例如 9、F9、NUMPAD9"
+                                                                Text="9" />
+                                                            <TextBox
+                                                                x:Name="PauseWorldHotkeyBox"
+                                                                Grid.Column="1"
+                                                                Header="时间冻结热键"
+                                                                LostFocus="PauseWorldHotkeyBox_LostFocus"
+                                                                MaxLength="8"
+                                                                PlaceholderText="例如 8、F8、NUMPAD8"
+                                                                Text="8" />
+                                                            <NumberBox
+                                                                x:Name="FreeCameraMovementSpeedNumberBox"
+                                                                Grid.Row="1"
+                                                                Header="移动速度"
+                                                                Minimum="0.1"
+                                                                Maximum="100"
+                                                                SmallChange="0.5"
+                                                                SpinButtonPlacementMode="Compact"
+                                                                Value="5"
+                                                                ValueChanged="CameraEnhancementNumberBox_ValueChanged" />
+                                                            <NumberBox
+                                                                x:Name="FreeCameraFieldOfViewNumberBox"
+                                                                Grid.Row="1"
+                                                                Grid.Column="1"
+                                                                Header="视野（FOV）"
+                                                                Minimum="20"
+                                                                Maximum="120"
+                                                                SmallChange="1"
+                                                                SpinButtonPlacementMode="Compact"
+                                                                Value="60"
+                                                                ValueChanged="CameraEnhancementNumberBox_ValueChanged" />
+                                                        </Grid>
+                                                    </StackPanel>
+                                                </Border>
+
+                                                <!-- Right Column: Global FOV + Visual & Occlusion -->
+                                                <StackPanel Grid.Column="1" Spacing="16" VerticalAlignment="Top">
+                                                    <Border Style="{StaticResource SectionStyle}">
+                                                        <StackPanel Spacing="14">
+                                                            <Grid ColumnSpacing="12" Padding="0,2">
+                                                                <Grid.ColumnDefinitions>
+                                                                    <ColumnDefinition Width="*" />
+                                                                    <ColumnDefinition Width="Auto" />
+                                                                </Grid.ColumnDefinitions>
+                                                                <StackPanel Spacing="2" VerticalAlignment="Center">
+                                                                    <TextBlock Style="{StaticResource SectionTitleStyle}" Text="{Binding Header, ElementName=GlobalFovToggle}" />
+                                                                    <TextBlock
+                                                                        x:Name="GlobalFovHint"
+                                                                        Style="{StaticResource FieldHintStyle}"
+                                                                        Text="作用于普通主相机。自由视角和导入运镜保留各自的视野；关闭后随游戏下一次相机更新恢复。"
+                                                                        TextWrapping="Wrap" />
+                                                                </StackPanel>
+                                                                <ToggleSwitch
+                                                                    x:Name="GlobalFovToggle"
+                                                                    Grid.Column="1"
+                                                                    Header="修改全局视野"
+                                                                    OffContent="使用游戏视野"
+                                                                    OnContent="覆盖普通主相机视野"
+                                                                    Style="{StaticResource CompactToggleSwitchStyle}"
+                                                                    Toggled="CameraEnhancementToggle_Toggled" />
+                                                            </Grid>
+                                                            <Border Height="1" Background="{ThemeResource SubtleDividerBrush}" />
+                                                            <Grid ColumnSpacing="12" Padding="0,2">
+                                                                <Grid.ColumnDefinitions>
+                                                                    <ColumnDefinition Width="*" />
+                                                                    <ColumnDefinition Width="Auto" />
+                                                                </Grid.ColumnDefinitions>
+                                                                <TextBlock
+                                                                    VerticalAlignment="Center"
+                                                                    FontSize="14"
+                                                                    FontWeight="Bold"
+                                                                    Foreground="{ThemeResource TextFillColorPrimaryBrush}"
+                                                                    Text="{Binding Header, ElementName=GlobalFieldOfViewNumberBox}" />
+                                                                <NumberBox
+                                                                    x:Name="GlobalFieldOfViewNumberBox"
+                                                                    Grid.Column="1"
+                                                                    Width="140"
+                                                                    Header="全局视野（FOV）"
+                                                                    Minimum="5"
+                                                                    Maximum="150"
+                                                                    SmallChange="1"
+                                                                    SpinButtonPlacementMode="Compact"
+                                                                    Value="60"
+                                                                    ValueChanged="CameraEnhancementNumberBox_ValueChanged">
+                                                                    <NumberBox.HeaderTemplate>
+                                                                        <DataTemplate>
+                                                                            <Grid Width="0" Height="0" Visibility="Collapsed" />
+                                                                        </DataTemplate>
+                                                                    </NumberBox.HeaderTemplate>
+                                                                </NumberBox>
+                                                            </Grid>
+                                                        </StackPanel>
+                                                    </Border>
+
+                                                    <Border Style="{StaticResource SectionStyle}">
+                                                        <StackPanel Spacing="14">
+                                                            <StackPanel Spacing="3">
+                                                                <TextBlock x:Name="CameraVisualSectionTitle" Style="{StaticResource SectionTitleStyle}" Text="镜头画面" />
+                                                                <TextBlock
+                                                                    x:Name="CameraVisualSectionHint"
+                                                                    Style="{StaticResource FieldHintStyle}"
+                                                                    Text="调用游戏自身的清理逻辑，移除镜头贴近角色时出现的半透明虚化。"
+                                                                    TextWrapping="Wrap" />
+                                                            </StackPanel>
+                                                            <Border Height="1" Background="{ThemeResource SubtleDividerBrush}" />
+                                                            <Grid ColumnSpacing="12" Padding="0,2">
+                                                                <Grid.ColumnDefinitions>
+                                                                    <ColumnDefinition Width="*" />
+                                                                    <ColumnDefinition Width="Auto" />
+                                                                </Grid.ColumnDefinitions>
+                                                                <StackPanel Spacing="2" VerticalAlignment="Center">
+                                                                    <TextBlock FontSize="14" FontWeight="Bold" Foreground="{ThemeResource TextFillColorPrimaryBrush}" Text="{Binding Header, ElementName=DisableDitherToggle}" />
+                                                                    <TextBlock Style="{StaticResource FieldHintStyle}" Text="{Binding OnContent, ElementName=DisableDitherToggle}" />
+                                                                </StackPanel>
+                                                                <ToggleSwitch
+                                                                    x:Name="DisableDitherToggle"
+                                                                    Grid.Column="1"
+                                                                    Header="移除角色近距离虚化"
+                                                                    OffContent="保留原效果"
+                                                                    OnContent="关闭虚化"
+                                                                    Style="{StaticResource CompactToggleSwitchStyle}"
+                                                                    Toggled="CameraEnhancementToggle_Toggled" />
+                                                            </Grid>
+                                                        </StackPanel>
+                                                    </Border>
+                                                </StackPanel>
+                                            </Grid>
+                                        </StackPanel>
+
+                                        <!-- Tab 2: 运镜与 VMD -->
+                                        <Grid x:Name="CameraTabMotionPanel" ColumnSpacing="18" Visibility="Collapsed">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="6*" />
+                                                <ColumnDefinition Width="5*" />
+                                            </Grid.ColumnDefinitions>
+
+                                            <!-- Left Card: Camera Motion Control -->
+                                            <Border Grid.Column="0" Style="{StaticResource SectionStyle}" VerticalAlignment="Top">
+                                                <StackPanel Spacing="14">
+                                                    <StackPanel Spacing="3">
+                                                        <TextBlock x:Name="CameraMotionSectionTitle" Style="{StaticResource SectionTitleStyle}" Text="运镜与镜头导入" />
+                                                        <TextBlock
+                                                            x:Name="CameraMotionSectionHint"
+                                                            Style="{StaticResource FieldHintStyle}"
+                                                            Text="自由视角中可用。小键盘（不需要开启 NumLock）：7/9 滚转，8 复位，1/3 缩放视野，2 开始/停止运镜，0 记录关键帧，. 播放关键帧。滚轮也可缩放视野。清空、保存、读取关键帧在 MMD 悬浮窗里。"
+                                                            TextWrapping="Wrap" />
+                                                    </StackPanel>
+
+                                                    <Border Height="1" Background="{ThemeResource SubtleDividerBrush}" />
+
+                                                    <Grid ColumnSpacing="12" Padding="0,2">
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="*" />
+                                                            <ColumnDefinition Width="Auto" />
+                                                        </Grid.ColumnDefinitions>
+                                                        <StackPanel Spacing="2" VerticalAlignment="Center">
+                                                            <TextBlock FontSize="14" FontWeight="Bold" Foreground="{ThemeResource TextFillColorPrimaryBrush}" Text="{Binding Header, ElementName=FreeCameraMouseLookToggle}" />
+                                                            <TextBlock Style="{StaticResource FieldHintStyle}" Text="{Binding OnContent, ElementName=FreeCameraMouseLookToggle}" />
+                                                        </StackPanel>
+                                                        <ToggleSwitch
+                                                            x:Name="FreeCameraMouseLookToggle"
+                                                            Grid.Column="1"
+                                                            Header="鼠标转向"
+                                                            OffContent="关闭"
+                                                            OnContent="自由视角中用鼠标转动镜头"
+                                                            IsOn="True"
+                                                            Style="{StaticResource CompactToggleSwitchStyle}"
+                                                            Toggled="CameraEnhancementToggle_Toggled" />
+                                                    </Grid>
+
+                                                    <Border Height="1" Background="{ThemeResource SubtleDividerBrush}" />
+
+                                                    <Grid ColumnSpacing="12" Padding="0,2">
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="*" />
+                                                            <ColumnDefinition Width="Auto" />
+                                                        </Grid.ColumnDefinitions>
+                                                        <TextBlock VerticalAlignment="Center" FontSize="14" FontWeight="Bold" Foreground="{ThemeResource TextFillColorPrimaryBrush}" Text="{Binding Header, ElementName=FreeCameraInvertYToggle}" />
+                                                        <ToggleSwitch
+                                                            x:Name="FreeCameraInvertYToggle"
+                                                            Grid.Column="1"
+                                                            Header="反转鼠标上下"
+                                                            OffContent="不反转"
+                                                            OnContent="反转"
+                                                            Style="{StaticResource CompactToggleSwitchStyle}"
+                                                            Toggled="CameraEnhancementToggle_Toggled" />
+                                                    </Grid>
+
+                                                    <Border Height="1" Background="{ThemeResource SubtleDividerBrush}" />
+
+                                                    <Grid ColumnSpacing="12" Padding="0,2">
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="*" />
+                                                            <ColumnDefinition Width="Auto" />
+                                                        </Grid.ColumnDefinitions>
+                                                        <StackPanel Spacing="2" VerticalAlignment="Center">
+                                                            <TextBlock FontSize="14" FontWeight="Bold" Foreground="{ThemeResource TextFillColorPrimaryBrush}" Text="{Binding Header, ElementName=KeyframeLoopToggle}" />
+                                                            <TextBlock Style="{StaticResource FieldHintStyle}" Text="{Binding OffContent, ElementName=KeyframeLoopToggle}" />
+                                                        </StackPanel>
+                                                        <ToggleSwitch
+                                                            x:Name="KeyframeLoopToggle"
+                                                            Grid.Column="1"
+                                                            Header="关键帧循环播放"
+                                                            OffContent="播放一次（首尾缓动）"
+                                                            OnContent="循环播放"
+                                                            Style="{StaticResource CompactToggleSwitchStyle}"
+                                                            Toggled="CameraEnhancementToggle_Toggled" />
+                                                    </Grid>
+
+                                                    <Border Height="1" Background="{ThemeResource SubtleDividerBrush}" />
+
+                                                    <Grid ColumnSpacing="12" RowSpacing="12">
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="*" />
+                                                            <ColumnDefinition Width="*" />
+                                                        </Grid.ColumnDefinitions>
+                                                        <Grid.RowDefinitions>
+                                                            <RowDefinition Height="Auto" />
+                                                            <RowDefinition Height="Auto" />
+                                                            <RowDefinition Height="Auto" />
+                                                            <RowDefinition Height="Auto" />
+                                                        </Grid.RowDefinitions>
+                                                        <NumberBox
+                                                            x:Name="FreeCameraMouseSensitivityNumberBox"
+                                                            VerticalAlignment="Bottom"
+                                                            FontWeight="Bold"
+                                                            Header="鼠标灵敏度（度/像素）"
+                                                            Minimum="0.01"
+                                                            Maximum="2"
+                                                            SmallChange="0.01"
+                                                            SpinButtonPlacementMode="Compact"
+                                                            Value="0.1"
+                                                            ValueChanged="CameraEnhancementNumberBox_ValueChanged" />
+                                                        <NumberBox
+                                                            x:Name="FreeCameraSmoothingNumberBox"
+                                                            Grid.Column="1"
+                                                            VerticalAlignment="Bottom"
+                                                            FontWeight="Bold"
+                                                            Header="镜头平滑（%，0 为关闭）"
+                                                            Minimum="0"
+                                                            Maximum="95"
+                                                            SmallChange="5"
+                                                            SpinButtonPlacementMode="Compact"
+                                                            Value="30"
+                                                            ValueChanged="CameraEnhancementNumberBox_ValueChanged" />
+                                                        <ComboBox
+                                                            x:Name="MotionPresetComboBox"
+                                                            Grid.Row="1"
+                                                            VerticalAlignment="Bottom"
+                                                            HorizontalAlignment="Stretch"
+                                                            Header="运镜类型"
+                                                            SelectedIndex="0"
+                                                            SelectionChanged="MotionPresetComboBox_SelectionChanged">
+                                                            <ComboBoxItem Content="环绕角色" />
+                                                            <ComboBoxItem Content="推拉变焦（希区柯克）" />
+                                                            <ComboBoxItem Content="升降（看向角色）" />
+                                                            <ComboBoxItem Content="横向平移" />
+                                                        </ComboBox>
+                                                        <NumberBox
+                                                            x:Name="MotionSpeedNumberBox"
+                                                            Grid.Row="1"
+                                                            Grid.Column="1"
+                                                            VerticalAlignment="Bottom"
+                                                            FontWeight="Bold"
+                                                            Header="推拉/升降/平移速度（米/秒，可为负）"
+                                                            Minimum="-20"
+                                                            Maximum="20"
+                                                            SmallChange="0.1"
+                                                            SpinButtonPlacementMode="Compact"
+                                                            Value="1"
+                                                            ValueChanged="CameraEnhancementNumberBox_ValueChanged" />
+                                                        <NumberBox
+                                                            x:Name="OrbitSpeedNumberBox"
+                                                            Grid.Row="2"
+                                                            VerticalAlignment="Bottom"
+                                                            FontWeight="Bold"
+                                                            Header="环绕速度（度/秒，负数反向）"
+                                                            Minimum="-180"
+                                                            Maximum="180"
+                                                            SmallChange="5"
+                                                            SpinButtonPlacementMode="Compact"
+                                                            Value="20"
+                                                            ValueChanged="CameraEnhancementNumberBox_ValueChanged" />
+                                                        <NumberBox
+                                                            x:Name="MotionDurationNumberBox"
+                                                            Grid.Row="2"
+                                                            Grid.Column="1"
+                                                            VerticalAlignment="Bottom"
+                                                            FontWeight="Bold"
+                                                            Header="运镜时长（秒，0 为不限）"
+                                                            Minimum="0"
+                                                            Maximum="600"
+                                                            SmallChange="1"
+                                                            SpinButtonPlacementMode="Compact"
+                                                            Value="0"
+                                                            ValueChanged="CameraEnhancementNumberBox_ValueChanged" />
+                                                        <NumberBox
+                                                            x:Name="MotionTargetHeightNumberBox"
+                                                            Grid.Row="3"
+                                                            VerticalAlignment="Bottom"
+                                                            FontWeight="Bold"
+                                                            Header="注视点高度（米，相对角色脚底）"
+                                                            Minimum="-5"
+                                                            Maximum="5"
+                                                            SmallChange="0.1"
+                                                            SpinButtonPlacementMode="Compact"
+                                                            Value="1.2"
+                                                            ValueChanged="CameraEnhancementNumberBox_ValueChanged" />
+                                                        <NumberBox
+                                                            x:Name="KeyframeSegmentNumberBox"
+                                                            Grid.Row="3"
+                                                            Grid.Column="1"
+                                                            VerticalAlignment="Bottom"
+                                                            FontWeight="Bold"
+                                                            Header="关键帧间隔（秒）"
+                                                            Minimum="0.2"
+                                                            Maximum="60"
+                                                            SmallChange="0.5"
+                                                            SpinButtonPlacementMode="Compact"
+                                                            Value="3"
+                                                            ValueChanged="CameraEnhancementNumberBox_ValueChanged" />
+                                                    </Grid>
+                                                </StackPanel>
+                                            </Border>
+
+                                            <!-- Right Card: VMD Camera Import -->
+                                            <Border Grid.Column="1" Style="{StaticResource SectionStyle}" VerticalAlignment="Top">
+                                                <StackPanel Spacing="14">
+                                                    <StackPanel Spacing="3">
+                                                        <TextBlock Style="{StaticResource SectionTitleStyle}" Text="{Binding Header, ElementName=VmdCameraFileBox}" />
+                                                        <TextBlock Style="{StaticResource FieldHintStyle}" Text="加载 .vmd 镜头轨迹并自定义缩放比例与视野修正。" />
+                                                    </StackPanel>
+                                                    <Grid ColumnSpacing="8">
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="*" />
+                                                            <ColumnDefinition Width="Auto" />
+                                                        </Grid.ColumnDefinitions>
+                                                        <TextBox
+                                                            x:Name="VmdCameraFileBox"
+                                                            Header="VMD 镜头文件"
+                                                            LostFocus="VmdCameraFileBox_LostFocus"
+                                                            PlaceholderText="选择 MMD 镜头 .vmd 文件" />
+                                                        <Button
+                                                            x:Name="VmdCameraBrowseButton"
+                                                            Grid.Column="1"
+                                                            VerticalAlignment="Bottom"
+                                                            Click="VmdCameraBrowseButton_Click"
+                                                            Content="浏览" />
+                                                    </Grid>
+                                                    <Grid ColumnSpacing="12" RowSpacing="12">
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="*" />
+                                                            <ColumnDefinition Width="*" />
+                                                        </Grid.ColumnDefinitions>
+                                                        <NumberBox
+                                                            x:Name="VmdCameraScaleNumberBox"
+                                                            Header="VMD 缩放（米/MMD 单位）"
+                                                            Minimum="0.001"
+                                                            Maximum="10"
+                                                            SmallChange="0.005"
+                                                            SpinButtonPlacementMode="Compact"
+                                                            Value="0.07"
+                                                            ValueChanged="CameraEnhancementNumberBox_ValueChanged" />
+                                                        <NumberBox
+                                                            x:Name="VmdCameraFovBiasNumberBox"
+                                                            Grid.Column="1"
+                                                            Header="VMD 视野修正（度）"
+                                                            Minimum="-60"
+                                                            Maximum="60"
+                                                            SmallChange="1"
+                                                            SpinButtonPlacementMode="Compact"
+                                                            Value="5"
+                                                            ValueChanged="CameraEnhancementNumberBox_ValueChanged" />
+                                                    </Grid>
+                                                    <Border Height="1" Background="{ThemeResource SubtleDividerBrush}" />
+                                                    <Grid ColumnSpacing="12" Padding="0,2">
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="*" />
+                                                            <ColumnDefinition Width="Auto" />
+                                                        </Grid.ColumnDefinitions>
+                                                        <TextBlock VerticalAlignment="Center" FontSize="14" FontWeight="Bold" Foreground="{ThemeResource TextFillColorPrimaryBrush}" Text="{Binding Header, ElementName=VmdCameraLoopToggle}" />
+                                                        <ToggleSwitch
+                                                            x:Name="VmdCameraLoopToggle"
+                                                            Grid.Column="1"
+                                                            Header="VMD 镜头循环播放"
+                                                            OffContent="播放一次"
+                                                            OnContent="循环播放"
+                                                            Style="{StaticResource CompactToggleSwitchStyle}"
+                                                            Toggled="CameraEnhancementToggle_Toggled" />
+                                                    </Grid>
+                                                </StackPanel>
+                                            </Border>
+                                        </Grid>
+
+                                        <!-- Tab 3: MMD 播放与作品库 -->
+                                        <StackPanel x:Name="CameraTabMmdPanel" Spacing="16" Visibility="Collapsed">
+                                            <Grid ColumnSpacing="18">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="6*" />
+                                                    <ColumnDefinition Width="5*" />
+                                                </Grid.ColumnDefinitions>
+
+                                                <!-- Left Card: MMD Playback Control -->
+                                                <Border Grid.Column="0" Style="{StaticResource SectionStyle}" VerticalAlignment="Top">
+                                                    <StackPanel Spacing="14">
+                                                        <StackPanel Spacing="3">
+                                                            <TextBlock x:Name="MmdSectionTitle" Style="{StaticResource SectionTitleStyle}" Text="MMD 播放与作品库" />
+                                                            <TextBlock
+                                                                x:Name="MmdSectionHint"
+                                                                Style="{StaticResource FieldHintStyle}"
+                                                                Text="动作、镜头和音乐共用一个时钟。小键盘：Enter 播放/暂停，+ 停止，4/6 后退/前进，5 切换镜头（VMD/自由/游戏），- 显示/隐藏悬浮窗。VMD 镜头不需要开启自由视角（切到“自由”模式才需要）；音乐通过音乐模块播放（不需要 OmniMix）。"
+                                                                TextWrapping="Wrap" />
+                                                        </StackPanel>
+
+                                                        <Border Height="1" Background="{ThemeResource SubtleDividerBrush}" />
+
+                                                        <Grid ColumnSpacing="12" Padding="0,2">
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="*" />
+                                                                <ColumnDefinition Width="Auto" />
+                                                            </Grid.ColumnDefinitions>
+                                                            <StackPanel Spacing="2" VerticalAlignment="Center">
+                                                                <TextBlock FontSize="14" FontWeight="Bold" Foreground="{ThemeResource TextFillColorPrimaryBrush}" Text="{Binding Header, ElementName=MmdEnabledToggle}" />
+                                                                <TextBlock Style="{StaticResource FieldHintStyle}" Text="{Binding OnContent, ElementName=MmdEnabledToggle}" />
+                                                            </StackPanel>
+                                                            <ToggleSwitch
+                                                                x:Name="MmdEnabledToggle"
+                                                                Grid.Column="1"
+                                                                Header="启用 MMD 播放"
+                                                                OffContent="关闭"
+                                                                OnContent="用小键盘和悬浮窗控制"
+                                                                Style="{StaticResource CompactToggleSwitchStyle}"
+                                                                Toggled="CameraEnhancementToggle_Toggled" />
+                                                        </Grid>
+
+                                                        <Border Height="1" Background="{ThemeResource SubtleDividerBrush}" />
+
+                                                        <Grid ColumnSpacing="10" RowSpacing="10">
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="*" />
+                                                                <ColumnDefinition Width="*" />
+                                                            </Grid.ColumnDefinitions>
+                                                            <Grid.RowDefinitions>
+                                                                <RowDefinition Height="Auto" />
+                                                                <RowDefinition Height="Auto" />
+                                                                <RowDefinition Height="Auto" />
+                                                                <RowDefinition Height="Auto" />
+                                                            </Grid.RowDefinitions>
+
+                                                            <Border Style="{StaticResource SettingsRowStyle}" Padding="12,8">
+                                                                <Grid ColumnSpacing="8">
+                                                                    <Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
+                                                                    <TextBlock VerticalAlignment="Center" FontWeight="Bold" Text="{Binding Header, ElementName=MmdBodyToggle}" />
+                                                                    <ToggleSwitch x:Name="MmdBodyToggle" Grid.Column="1" Header="身体动作" OffContent="关闭" OnContent="开启" Style="{StaticResource CompactToggleSwitchStyle}" Toggled="CameraEnhancementToggle_Toggled" />
+                                                                </Grid>
+                                                            </Border>
+
+                                                            <Border Grid.Column="1" Style="{StaticResource SettingsRowStyle}" Padding="12,8">
+                                                                <Grid ColumnSpacing="8">
+                                                                    <Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
+                                                                    <TextBlock VerticalAlignment="Center" FontWeight="Bold" Text="{Binding Header, ElementName=MmdTerrainToggle}" />
+                                                                    <ToggleSwitch x:Name="MmdTerrainToggle" Grid.Column="1" Header="地形贴合（实验）" OffContent="关闭" OnContent="开启" Style="{StaticResource CompactToggleSwitchStyle}" Toggled="CameraEnhancementToggle_Toggled" />
+                                                                </Grid>
+                                                            </Border>
+
+                                                            <Border Grid.Row="1" Style="{StaticResource SettingsRowStyle}" Padding="12,8">
+                                                                <Grid ColumnSpacing="8">
+                                                                    <Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
+                                                                    <TextBlock VerticalAlignment="Center" FontWeight="Bold" Text="{Binding Header, ElementName=MmdFaceToggle}" />
+                                                                    <ToggleSwitch x:Name="MmdFaceToggle" Grid.Column="1" Header="表情" OffContent="关闭" OnContent="开启" Style="{StaticResource CompactToggleSwitchStyle}" Toggled="CameraEnhancementToggle_Toggled" />
+                                                                </Grid>
+                                                            </Border>
+
+                                                            <Border Grid.Row="1" Grid.Column="1" Style="{StaticResource SettingsRowStyle}" Padding="12,8">
+                                                                <Grid ColumnSpacing="8">
+                                                                    <Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
+                                                                    <TextBlock VerticalAlignment="Center" FontWeight="Bold" Text="{Binding Header, ElementName=MmdMusicToggle}" />
+                                                                    <ToggleSwitch x:Name="MmdMusicToggle" Grid.Column="1" Header="音乐" OffContent="不播放" OnContent="通过音乐模块播放" IsOn="True" Style="{StaticResource CompactToggleSwitchStyle}" Toggled="CameraEnhancementToggle_Toggled" />
+                                                                </Grid>
+                                                            </Border>
+
+                                                            <Border Grid.Row="2" Style="{StaticResource SettingsRowStyle}" Padding="12,8">
+                                                                <Grid ColumnSpacing="8">
+                                                                    <Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
+                                                                    <TextBlock VerticalAlignment="Center" FontWeight="Bold" Text="{Binding Header, ElementName=MmdOverlayToggle}" />
+                                                                    <ToggleSwitch x:Name="MmdOverlayToggle" Grid.Column="1" Header="悬浮窗" OffContent="关闭" OnContent="小键盘 - 显示/隐藏" IsOn="True" Style="{StaticResource CompactToggleSwitchStyle}" Toggled="CameraEnhancementToggle_Toggled" />
+                                                                </Grid>
+                                                            </Border>
+
+                                                            <Border Grid.Row="2" Grid.Column="1" Style="{StaticResource SettingsRowStyle}" Padding="12,8">
+                                                                <Grid ColumnSpacing="8">
+                                                                    <Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
+                                                                    <TextBlock VerticalAlignment="Center" FontWeight="Bold" Text="{Binding Header, ElementName=MmdOverlayVisibleToggle}" />
+                                                                    <ToggleSwitch x:Name="MmdOverlayVisibleToggle" Grid.Column="1" Header="进入游戏时显示悬浮窗" OffContent="隐藏" OnContent="显示" Style="{StaticResource CompactToggleSwitchStyle}" Toggled="CameraEnhancementToggle_Toggled" />
+                                                                </Grid>
+                                                            </Border>
+
+                                                            <Border Grid.Row="3" Grid.ColumnSpan="2" Style="{StaticResource SettingsRowStyle}" Padding="12,8">
+                                                                <Grid ColumnSpacing="8">
+                                                                    <Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
+                                                                    <TextBlock VerticalAlignment="Center" FontWeight="Bold" Text="{Binding Header, ElementName=MmdLoopToggle}" />
+                                                                    <ToggleSwitch x:Name="MmdLoopToggle" Grid.Column="1" Header="循环播放" OffContent="播放一次" OnContent="循环" Style="{StaticResource CompactToggleSwitchStyle}" Toggled="CameraEnhancementToggle_Toggled" />
+                                                                </Grid>
+                                                            </Border>
+                                                        </Grid>
+                                                    </StackPanel>
+                                                </Border>
+
+                                                <!-- Right Card: Cloth Physics & Playback Parameters -->
+                                                <Border Grid.Column="1" Style="{StaticResource SectionStyle}" VerticalAlignment="Top">
+                                                    <StackPanel Spacing="14">
+                                                        <StackPanel Spacing="6">
+                                                            <ComboBox
+                                                                x:Name="MmdClothComboBox"
+                                                                Header="衣物物理"
+                                                                HorizontalAlignment="Stretch"
+                                                                SelectedIndex="0"
+                                                                SelectionChanged="MmdClothComboBox_SelectionChanged">
+                                                                <ComboBoxItem Content="稳定（推荐）：完整模拟，不被原动作拉回" />
+                                                                <ComboBoxItem Content="游戏原样：不做处理" />
+                                                                <ComboBoxItem Content="冻结：关闭模拟，衣物随身体硬动" />
+                                                            </ComboBox>
+                                                            <TextBlock
+                                                                x:Name="MmdClothHint"
+                                                                Style="{StaticResource FieldHintStyle}"
+                                                                Text="作用于衣服、头发和尾巴的游戏物理，每位跳舞的队员各自处理，停止播放后恢复原设置。在下次开始播放时生效。碰撞体仍是游戏原值，大幅度动作可能穿模。"
+                                                                TextWrapping="Wrap" />
+                                                        </StackPanel>
+                                                        <Border Height="1" Background="{ThemeResource SubtleDividerBrush}" />
+                                                        <Grid ColumnSpacing="12">
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="*" />
+                                                                <ColumnDefinition Width="*" />
+                                                                <ColumnDefinition Width="*" />
+                                                            </Grid.ColumnDefinitions>
+                                                            <NumberBox
+                                                                x:Name="MmdMotionScaleNumberBox"
+                                                                Header="位移幅度（%）"
+                                                                Minimum="5"
+                                                                Maximum="500"
+                                                                SmallChange="5"
+                                                                SpinButtonPlacementMode="Compact"
+                                                                Value="100"
+                                                                ValueChanged="CameraEnhancementNumberBox_ValueChanged" />
+                                                            <NumberBox
+                                                                x:Name="MmdMusicGainNumberBox"
+                                                                Grid.Column="1"
+                                                                Header="音乐音量（%）"
+                                                                Minimum="0"
+                                                                Maximum="200"
+                                                                SmallChange="5"
+                                                                SpinButtonPlacementMode="Compact"
+                                                                Value="100"
+                                                                ValueChanged="CameraEnhancementNumberBox_ValueChanged" />
+                                                            <NumberBox
+                                                                x:Name="MmdSeekNumberBox"
+                                                                Grid.Column="2"
+                                                                Header="快进/快退（秒）"
+                                                                Minimum="0.5"
+                                                                Maximum="60"
+                                                                SmallChange="1"
+                                                                SpinButtonPlacementMode="Compact"
+                                                                Value="5"
+                                                                ValueChanged="CameraEnhancementNumberBox_ValueChanged" />
+                                                        </Grid>
+                                                    </StackPanel>
+                                                </Border>
+                                            </Grid>
+
+                                            <!-- Middle Default-Collapsed Expander: 21 MMD Hotkeys -->
+                                            <Expander
+                                                IsExpanded="False"
+                                                HorizontalAlignment="Stretch"
+                                                HorizontalContentAlignment="Stretch"
+                                                CornerRadius="16"
+                                                Padding="18,14"
+                                                Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                                                BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                                                BorderThickness="1.5">
+                                                <Expander.Header>
+                                                    <StackPanel Spacing="2" Padding="0,6">
+                                                        <TextBlock x:Name="MmdHotkeysTitle" Style="{StaticResource SectionTitleStyle}" FontSize="15" Text="MMD 快捷键" />
+                                                        <TextBlock x:Name="MmdHotkeysHint" Style="{StaticResource FieldHintStyle}" Text="点击输入框后直接按下按键，可使用 Ctrl、Alt、Shift、Win 组合键；修改会自动保存。" TextWrapping="Wrap" />
+                                                    </StackPanel>
+                                                </Expander.Header>
+                                                <StackPanel Spacing="12">
+                                                    <Grid ColumnSpacing="12" RowSpacing="10">
+                                                        <Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="*" /><ColumnDefinition Width="*" /></Grid.ColumnDefinitions>
+                                                        <Grid.RowDefinitions><RowDefinition Height="Auto" /><RowDefinition Height="Auto" /><RowDefinition Height="Auto" /><RowDefinition Height="Auto" /><RowDefinition Height="Auto" /></Grid.RowDefinitions>
+                                                        <TextBox x:Name="MmdPlayHotkeyBox" Header="播放/暂停" Text="NUMPAD_ENTER" />
+                                                        <TextBox x:Name="MmdStopHotkeyBox" Grid.Column="1" Header="停止" Text="ADD" />
+                                                        <TextBox x:Name="MmdCameraModeHotkeyBox" Grid.Column="2" Header="镜头模式" Text="NUMPAD5" />
+                                                        <TextBox x:Name="MmdSeekBackHotkeyBox" Grid.Row="1" Header="后退" Text="NUMPAD4" />
+                                                        <TextBox x:Name="MmdSeekForwardHotkeyBox" Grid.Row="1" Grid.Column="1" Header="前进" Text="NUMPAD6" />
+                                                        <TextBox x:Name="MmdOverlayHotkeyBox" Grid.Row="1" Grid.Column="2" Header="悬浮窗" Text="SUBTRACT" />
+                                                        <TextBox x:Name="MmdMotionHotkeyBox" Grid.Row="2" Header="运镜" Text="NUMPAD2" />
+                                                        <TextBox x:Name="MmdRollLeftHotkeyBox" Grid.Row="2" Grid.Column="1" Header="左滚转" Text="NUMPAD7" />
+                                                        <TextBox x:Name="MmdRollRightHotkeyBox" Grid.Row="2" Grid.Column="2" Header="右滚转" Text="NUMPAD9" />
+                                                        <TextBox x:Name="MmdFovWideHotkeyBox" Grid.Row="3" Header="放大视野" Text="NUMPAD1" />
+                                                        <TextBox x:Name="MmdFovNarrowHotkeyBox" Grid.Row="3" Grid.Column="1" Header="缩小视野" Text="NUMPAD3" />
+                                                        <TextBox x:Name="MmdViewResetHotkeyBox" Grid.Row="3" Grid.Column="2" Header="视野复位" Text="NUMPAD8" />
+                                                        <TextBox x:Name="MmdKeyframeAddHotkeyBox" Grid.Row="4" Header="记录机位" Text="NUMPAD0" />
+                                                        <TextBox x:Name="MmdKeyframePlayHotkeyBox" Grid.Row="4" Grid.Column="1" Header="播放机位" Text="DECIMAL" />
+                                                        <TextBox x:Name="MmdKeyframeClearHotkeyBox" Grid.Row="4" Grid.Column="2" Header="清空机位" Text="NONE" />
+                                                    </Grid>
+                                                    <Grid ColumnSpacing="12" RowSpacing="10">
+                                                        <Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="*" /><ColumnDefinition Width="*" /></Grid.ColumnDefinitions>
+                                                        <Grid.RowDefinitions><RowDefinition Height="Auto" /><RowDefinition Height="Auto" /></Grid.RowDefinitions>
+                                                        <TextBox x:Name="MmdVmdPlayHotkeyBox" Header="VMD 镜头" Text="NONE" />
+                                                        <TextBox x:Name="MmdVmdMotionHotkeyBox" Grid.Column="1" Header="身体动作" Text="NONE" />
+                                                        <TextBox x:Name="MmdVmdMotionPauseHotkeyBox" Grid.Column="2" Header="动作暂停" Text="NONE" />
+                                                        <TextBox x:Name="MmdVmdMotionStopHotkeyBox" Grid.Row="1" Header="动作停止" Text="NONE" />
+                                                        <TextBox x:Name="MmdKeyframeSaveHotkeyBox" Grid.Row="1" Grid.Column="1" Header="保存机位" Text="NONE" />
+                                                        <TextBox x:Name="MmdKeyframeLoadHotkeyBox" Grid.Row="1" Grid.Column="2" Header="读取机位" Text="NONE" />
+                                                    </Grid>
+                                                </StackPanel>
+                                            </Expander>
+
+                                            <!-- Bottom Full-Width L3 Card: Works Library -->
+                                            <Border Style="{StaticResource SectionStyle}">
+                                                <StackPanel Spacing="14">
+                                                    <StackPanel Spacing="3">
+                                                        <TextBlock x:Name="MmdLibraryTitle" Style="{StaticResource SectionTitleStyle}" Text="作品库" />
+                                                        <TextBlock
+                                                            x:Name="MmdLibraryHint"
+                                                            Style="{StaticResource FieldHintStyle}"
+                                                            Text="导入时会把文件复制到软件目录下的 mmd 文件夹，悬浮窗直接从这里读取。"
+                                                            TextWrapping="Wrap" />
+                                                        <TextBlock
+                                                            x:Name="MmdLibraryPathTextBlock"
+                                                            Style="{StaticResource FieldHintStyle}"
+                                                            IsTextSelectionEnabled="True"
+                                                            TextWrapping="Wrap" />
+                                                    </StackPanel>
+                                                    <ListView
+                                                        x:Name="MmdWorksListView"
+                                                        Height="200"
+                                                        BorderBrush="{ThemeResource SubtleDividerBrush}"
+                                                        BorderThickness="1"
+                                                        CornerRadius="12"
+                                                        SelectionMode="Single" />
+                                                    <TextBlock
+                                                        x:Name="MmdDefaultWorkTextBlock"
+                                                        Style="{StaticResource FieldHintStyle}"
+                                                        TextWrapping="Wrap" />
+                                                    <controls:WrapPanel HorizontalSpacing="8" VerticalSpacing="8">
+                                                        <Button x:Name="MmdImportButton" Click="MmdImportButton_Click" Content="导入作品" Style="{StaticResource AccentButtonStyle}" />
+                                                        <Button x:Name="MmdSetDefaultButton" Click="MmdSetDefaultButton_Click" Content="设为默认" />
+                                                        <Button x:Name="MmdOffsetButton" Click="MmdOffsetButton_Click" Content="音乐偏移" />
+                                                        <Button x:Name="MmdDeleteButton" Click="MmdDeleteButton_Click" Content="删除" />
+                                                        <Button x:Name="MmdOpenFolderButton" Click="MmdOpenFolderButton_Click" Content="打开文件夹" />
+                                                        <Button x:Name="MmdRefreshButton" Click="MmdRefreshButton_Click" Content="刷新" />
+                                                    </controls:WrapPanel>
+                                                </StackPanel>
+                                            </Border>
+                                        </StackPanel>
+                                    </Grid>
+                                </controls:PageContentPanel>
+                            </ScrollViewer>
+                        </Grid>
 
                         <ScrollViewer
                             x:Name="DisplayPageScrollViewer"
