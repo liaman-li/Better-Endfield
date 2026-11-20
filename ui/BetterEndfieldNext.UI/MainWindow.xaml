@@ -86,6 +86,26 @@
                             <SolidColorBrush Color="#B8FFFFFF" x:Key="NavigationViewItemBackgroundPressed"/>
                             <SolidColorBrush Color="#FFD66853" x:Key="NavigationViewSelectionIndicatorForeground"/>
                         </ResourceDictionary>
+                        <ResourceDictionary x:Key="Default">
+                            <SolidColorBrush Color="Transparent" x:Key="NavigationViewExpandedPaneBackground"/>
+                            <SolidColorBrush Color="#F21E1F24" x:Key="NavigationViewDefaultPaneBackground"/>
+                            <SolidColorBrush Color="Transparent" x:Key="NavigationViewTopPaneBackground"/>
+                            <SolidColorBrush Color="Transparent" x:Key="NavigationViewContentBackground"/>
+                            <SolidColorBrush Color="Transparent" x:Key="NavigationViewContentGridBorderBrush"/>
+
+                            <SolidColorBrush Color="#1FFFFFFF" x:Key="NavigationViewItemBackgroundSelected"/>
+                            <SolidColorBrush Color="#29FFFFFF" x:Key="NavigationViewItemBackgroundSelectedPointerOver"/>
+                            <SolidColorBrush Color="#14FFFFFF" x:Key="NavigationViewItemBackgroundSelectedPressed"/>
+                            <SolidColorBrush Color="#2EFFFFFF" x:Key="NavigationViewItemBorderBrushSelected"/>
+                            <SolidColorBrush Color="#3DFFFFFF" x:Key="NavigationViewItemBorderBrushSelectedPointerOver"/>
+                            <SolidColorBrush Color="#14FFFFFF" x:Key="NavigationViewItemBackgroundPointerOver"/>
+                            <SolidColorBrush Color="#0FFFFFFF" x:Key="NavigationViewItemBackgroundPressed"/>
+                            <SolidColorBrush Color="#FFE07A64" x:Key="NavigationViewSelectionIndicatorForeground"/>
+                            <SolidColorBrush Color="#CCFFFFFF" x:Key="NavigationViewItemForeground"/>
+                            <SolidColorBrush Color="#FFFFFFFF" x:Key="NavigationViewItemForegroundPointerOver"/>
+                            <SolidColorBrush Color="#FFFFFFFF" x:Key="NavigationViewItemForegroundSelected"/>
+                            <SolidColorBrush Color="#FFFFFFFF" x:Key="NavigationViewItemForegroundSelectedPointerOver"/>
+                        </ResourceDictionary>
                     </ResourceDictionary.ThemeDictionaries>
                     <Thickness x:Key="NavigationViewItemBorderThickness">1</Thickness>
                     <Style TargetType="NavigationViewItem">

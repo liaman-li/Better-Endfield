@@ -68,6 +68,7 @@
                             <SolidColorBrush Color="#CCEAE5F2" x:Key="SubTileHoverBackgroundBrush"/>
                             <SolidColorBrush Color="#FF7C64B8" x:Key="SubTileFocusBorderBrush"/>
                             <SolidColorBrush Color="#1C5B5768" x:Key="SubtleRowDividerBrush"/>
+                            <SolidColorBrush Color="#145B5768" x:Key="SubtleDividerBrush"/>
                             <SolidColorBrush Color="#225B5768" x:Key="DividerStrokeColorDefaultBrush"/>
 
                             <SolidColorBrush Color="#A8F1EFF6" x:Key="ControlFillColorDefaultBrush"/>
@@ -104,15 +105,17 @@
                             <SolidColorBrush Color="#FF7C64B8" x:Key="ComboBoxBorderBrushPressed"/>
                             <SolidColorBrush Color="Transparent" x:Key="ComboBoxBorderBrushDisabled"/>
 
-                            <SolidColorBrush Color="#F5FFFFFF" x:Key="ButtonBackground"/>
+                            <SolidColorBrush Color="#EBF3F1F8" x:Key="ButtonBackground"/>
                             <SolidColorBrush Color="#FFFFFFFF" x:Key="ButtonBackgroundPointerOver"/>
-                            <SolidColorBrush Color="#CCEAE5F2" x:Key="ButtonBackgroundPressed"/>
-                            <SolidColorBrush Color="#D9EDEAF5" x:Key="ButtonBackgroundDisabled"/>
-                            <SolidColorBrush Color="#F7FFFFFF" x:Key="ButtonBorderBrush"/>
-                            <SolidColorBrush Color="#1C5B5768" x:Key="ButtonBorderBrushPointerOver"/>
-                            <SolidColorBrush Color="#265B5768" x:Key="ButtonBorderBrushPressed"/>
-                            <SolidColorBrush Color="#1E5B5768" x:Key="ButtonBorderBrushDisabled"/>
+                            <SolidColorBrush Color="#FFE6E2F0" x:Key="ButtonBackgroundPressed"/>
+                            <SolidColorBrush Color="#B8EDEAF5" x:Key="ButtonBackgroundDisabled"/>
+                            <SolidColorBrush Color="#2E5B5768" x:Key="ButtonBorderBrush"/>
+                            <SolidColorBrush Color="#455B5768" x:Key="ButtonBorderBrushPointerOver"/>
+                            <SolidColorBrush Color="#525B5768" x:Key="ButtonBorderBrushPressed"/>
+                            <SolidColorBrush Color="#1C5B5768" x:Key="ButtonBorderBrushDisabled"/>
                             <SolidColorBrush Color="#FF1B1922" x:Key="ButtonForeground"/>
+                            <SolidColorBrush Color="#FF1B1922" x:Key="ButtonForegroundPointerOver"/>
+                            <SolidColorBrush Color="#FF5B5768" x:Key="ButtonForegroundPressed"/>
                             <SolidColorBrush Color="#FF807990" x:Key="ButtonForegroundDisabled"/>
 
                             <!-- CheckBox 未勾选态清晰边框与底色（仅置于 Light 字典，防深色模式串色） -->
@@ -241,11 +244,32 @@
 
                             <SolidColorBrush Color="#FFB44637" x:Key="SponsorForegroundBrush"/>
                             <SolidColorBrush Color="#22D66853" x:Key="SponsorBackgroundBrush"/>
+
+                            <!-- 寻访查询卡池筛选胶囊（未选中柔和填充+描边 / 选中高对比珊瑚高亮） -->
+                            <SolidColorBrush Color="#CCF1EFF6" x:Key="FilterPillBackgroundBrush"/>
+                            <SolidColorBrush Color="#E6EAE5F2" x:Key="FilterPillBackgroundPointerOverBrush"/>
+                            <SolidColorBrush Color="#FFE2DCEE" x:Key="FilterPillBackgroundPressedBrush"/>
+                            <SolidColorBrush Color="#365B5768" x:Key="FilterPillBorderBrush"/>
+                            <SolidColorBrush Color="#4D5B5768" x:Key="FilterPillBorderPointerOverBrush"/>
+                            <SolidColorBrush Color="#FF5B5768" x:Key="FilterPillForegroundBrush"/>
+                            <SolidColorBrush Color="#FF1B1922" x:Key="FilterPillForegroundPointerOverBrush"/>
+                            <SolidColorBrush Color="#FFFFFFFF" x:Key="FilterPillSelectedBackgroundBrush"/>
+                            <SolidColorBrush Color="#FFFFFFFF" x:Key="FilterPillSelectedBackgroundPointerOverBrush"/>
+                            <SolidColorBrush Color="#FFFDF7F5" x:Key="FilterPillSelectedBackgroundPressedBrush"/>
+                            <SolidColorBrush Color="#FFD66853" x:Key="FilterPillSelectedBorderBrush"/>
+                            <SolidColorBrush Color="#FFB44637" x:Key="FilterPillSelectedForegroundBrush"/>
                         </ResourceDictionary>
 
                         <!-- Default 同时承担 Dark 模式与全局兜底，防止切换主题闪退 -->
                         <ResourceDictionary x:Key="Default">
-                            <Color x:Key="SystemAccentColor">#FFE5836E</Color>
+                            <Color x:Key="SystemAccentColor">#FFE07A64</Color>
+                            <Color x:Key="SystemAccentColorLight1">#FFEA8E7A</Color>
+                            <Color x:Key="SystemAccentColorLight2">#FFF2A391</Color>
+                            <Color x:Key="SystemAccentColorLight3">#FFF8B9AA</Color>
+                            <Color x:Key="SystemAccentColorDark1">#FFCC6652</Color>
+                            <Color x:Key="SystemAccentColorDark2">#FFB85643</Color>
+                            <Color x:Key="SystemAccentColorDark3">#FFA34735</Color>
+
                             <CornerRadius x:Key="ControlCornerRadius">10</CornerRadius>
                             <CornerRadius x:Key="OverlayCornerRadius">14</CornerRadius>
                             <CornerRadius x:Key="NavigationViewItemCornerRadius">14</CornerRadius>
@@ -261,21 +285,126 @@
                             <SolidColorBrush Color="#1FFFFFFF" x:Key="SubTileHoverBackgroundBrush"/>
                             <SolidColorBrush Color="#FFA68EE8" x:Key="SubTileFocusBorderBrush"/>
                             <SolidColorBrush Color="#1CFFFFFF" x:Key="SubtleRowDividerBrush"/>
+                            <SolidColorBrush Color="#1AFFFFFF" x:Key="SubtleDividerBrush"/>
                             <SolidColorBrush Color="#24FFFFFF" x:Key="DividerStrokeColorDefaultBrush"/>
 
-                            <SolidColorBrush Color="#1AFFFFFF" x:Key="NavSelectedPillBrush"/>
-                            <SolidColorBrush Color="#24FFFFFF" x:Key="NavSelectedPillBorderBrush"/>
-                            <SolidColorBrush Color="#FFE5836E" x:Key="NavSelectedIndicatorBrush"/>
+                            <!-- 深色模式次级按钮（清晰半透底+描边，不恢复输入框底灰线） -->
+                            <SolidColorBrush Color="#1AFFFFFF" x:Key="ButtonBackground"/>
+                            <SolidColorBrush Color="#26FFFFFF" x:Key="ButtonBackgroundPointerOver"/>
+                            <SolidColorBrush Color="#14FFFFFF" x:Key="ButtonBackgroundPressed"/>
+                            <SolidColorBrush Color="#0DFFFFFF" x:Key="ButtonBackgroundDisabled"/>
+                            <SolidColorBrush Color="#2AFFFFFF" x:Key="ButtonBorderBrush"/>
+                            <SolidColorBrush Color="#3DFFFFFF" x:Key="ButtonBorderBrushPointerOver"/>
+                            <SolidColorBrush Color="#24FFFFFF" x:Key="ButtonBorderBrushPressed"/>
+                            <SolidColorBrush Color="#18FFFFFF" x:Key="ButtonBorderBrushDisabled"/>
+
+                            <!-- 深色模式导航选中胶囊与左下角状态卡 -->
+                            <SolidColorBrush Color="#1FFFFFFF" x:Key="NavSelectedPillBrush"/>
+                            <SolidColorBrush Color="#2EFFFFFF" x:Key="NavSelectedPillBorderBrush"/>
+                            <SolidColorBrush Color="#FFE07A64" x:Key="NavSelectedIndicatorBrush"/>
                             <SolidColorBrush Color="#B324262D" x:Key="StatusCardBackgroundBrush"/>
                             <SolidColorBrush Color="#1AFFFFFF" x:Key="StatusCardBorderBrush"/>
 
                             <SolidColorBrush Color="Transparent" x:Key="LayerFillColorDefaultBrush"/>
                             <SolidColorBrush Color="Transparent" x:Key="LayerFillColorAltBrush"/>
                             <SolidColorBrush Color="Transparent" x:Key="LayerOnMicaBaseAltFillColorDefaultBrush"/>
-                            <SolidColorBrush Color="Transparent" x:Key="NavigationViewDefaultPaneBackground"/>
+                            <SolidColorBrush Color="#F21E1F24" x:Key="NavigationViewDefaultPaneBackground"/>
                             <SolidColorBrush Color="Transparent" x:Key="NavigationViewExpandedPaneBackground"/>
+                            <SolidColorBrush Color="Transparent" x:Key="NavigationViewTopPaneBackground"/>
                             <SolidColorBrush Color="Transparent" x:Key="NavigationViewContentBackground"/>
                             <SolidColorBrush Color="Transparent" x:Key="NavigationViewContentGridBorderBrush"/>
+
+                            <SolidColorBrush Color="#1FFFFFFF" x:Key="NavigationViewItemBackgroundSelected"/>
+                            <SolidColorBrush Color="#29FFFFFF" x:Key="NavigationViewItemBackgroundSelectedPointerOver"/>
+                            <SolidColorBrush Color="#14FFFFFF" x:Key="NavigationViewItemBackgroundSelectedPressed"/>
+                            <SolidColorBrush Color="#2EFFFFFF" x:Key="NavigationViewItemBorderBrushSelected"/>
+                            <SolidColorBrush Color="#3DFFFFFF" x:Key="NavigationViewItemBorderBrushSelectedPointerOver"/>
+                            <SolidColorBrush Color="#14FFFFFF" x:Key="NavigationViewItemBackgroundPointerOver"/>
+                            <SolidColorBrush Color="#0FFFFFFF" x:Key="NavigationViewItemBackgroundPressed"/>
+                            <SolidColorBrush Color="#FFE07A64" x:Key="NavigationViewSelectionIndicatorForeground"/>
+                            <SolidColorBrush Color="#CCFFFFFF" x:Key="NavigationViewItemForeground"/>
+                            <SolidColorBrush Color="#FFFFFFFF" x:Key="NavigationViewItemForegroundPointerOver"/>
+                            <SolidColorBrush Color="#FFFFFFFF" x:Key="NavigationViewItemForegroundSelected"/>
+                            <SolidColorBrush Color="#FFFFFFFF" x:Key="NavigationViewItemForegroundSelectedPointerOver"/>
+
+                            <!-- 深色模式主强调色统一收敛为柔和珊瑚色系（消除系统蓝冷暖打架） -->
+                            <LinearGradientBrush EndPoint="1,1" StartPoint="0,0" x:Key="AccentFillColorDefaultBrush">
+                                <GradientStop Color="#FFE07A64" Offset="0.0"/>
+                                <GradientStop Color="#FFC45A47" Offset="1.0"/>
+                            </LinearGradientBrush>
+                            <LinearGradientBrush EndPoint="1,1" StartPoint="0,0" x:Key="AccentFillColorSecondaryBrush">
+                                <GradientStop Color="#FFEA8A75" Offset="0.0"/>
+                                <GradientStop Color="#FFCE6653" Offset="1.0"/>
+                            </LinearGradientBrush>
+                            <LinearGradientBrush EndPoint="1,1" StartPoint="0,0" x:Key="AccentFillColorTertiaryBrush">
+                                <GradientStop Color="#FFD26B56" Offset="0.0"/>
+                                <GradientStop Color="#FFB54E3C" Offset="1.0"/>
+                            </LinearGradientBrush>
+                            <SolidColorBrush Color="#FFFFFFFF" x:Key="TextOnAccentFillColorPrimaryBrush"/>
+                            <SolidColorBrush Color="#FFFDF7F5" x:Key="TextOnAccentFillColorSecondaryBrush"/>
+
+                            <LinearGradientBrush EndPoint="1,1" StartPoint="0,0" x:Key="AccentButtonBackground">
+                                <GradientStop Color="#FFE07A64" Offset="0.0"/>
+                                <GradientStop Color="#FFC45A47" Offset="1.0"/>
+                            </LinearGradientBrush>
+                            <LinearGradientBrush EndPoint="1,1" StartPoint="0,0" x:Key="AccentButtonBackgroundPointerOver">
+                                <GradientStop Color="#FFEA8A75" Offset="0.0"/>
+                                <GradientStop Color="#FFCE6653" Offset="1.0"/>
+                            </LinearGradientBrush>
+                            <LinearGradientBrush EndPoint="1,1" StartPoint="0,0" x:Key="AccentButtonBackgroundPressed">
+                                <GradientStop Color="#FFD26B56" Offset="0.0"/>
+                                <GradientStop Color="#FFB54E3C" Offset="1.0"/>
+                            </LinearGradientBrush>
+                            <SolidColorBrush Color="#33FFFFFF" x:Key="AccentButtonBorderBrush"/>
+                            <SolidColorBrush Color="#45FFFFFF" x:Key="AccentButtonBorderBrushPointerOver"/>
+                            <SolidColorBrush Color="Transparent" x:Key="AccentButtonBorderBrushPressed"/>
+                            <SolidColorBrush Color="#FFFFFFFF" x:Key="AccentButtonForeground"/>
+                            <SolidColorBrush Color="#FFFFFFFF" x:Key="AccentButtonForegroundPointerOver"/>
+                            <SolidColorBrush Color="#FFFDF7F5" x:Key="AccentButtonForegroundPressed"/>
+
+                            <!-- 深色模式 CheckBox 勾选态与 RadioButton 选中态（均为 Brush，匹配 generic.xaml ObjectAnimation 契约） -->
+                            <SolidColorBrush Color="#FFE07A64" x:Key="CheckBoxCheckBackgroundFillChecked"/>
+                            <SolidColorBrush Color="#FFEA8A75" x:Key="CheckBoxCheckBackgroundFillCheckedPointerOver"/>
+                            <SolidColorBrush Color="#FFD26B56" x:Key="CheckBoxCheckBackgroundFillCheckedPressed"/>
+                            <SolidColorBrush Color="#FFE07A64" x:Key="CheckBoxCheckBackgroundStrokeChecked"/>
+                            <SolidColorBrush Color="#FFEA8A75" x:Key="CheckBoxCheckBackgroundStrokeCheckedPointerOver"/>
+                            <SolidColorBrush Color="#FFD26B56" x:Key="CheckBoxCheckBackgroundStrokeCheckedPressed"/>
+                            <SolidColorBrush Color="#FFFFFFFF" x:Key="CheckBoxCheckGlyphForegroundChecked"/>
+                            <SolidColorBrush Color="#FFFFFFFF" x:Key="CheckBoxCheckGlyphForegroundCheckedPointerOver"/>
+                            <SolidColorBrush Color="#FFFDF7F5" x:Key="CheckBoxCheckGlyphForegroundCheckedPressed"/>
+
+                            <SolidColorBrush Color="#FFE07A64" x:Key="RadioButtonOuterEllipseCheckedFill"/>
+                            <SolidColorBrush Color="#FFEA8A75" x:Key="RadioButtonOuterEllipseCheckedFillPointerOver"/>
+                            <SolidColorBrush Color="#FFD26B56" x:Key="RadioButtonOuterEllipseCheckedFillPressed"/>
+                            <SolidColorBrush Color="#FFE07A64" x:Key="RadioButtonOuterEllipseCheckedStroke"/>
+                            <SolidColorBrush Color="#FFEA8A75" x:Key="RadioButtonOuterEllipseCheckedStrokePointerOver"/>
+                            <SolidColorBrush Color="#FFD26B56" x:Key="RadioButtonOuterEllipseCheckedStrokePressed"/>
+                            <SolidColorBrush Color="#FFFFFFFF" x:Key="RadioButtonCheckGlyphFill"/>
+                            <SolidColorBrush Color="#FFFFFFFF" x:Key="RadioButtonCheckGlyphFillPointerOver"/>
+                            <SolidColorBrush Color="#FFFDF7F5" x:Key="RadioButtonCheckGlyphFillPressed"/>
+
+                            <!-- 深色模式 ToggleSwitch（On 态与圆点用 Brush，Off 动画态用 <Color>） -->
+                            <LinearGradientBrush EndPoint="1,1" StartPoint="0,0" x:Key="ToggleSwitchFillOn">
+                                <GradientStop Color="#FFE07A64" Offset="0.0"/>
+                                <GradientStop Color="#FFC45A47" Offset="1.0"/>
+                            </LinearGradientBrush>
+                            <LinearGradientBrush EndPoint="1,1" StartPoint="0,0" x:Key="ToggleSwitchFillOnPointerOver">
+                                <GradientStop Color="#FFEA8A75" Offset="0.0"/>
+                                <GradientStop Color="#FFCE6653" Offset="1.0"/>
+                            </LinearGradientBrush>
+                            <LinearGradientBrush EndPoint="1,1" StartPoint="0,0" x:Key="ToggleSwitchFillOnPressed">
+                                <GradientStop Color="#FFD26B56" Offset="0.0"/>
+                                <GradientStop Color="#FFB54E3C" Offset="1.0"/>
+                            </LinearGradientBrush>
+                            <SolidColorBrush Color="#FF34303D" x:Key="ToggleSwitchFillOnDisabled"/>
+                            <SolidColorBrush Color="Transparent" x:Key="ToggleSwitchStrokeOn"/>
+                            <SolidColorBrush Color="Transparent" x:Key="ToggleSwitchStrokeOnPointerOver"/>
+                            <SolidColorBrush Color="Transparent" x:Key="ToggleSwitchStrokeOnPressed"/>
+                            <SolidColorBrush Color="#28FFFFFF" x:Key="ToggleSwitchStrokeOnDisabled"/>
+                            <SolidColorBrush Color="#FFFFFFFF" x:Key="ToggleSwitchKnobFillOn"/>
+                            <SolidColorBrush Color="#FFFFFFFF" x:Key="ToggleSwitchKnobFillOnPointerOver"/>
+                            <SolidColorBrush Color="#FFFFFFFF" x:Key="ToggleSwitchKnobFillOnPressed"/>
+                            <SolidColorBrush Color="#80FFFFFF" x:Key="ToggleSwitchKnobFillOnDisabled"/>
 
                             <SolidColorBrush Color="#99FFFFFF" x:Key="CardTagTextBrush"/>
                             <Color x:Key="AccentWarmShadowColor">#33000000</Color>
@@ -290,6 +419,20 @@
                             <SolidColorBrush Color="#FFFFB4A2" x:Key="SponsorForegroundBrush"/>
                             <SolidColorBrush Color="#2EE5836E" x:Key="SponsorBackgroundBrush"/>
 
+                            <!-- 深色模式寻访查询卡池筛选胶囊 -->
+                            <SolidColorBrush Color="#16FFFFFF" x:Key="FilterPillBackgroundBrush"/>
+                            <SolidColorBrush Color="#24FFFFFF" x:Key="FilterPillBackgroundPointerOverBrush"/>
+                            <SolidColorBrush Color="#12FFFFFF" x:Key="FilterPillBackgroundPressedBrush"/>
+                            <SolidColorBrush Color="#2AFFFFFF" x:Key="FilterPillBorderBrush"/>
+                            <SolidColorBrush Color="#3DFFFFFF" x:Key="FilterPillBorderPointerOverBrush"/>
+                            <SolidColorBrush Color="#CCFFFFFF" x:Key="FilterPillForegroundBrush"/>
+                            <SolidColorBrush Color="#FFFFFFFF" x:Key="FilterPillForegroundPointerOverBrush"/>
+                            <SolidColorBrush Color="#2EE07A64" x:Key="FilterPillSelectedBackgroundBrush"/>
+                            <SolidColorBrush Color="#3BE07A64" x:Key="FilterPillSelectedBackgroundPointerOverBrush"/>
+                            <SolidColorBrush Color="#24E07A64" x:Key="FilterPillSelectedBackgroundPressedBrush"/>
+                            <SolidColorBrush Color="#FFE07A64" x:Key="FilterPillSelectedBorderBrush"/>
+                            <SolidColorBrush Color="#FFFFD6CC" x:Key="FilterPillSelectedForegroundBrush"/>
+
                             <SolidColorBrush Color="#FF3A3642" x:Key="ToggleSwitchFillOff"/>
                             <Color x:Key="ToggleSwitchFillOffPointerOver">#FF464250</Color>
                             <Color x:Key="ToggleSwitchFillOffPressed">#FF524D5E</Color>
@@ -298,6 +441,10 @@
                             <Color x:Key="ToggleSwitchStrokeOffPointerOver">#58FFFFFF</Color>
                             <Color x:Key="ToggleSwitchStrokeOffPressed">#68FFFFFF</Color>
                             <Color x:Key="ToggleSwitchStrokeOffDisabled">#28FFFFFF</Color>
+                            <SolidColorBrush Color="#E6FFFFFF" x:Key="ToggleSwitchKnobFillOff"/>
+                            <SolidColorBrush Color="#FFFFFFFF" x:Key="ToggleSwitchKnobFillOffPointerOver"/>
+                            <SolidColorBrush Color="#FFFFFFFF" x:Key="ToggleSwitchKnobFillOffPressed"/>
+                            <SolidColorBrush Color="#66FFFFFF" x:Key="ToggleSwitchKnobFillOffDisabled"/>
                         </ResourceDictionary>
 
                         <ResourceDictionary x:Key="HighContrast">
@@ -311,6 +458,7 @@
                             <SolidColorBrush Color="{ThemeResource SystemColorWindowColor}" x:Key="SubTileHoverBackgroundBrush"/>
                             <SolidColorBrush Color="{ThemeResource SystemColorHighlightColor}" x:Key="SubTileFocusBorderBrush"/>
                             <SolidColorBrush Color="{ThemeResource SystemColorWindowTextColor}" x:Key="SubtleRowDividerBrush"/>
+                            <SolidColorBrush Color="{ThemeResource SystemColorWindowTextColor}" x:Key="SubtleDividerBrush"/>
                             <SolidColorBrush Color="{ThemeResource SystemColorWindowTextColor}" x:Key="DividerStrokeColorDefaultBrush"/>
                             <SolidColorBrush Color="{ThemeResource SystemColorHighlightColor}" x:Key="NavSelectedPillBrush"/>
                             <SolidColorBrush Color="{ThemeResource SystemColorWindowTextColor}" x:Key="NavSelectedPillBorderBrush"/>
@@ -327,12 +475,160 @@
                             <SolidColorBrush Color="{ThemeResource SystemColorHighlightTextColor}" x:Key="BadgePillForegroundBrush"/>
                             <SolidColorBrush Color="{ThemeResource SystemColorButtonTextColor}" x:Key="SponsorForegroundBrush"/>
                             <SolidColorBrush Color="{ThemeResource SystemColorButtonFaceColor}" x:Key="SponsorBackgroundBrush"/>
+                            <SolidColorBrush Color="{ThemeResource SystemColorButtonFaceColor}" x:Key="FilterPillBackgroundBrush"/>
+                            <SolidColorBrush Color="{ThemeResource SystemColorButtonFaceColor}" x:Key="FilterPillBackgroundPointerOverBrush"/>
+                            <SolidColorBrush Color="{ThemeResource SystemColorButtonFaceColor}" x:Key="FilterPillBackgroundPressedBrush"/>
+                            <SolidColorBrush Color="{ThemeResource SystemColorButtonTextColor}" x:Key="FilterPillBorderBrush"/>
+                            <SolidColorBrush Color="{ThemeResource SystemColorHighlightColor}" x:Key="FilterPillBorderPointerOverBrush"/>
+                            <SolidColorBrush Color="{ThemeResource SystemColorButtonTextColor}" x:Key="FilterPillForegroundBrush"/>
+                            <SolidColorBrush Color="{ThemeResource SystemColorButtonTextColor}" x:Key="FilterPillForegroundPointerOverBrush"/>
+                            <SolidColorBrush Color="{ThemeResource SystemColorHighlightColor}" x:Key="FilterPillSelectedBackgroundBrush"/>
+                            <SolidColorBrush Color="{ThemeResource SystemColorHighlightColor}" x:Key="FilterPillSelectedBackgroundPointerOverBrush"/>
+                            <SolidColorBrush Color="{ThemeResource SystemColorHighlightColor}" x:Key="FilterPillSelectedBackgroundPressedBrush"/>
+                            <SolidColorBrush Color="{ThemeResource SystemColorWindowTextColor}" x:Key="FilterPillSelectedBorderBrush"/>
+                            <SolidColorBrush Color="{ThemeResource SystemColorHighlightTextColor}" x:Key="FilterPillSelectedForegroundBrush"/>
                         </ResourceDictionary>
                     </ResourceDictionary.ThemeDictionaries>
 
                     <!-- 全局 CheckBox 隐式样式：20x20 复选框保持 5px 圆角方形，与圆形 RadioButton 区分并覆盖所有子页 -->
                     <Style TargetType="CheckBox">
                         <Setter Property="CornerRadius" Value="5" />
+                    </Style>
+
+                    <!-- 第 2 波复用基础样式：顶部提示/警示横条容器 -->
+                    <Style x:Key="HintBannerBorderStyle" TargetType="Border">
+                        <Setter Property="CornerRadius" Value="12" />
+                        <Setter Property="Padding" Value="14,10" />
+                        <Setter Property="Background" Value="{ThemeResource SubTileBackgroundBrush}" />
+                        <Setter Property="BorderBrush" Value="{ThemeResource SubtleDividerBrush}" />
+                        <Setter Property="BorderThickness" Value="1" />
+                    </Style>
+
+                    <!-- 寻访查询卡池筛选胶囊样式（未选中态 / 选中态，完整绑定 ThemeResource 支持亮暗主题切换） -->
+                    <Style x:Key="FilterPillButtonStyle" TargetType="Button">
+                        <Setter Property="Background" Value="{ThemeResource FilterPillBackgroundBrush}" />
+                        <Setter Property="Foreground" Value="{ThemeResource FilterPillForegroundBrush}" />
+                        <Setter Property="BorderBrush" Value="{ThemeResource FilterPillBorderBrush}" />
+                        <Setter Property="BorderThickness" Value="1" />
+                        <Setter Property="Padding" Value="16,7" />
+                        <Setter Property="CornerRadius" Value="14" />
+                        <Setter Property="FontWeight" Value="Normal" />
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="Button">
+                                    <ContentPresenter
+                                        x:Name="ContentPresenter"
+                                        Background="{TemplateBinding Background}"
+                                        BackgroundSizing="InnerBorderEdge"
+                                        BorderBrush="{TemplateBinding BorderBrush}"
+                                        BorderThickness="{TemplateBinding BorderThickness}"
+                                        Content="{TemplateBinding Content}"
+                                        ContentTemplate="{TemplateBinding ContentTemplate}"
+                                        ContentTransitions="{TemplateBinding ContentTransitions}"
+                                        CornerRadius="{TemplateBinding CornerRadius}"
+                                        Foreground="{TemplateBinding Foreground}"
+                                        HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                        Padding="{TemplateBinding Padding}"
+                                        VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}">
+                                        <VisualStateManager.VisualStateGroups>
+                                            <VisualStateGroup x:Name="CommonStates">
+                                                <VisualState x:Name="Normal" />
+                                                <VisualState x:Name="PointerOver">
+                                                    <Storyboard>
+                                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter" Storyboard.TargetProperty="Background">
+                                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource FilterPillBackgroundPointerOverBrush}" />
+                                                        </ObjectAnimationUsingKeyFrames>
+                                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter" Storyboard.TargetProperty="BorderBrush">
+                                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource FilterPillBorderPointerOverBrush}" />
+                                                        </ObjectAnimationUsingKeyFrames>
+                                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter" Storyboard.TargetProperty="Foreground">
+                                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource FilterPillForegroundPointerOverBrush}" />
+                                                        </ObjectAnimationUsingKeyFrames>
+                                                    </Storyboard>
+                                                </VisualState>
+                                                <VisualState x:Name="Pressed">
+                                                    <Storyboard>
+                                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter" Storyboard.TargetProperty="Background">
+                                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource FilterPillBackgroundPressedBrush}" />
+                                                        </ObjectAnimationUsingKeyFrames>
+                                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter" Storyboard.TargetProperty="BorderBrush">
+                                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource FilterPillBorderPointerOverBrush}" />
+                                                        </ObjectAnimationUsingKeyFrames>
+                                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter" Storyboard.TargetProperty="Foreground">
+                                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource FilterPillForegroundPointerOverBrush}" />
+                                                        </ObjectAnimationUsingKeyFrames>
+                                                    </Storyboard>
+                                                </VisualState>
+                                                <VisualState x:Name="Disabled" />
+                                            </VisualStateGroup>
+                                        </VisualStateManager.VisualStateGroups>
+                                    </ContentPresenter>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+
+                    <Style x:Key="FilterPillSelectedButtonStyle" TargetType="Button">
+                        <Setter Property="Background" Value="{ThemeResource FilterPillSelectedBackgroundBrush}" />
+                        <Setter Property="Foreground" Value="{ThemeResource FilterPillSelectedForegroundBrush}" />
+                        <Setter Property="BorderBrush" Value="{ThemeResource FilterPillSelectedBorderBrush}" />
+                        <Setter Property="BorderThickness" Value="1.5" />
+                        <Setter Property="Padding" Value="16,7" />
+                        <Setter Property="CornerRadius" Value="14" />
+                        <Setter Property="FontWeight" Value="SemiBold" />
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="Button">
+                                    <ContentPresenter
+                                        x:Name="ContentPresenter"
+                                        Background="{TemplateBinding Background}"
+                                        BackgroundSizing="OuterBorderEdge"
+                                        BorderBrush="{TemplateBinding BorderBrush}"
+                                        BorderThickness="{TemplateBinding BorderThickness}"
+                                        Content="{TemplateBinding Content}"
+                                        ContentTemplate="{TemplateBinding ContentTemplate}"
+                                        ContentTransitions="{TemplateBinding ContentTransitions}"
+                                        CornerRadius="{TemplateBinding CornerRadius}"
+                                        Foreground="{TemplateBinding Foreground}"
+                                        HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                        Padding="{TemplateBinding Padding}"
+                                        VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}">
+                                        <VisualStateManager.VisualStateGroups>
+                                            <VisualStateGroup x:Name="CommonStates">
+                                                <VisualState x:Name="Normal" />
+                                                <VisualState x:Name="PointerOver">
+                                                    <Storyboard>
+                                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter" Storyboard.TargetProperty="Background">
+                                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource FilterPillSelectedBackgroundPointerOverBrush}" />
+                                                        </ObjectAnimationUsingKeyFrames>
+                                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter" Storyboard.TargetProperty="BorderBrush">
+                                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource FilterPillSelectedBorderBrush}" />
+                                                        </ObjectAnimationUsingKeyFrames>
+                                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter" Storyboard.TargetProperty="Foreground">
+                                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource FilterPillSelectedForegroundBrush}" />
+                                                        </ObjectAnimationUsingKeyFrames>
+                                                    </Storyboard>
+                                                </VisualState>
+                                                <VisualState x:Name="Pressed">
+                                                    <Storyboard>
+                                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter" Storyboard.TargetProperty="Background">
+                                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource FilterPillSelectedBackgroundPressedBrush}" />
+                                                        </ObjectAnimationUsingKeyFrames>
+                                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter" Storyboard.TargetProperty="BorderBrush">
+                                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource FilterPillSelectedBorderBrush}" />
+                                                        </ObjectAnimationUsingKeyFrames>
+                                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter" Storyboard.TargetProperty="Foreground">
+                                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource FilterPillSelectedForegroundBrush}" />
+                                                        </ObjectAnimationUsingKeyFrames>
+                                                    </Storyboard>
+                                                </VisualState>
+                                                <VisualState x:Name="Disabled" />
+                                            </VisualStateGroup>
+                                        </VisualStateManager.VisualStateGroups>
+                                    </ContentPresenter>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
                     </Style>
                 </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>

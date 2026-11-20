@@ -35,7 +35,7 @@ public sealed partial class GachaPage : UserControl
     {
         InitializeComponent();
         LocalizationService.Instance.PropertyChanged += LocalizationChanged;
-        LimitedButton.BorderBrush = new SolidColorBrush(Windows.UI.Color.FromArgb(255, 30, 30, 30));
+        LimitedButton.Style = (Style)Application.Current.Resources["FilterPillSelectedButtonStyle"];
         UpdateLocalizedUi();
         Loaded += async (_, _) =>
         {
@@ -185,9 +185,10 @@ public sealed partial class GachaPage : UserControl
     {
         _selectedCategory = (sender as Button)?.Tag as string ?? "限定";
         foreach (Button button in new[] { LimitedButton, WeaponButton, FestivalButton, StandardButton, BeginnerButton, OtherButton })
-            button.BorderBrush = string.Equals(button.Tag as string, _selectedCategory, StringComparison.Ordinal)
-                ? new SolidColorBrush(Windows.UI.Color.FromArgb(255, 30, 30, 30))
-                : new SolidColorBrush(Windows.UI.Color.FromArgb(0, 0, 0, 0));
+            button.Style = (Style)Application.Current.Resources[
+                string.Equals(button.Tag as string, _selectedCategory, StringComparison.Ordinal)
+                    ? "FilterPillSelectedButtonStyle"
+                    : "FilterPillButtonStyle"];
         ShowCurrent();
     }
 
