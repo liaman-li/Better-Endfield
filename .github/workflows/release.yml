@@ -1,0 +1,445 @@
+name: release
+
+# Only the release owner can start a build: this repository takes no pull
+# requests, and the workflow never runs on pull_request_target, so no code from
+# a fork can reach these jobs.
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Version from Directory.Build.props, without the leading v
+        required: true
+      publish:
+        description: Sign and publish the release after building
+        type: boolean
+        default: false
+      use_sccache:
+        description: Cache native C++ objects with sccache (experimental on MSVC/LTCG)
+        type: boolean
+        default: false
+  push:
+    tags:
+      - "v*"
+
+concurrency:
+  group: release
+  # A newer run supersedes an older one. While iterating on the pipeline this is
+  # what keeps a fix from sitting behind a doomed run for half an hour; a
+  # superseded attempt can only ever describe a build that is already stale.
+  cancel-in-progress: true
+
+# The build agents never write to the repository. Publishing happens on the
+# release host, so this token cannot create or modify a release even if a build
+# step is compromised.
+permissions:
+  contents: read
+
+env:
+  DOTNET_VERSION: "9.0.x"
+  DOTNET_NOLOGO: "true"
+  DOTNET_CLI_TELEMETRY_OPTOUT: "true"
+  NDK_VERSION: "27.2.12479018"
+
+jobs:
+  windows:
+    name: Windows
+    runs-on: windows-2022
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Resolve version
+        id: version
+        shell: pwsh
+        run: |
+          $props = ([xml](Get-Content -LiteralPath Directory.Build.props -Raw)).
+            SelectSingleNode('//Version').InnerText.Trim()
+          $requested = if ('${{ github.event_name }}' -eq 'workflow_dispatch') {
+            '${{ inputs.version }}'
+          } else {
+            '${{ github.ref_name }}'.TrimStart('v')
+          }
+          if ($requested -and $requested -ne $props) {
+            throw "Requested version $requested does not match Directory.Build.props ($props)."
+          }
+          "value=$props" >> $env:GITHUB_OUTPUT
+          Write-Host "Building $props"
+
+      - uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+
+      - uses: actions/cache@v6
+        with:
+          path: |
+            ~/.nuget/packages
+            ~/AppData/Local/pip/Cache
+          key: ${{ runner.os }}-nuget-pip-${{ hashFiles('**/*.csproj', 'tools/CustomModel/requirements-build.txt') }}
+          restore-keys: ${{ runner.os }}-nuget-pip-
+
+      # Optional: cache native objects across runs. Default off because this
+      # project builds Release with LTCG; sccache needs the /Z7 launcher
+      # configuration, which changes PDB output and must be validated first.
+      - name: Prepare sccache
+        if: ${{ inputs.use_sccache }}
+        shell: pwsh
+        run: |
+          $version = 'v0.19.0'
+          $zip = "sccache-$version-x86_64-pc-windows-msvc.zip"
+          Invoke-WebRequest -Uri "https://github.com/mozilla/sccache/releases/download/$version/$zip" -OutFile $zip
+          Expand-Archive -Path $zip -DestinationPath sccache-bin -Force
+          $exe = Get-ChildItem sccache-bin -Recurse -Filter sccache.exe | Select-Object -First 1
+          Copy-Item -LiteralPath $exe.FullName -Destination sccache.exe
+          (Resolve-Path sccache.exe).Path | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+
+      - uses: actions/cache@v6
+        if: ${{ inputs.use_sccache }}
+        with:
+          path: .sccache
+          key: ${{ runner.os }}-sccache-${{ github.sha }}
+          restore-keys: ${{ runner.os }}-sccache-
+
+      - name: Enable sccache for native builds
+        if: ${{ inputs.use_sccache }}
+        shell: pwsh
+        run: |
+          "BE_CMAKE_LAUNCHER=sccache" >> $env:GITHUB_ENV
+          "SCCACHE_DIR=$((Resolve-Path .).Path)/.sccache" >> $env:GITHUB_ENV
+
+      # The main build calls BuildBemTools.ps1, whose first act is importing
+      # bem_tool.py. Without zstandard that import fails before anything builds.
+      - name: Install tool build dependencies
+        shell: pwsh
+        run: pip install -r tools/CustomModel/requirements-build.txt
+
+      - name: Prepare archive backend
+        shell: pwsh
+        run: ./scripts/PrepareBemArchiveBackend.ps1
+
+      - name: Install Obfuscar
+        shell: pwsh
+        run: |
+          dotnet tool install Obfuscar.GlobalTool --version 2.2.50 --tool-path toolchains/obfuscar
+          if (-not (Test-Path -LiteralPath toolchains/obfuscar/obfuscar.console.exe -PathType Leaf)) {
+            throw 'Obfuscar was not installed where the build expects it.'
+          }
+
+      - name: Download core package
+        shell: pwsh
+        run: |
+          $registry = Get-Content -LiteralPath config/resource-packs.json -Raw | ConvertFrom-Json
+          $game = (Get-Content -LiteralPath config/workspace.defaults.json -Raw |
+            ConvertFrom-Json).game.version
+          $coreVersion = "$game.$($registry.revisions.core.windows.$game)"
+          $url = "https://github.com/${{ github.repository }}/releases/download/game-resources/BE-Core-Windows-$coreVersion.zip"
+          Write-Host "Fetching $url"
+          Invoke-WebRequest -Uri $url -OutFile core.zip
+
+      - name: Restore generated inputs
+        shell: pwsh
+        run: ./scripts/ci/fetch-core.ps1 -Platform windows -Archive core.zip
+
+      - name: Build
+        shell: pwsh
+        run: ./scripts/ci/windows.ps1 -SkipDshPlugin
+
+      - name: Stage release payload
+        id: stage
+        shell: pwsh
+        run: |
+          $version = '${{ steps.version.outputs.value }}'
+          $stage = Join-Path $env:RUNNER_TEMP 'windows'
+          New-Item -ItemType Directory -Path $stage -Force | Out-Null
+
+          $installer = "releases/$version/BetterEndfieldNext-$version-Setup.exe"
+          if (-not (Test-Path -LiteralPath $installer -PathType Leaf)) {
+            throw "Missing installer: $installer"
+          }
+          Copy-Item -LiteralPath $installer -Destination $stage
+
+          $notes = "docs/workspace/releases/$version/RELEASE_" + ($version -replace '\.', '_') + ".md"
+          if (-not (Test-Path -LiteralPath $notes -PathType Leaf)) {
+            throw "Release notes are missing: $notes"
+          }
+          Copy-Item -LiteralPath $notes -Destination (Join-Path $stage 'notes.md')
+
+          @{
+            version    = $version
+            components = @(
+              @{ name = "BetterEndfieldNext-$version-Setup.exe"; kind = 'authenticode' }
+            )
+          } | ConvertTo-Json -Depth 5 | Set-Content -LiteralPath (Join-Path $stage 'payload.json') -Encoding utf8
+
+          "stage=$stage" >> $env:GITHUB_OUTPUT
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: windows
+          path: ${{ steps.stage.outputs.stage }}
+          if-no-files-found: error
+          retention-days: 3
+
+  android:
+    name: Android
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: "21"
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+
+      - uses: actions/cache@v6
+        with:
+          path: |
+            ~/.gradle/caches/modules-2
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('android/**/*.gradle.kts', 'android/gradle.properties', 'android/settings.gradle.kts') }}
+          restore-keys: ${{ runner.os }}-gradle-
+
+      # The action defaults to "tools platform-tools", but the legacy tools
+      # package no longer exists in the SDK repository and fails the install.
+      - uses: android-actions/setup-android@v3
+        with:
+          packages: platform-tools
+
+      # The SDK repository ships minor versions from API 36 onward, so there is
+      # no platforms;android-37 package. AGP still resolves compileSdk 37 to
+      # platforms/android-37, which is why a local SDK has both directories.
+      - name: Install NDK and platform
+        run: |
+          sdkmanager --install "platforms;android-37.0" "ndk;$NDK_VERSION"
+          sdk="${ANDROID_SDK_ROOT:-$ANDROID_HOME}"
+          ln -sfn "$sdk/platforms/android-37.0" "$sdk/platforms/android-37"
+          ls -1 "$sdk/platforms"
+
+      - name: Download core package
+        run: |
+          set -euo pipefail
+          core=$(python3 - <<'PY'
+          import json
+          revisions = json.load(open('config/resource-packs.json'))['revisions']['core']['android']
+          source = json.load(open('android/resources/resource-source.json'))
+          game = (source.get('provenance') or {}).get('gameVersion') or source.get('gameVersion')
+          print(f"{game}.{revisions[game]}")
+          PY
+          )
+          echo "core package: $core"
+          curl -fsSL -o core.zip \
+            "https://github.com/${{ github.repository }}/releases/download/game-resources/BE-Core-Android-$core.zip"
+
+      - name: Restore generated inputs
+        run: pwsh ./scripts/ci/fetch-core.ps1 -Platform android -Archive core.zip
+
+      # No signing key is on this agent, so the release build emits an unsigned
+      # APK and the release host signs it. build.gradle.kts decides that itself.
+      - name: Build APK
+        run: |
+          sdk="${ANDROID_SDK_ROOT:-$ANDROID_HOME}"
+          test -d "$sdk"
+          # settings.gradle.kts refuses to run when ANDROID_HOME and
+          # tools.android_sdk disagree. On an agent the SDK is wherever the image
+          # put it, so the workspace is pointed at it rather than the SDK moved.
+          printf '{"schema_version": 1, "tools": {"android_sdk": "%s"}}\n' "$sdk" > ci-workspace.json
+          cd android
+          # The wrapper is committed from Windows, where the executable bit does
+          # not exist, so it arrives as 0644 and refuses to run.
+          chmod +x gradlew
+          ./gradlew :app:assembleRelease --console=plain --no-daemon \
+            -PworkspaceConfig="$GITHUB_WORKSPACE/ci-workspace.json"
+
+      - name: Stage release payload
+        run: |
+          set -euo pipefail
+          version=$(python3 -c "import xml.etree.ElementTree as ET;print(ET.parse('Directory.Build.props').getroot().findtext('.//Version'))")
+          name="BetterEndfieldNext-$version-Android-arm64.apk"
+          mkdir -p payload
+          # Gradle redirects its build directory under the workspace build root,
+          # so the APK is not at android/app/build.
+          apk=$(find build -path '*/outputs/apk/release/*.apk' -type f | head -1)
+          test -n "$apk"
+          cp "$apk" "payload/$name"
+          python3 - "$version" "$name" <<'PY'
+          import json, sys
+          version, name = sys.argv[1], sys.argv[2]
+          json.dump({"version": version, "components": [{"name": name, "kind": "apk"}]},
+                    open('payload/payload.json', 'w'), indent=2)
+          PY
+          ls -l payload
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: android
+          path: payload
+          if-no-files-found: error
+          retention-days: 3
+
+  tools:
+    name: Creator tools
+    runs-on: windows-2022
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Resolve version
+        id: version
+        shell: pwsh
+        run: |
+          $props = ([xml](Get-Content -LiteralPath Directory.Build.props -Raw)).
+            SelectSingleNode('//Version').InnerText.Trim()
+          "value=$props" >> $env:GITHUB_OUTPUT
+
+      - uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+
+      - uses: actions/cache@v6
+        with:
+          path: |
+            ~/.nuget/packages
+            ~/AppData/Local/pip/Cache
+          key: ${{ runner.os }}-nuget-pip-${{ hashFiles('**/*.csproj', 'tools/CustomModel/requirements-build.txt') }}
+          restore-keys: ${{ runner.os }}-nuget-pip-
+
+      - name: Prepare sccache
+        if: ${{ inputs.use_sccache }}
+        shell: pwsh
+        run: |
+          $version = 'v0.19.0'
+          $zip = "sccache-$version-x86_64-pc-windows-msvc.zip"
+          Invoke-WebRequest -Uri "https://github.com/mozilla/sccache/releases/download/$version/$zip" -OutFile $zip
+          Expand-Archive -Path $zip -DestinationPath sccache-bin -Force
+          $exe = Get-ChildItem sccache-bin -Recurse -Filter sccache.exe | Select-Object -First 1
+          Copy-Item -LiteralPath $exe.FullName -Destination sccache.exe
+          (Resolve-Path sccache.exe).Path | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+
+      - uses: actions/cache@v6
+        if: ${{ inputs.use_sccache }}
+        with:
+          path: .sccache
+          key: ${{ runner.os }}-sccache-${{ github.sha }}
+          restore-keys: ${{ runner.os }}-sccache-
+
+      - name: Enable sccache for native builds
+        if: ${{ inputs.use_sccache }}
+        shell: pwsh
+        run: |
+          "BE_CMAKE_LAUNCHER=sccache" >> $env:GITHUB_ENV
+          "SCCACHE_DIR=$((Resolve-Path .).Path)/.sccache" >> $env:GITHUB_ENV
+
+      # bem_tool.py imports zstandard at load time, so the version probe that
+      # BuildBemTools.ps1 runs first fails without this.
+      - name: Install tool build dependencies
+        run: pip install -r tools/CustomModel/requirements-build.txt
+
+      - name: Prepare archive backend
+        shell: pwsh
+        run: ./scripts/PrepareBemArchiveBackend.ps1
+
+      # The Python CLI tree has to exist before the DSH plugin can be packaged,
+      # and BuildBemTools.ps1 does that packaging itself.
+      - name: Build Android tool bundle
+        shell: pwsh
+        run: ./scripts/BuildBemCliAndroid.ps1
+
+      - name: Build tools
+        shell: pwsh
+        run: ./scripts/BuildBemTools.ps1 -SkipSigning
+
+      - name: Stage release payload
+        id: stage
+        shell: pwsh
+        run: |
+          $version = '${{ steps.version.outputs.value }}'
+          $stage = Join-Path $env:RUNNER_TEMP 'tools'
+          New-Item -ItemType Directory -Path $stage -Force | Out-Null
+          $releaseDir = Join-Path 'releases' $version
+
+          $toolZip = Get-ChildItem -LiteralPath $releaseDir -Filter 'BEM-Tools-*-win-x64.zip' |
+            Select-Object -First 1
+          if (-not $toolZip) { throw "BEM Tools archive is missing in $releaseDir" }
+          $toolVersion = ($toolZip.Name -replace '^BEM-Tools-', '') -replace '-win-x64\.zip$', ''
+
+          $androidBundle = Join-Path 'build/tools/bem-android/dist' 'BEM-Tools-android-arm64.tar.gz'
+          if (-not (Test-Path -LiteralPath $androidBundle -PathType Leaf)) {
+            throw "Android tool bundle is missing: $androidBundle"
+          }
+          Copy-Item -LiteralPath $toolZip.FullName -Destination $stage
+          Copy-Item -LiteralPath $androidBundle -Destination (Join-Path $stage "BEM-Tools-$toolVersion-android-arm64.tar.gz")
+
+          $dsh = Join-Path $releaseDir "dsh-bem-creator-$toolVersion.tgz"
+          if (-not (Test-Path -LiteralPath $dsh -PathType Leaf)) {
+            throw "DSH bundle is missing: $dsh"
+          }
+          Copy-Item -LiteralPath $dsh -Destination $stage
+
+          @{
+            version    = $version
+            components = @(
+              @{ name = $toolZip.Name; kind = 'none' }
+              @{ name = "BEM-Tools-$toolVersion-android-arm64.tar.gz"; kind = 'none' }
+              @{ name = "dsh-bem-creator-$toolVersion.tgz"; kind = 'none' }
+            )
+          } | ConvertTo-Json -Depth 5 | Set-Content -LiteralPath (Join-Path $stage 'payload.json') -Encoding utf8
+
+          "stage=$stage" >> $env:GITHUB_OUTPUT
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: tools
+          path: ${{ steps.stage.outputs.stage }}
+          if-no-files-found: error
+          retention-days: 3
+
+  publish:
+    name: Sign and publish
+    needs: [windows, android, tools]
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    if: github.event_name == 'push' || inputs.publish
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/download-artifact@v8
+        with:
+          path: payload
+
+      # Cloudflare refuses a request body over 100 MB and the whole release is
+      # larger than that, so each job's payload travels as its own part. The
+      # host assembles them and signs once the last part arrives.
+      - name: Sign and publish
+        env:
+          RELEASE_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+          RELEASE_ENDPOINT: ${{ secrets.RELEASE_ENDPOINT }}
+        run: |
+          set -euo pipefail
+          version=$(python3 -c "import json;print(json.load(open('payload/windows/payload.json'))['version'])")
+          n=0
+          for dir in windows android tools; do
+            n=$((n + 1))
+            test -f "payload/$dir/payload.json"
+            tar -C "payload/$dir" -czf "part-$n.tgz" .
+            echo "part $n/3 ($dir): $(stat -c%s "part-$n.tgz") bytes"
+            # --fail-with-body keeps the server's stdout/stderr visible. A plain
+            # -f hides the 500 body that says what actually failed on the host.
+            curl -fsS --fail-with-body --retry 0 --max-time 1800 \
+              -H "X-Release-Token: $RELEASE_TOKEN" \
+              -H "Content-Type: application/gzip" \
+              --data-binary "@part-$n.tgz" \
+              "$RELEASE_ENDPOINT/sign?tag=v$version&part=$n&parts=3"
+            echo
+          done

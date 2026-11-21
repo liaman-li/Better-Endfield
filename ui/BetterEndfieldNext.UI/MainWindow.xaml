@@ -136,7 +136,7 @@
                             Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                             FontSize="11"
                             FontWeight="SemiBold"
-                            Text="v4.2.0 · 终末地控制器" />
+                            Text="终末地 Mod 控制器" />
                     </StackPanel>
                 </Grid>
             </NavigationView.PaneHeader>
@@ -2307,43 +2307,6 @@
                                     <Grid>
                                         <!-- Tab 1: 自由视角与画面 -->
                                         <StackPanel x:Name="CameraTabFreePanel" Spacing="16" Visibility="Visible">
-                                            <!-- Keep InfoBar instance for C# localization binding while rendering with HintBannerBorderStyle -->
-                                            <InfoBar
-                                                x:Name="CameraFreeInfoBar"
-                                                IsClosable="False"
-                                                IsOpen="True"
-                                                Message="启用后按设置的热键进入或退出。鼠标转向，方向键前后左右移动，PageUp/PageDown 升降，Shift 加速、Ctrl 减速；冻结时间后仍可移动。切换场景或主相机时会自动退出。"
-                                                Severity="Informational"
-                                                Title="自由视角操作"
-                                                Visibility="Collapsed" />
-
-                                            <Border Style="{StaticResource HintBannerBorderStyle}">
-                                                <Grid ColumnSpacing="10">
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="Auto" />
-                                                        <ColumnDefinition Width="*" />
-                                                    </Grid.ColumnDefinitions>
-                                                    <Border
-                                                        VerticalAlignment="Top"
-                                                        Padding="10,3"
-                                                        CornerRadius="8"
-                                                        Background="{ThemeResource AuxBadgeBackgroundBrush}">
-                                                        <TextBlock
-                                                            FontSize="11"
-                                                            FontWeight="Bold"
-                                                            Foreground="{ThemeResource AuxBadgeForegroundBrush}"
-                                                            Text="{Binding Title, ElementName=CameraFreeInfoBar}" />
-                                                    </Border>
-                                                    <TextBlock
-                                                        Grid.Column="1"
-                                                        VerticalAlignment="Center"
-                                                        FontSize="12"
-                                                        Foreground="{ThemeResource TextFillColorSecondaryBrush}"
-                                                        Text="{Binding Message, ElementName=CameraFreeInfoBar}"
-                                                        TextWrapping="Wrap" />
-                                                </Grid>
-                                            </Border>
-
                                             <Grid ColumnSpacing="18">
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="6*" />
@@ -2358,7 +2321,7 @@
                                                             <TextBlock
                                                                 x:Name="CameraFreeSectionHint"
                                                                 Style="{StaticResource FieldHintStyle}"
-                                                                Text="进入时捕获主相机的位置、朝向和视野，退出后恢复原值。自由视角期间位置和朝向都由模块控制，不受时间冻结影响。"
+                                                                Text="启用后按设置的热键进入或退出：进入时捕获主相机的位置、朝向和视野，退出后恢复原值。鼠标转向，方向键前后左右移动，PageUp/PageDown 升降，Shift 加速、Ctrl 减速；冻结时间后仍可移动。切换场景或主相机时会自动退出。"
                                                                 TextWrapping="Wrap" />
                                                         </StackPanel>
 
@@ -2480,8 +2443,40 @@
                                                     </StackPanel>
                                                 </Border>
 
-                                                <!-- Right Column: Global FOV + Visual & Occlusion -->
+                                                <!-- Right Column: Visual & Occlusion (First, matching v4.2.1) + Global FOV -->
                                                 <StackPanel Grid.Column="1" Spacing="16" VerticalAlignment="Top">
+                                                    <Border Style="{StaticResource SectionStyle}">
+                                                        <StackPanel Spacing="14">
+                                                            <StackPanel Spacing="3">
+                                                                <TextBlock x:Name="CameraVisualSectionTitle" Style="{StaticResource SectionTitleStyle}" Text="镜头画面" />
+                                                                <TextBlock
+                                                                    x:Name="CameraVisualSectionHint"
+                                                                    Style="{StaticResource FieldHintStyle}"
+                                                                    Text="调用游戏自身的清理逻辑，移除镜头贴近角色时出现的半透明虚化。"
+                                                                    TextWrapping="Wrap" />
+                                                            </StackPanel>
+                                                            <Border Height="1" Background="{ThemeResource SubtleDividerBrush}" />
+                                                            <Grid ColumnSpacing="12" Padding="0,2">
+                                                                <Grid.ColumnDefinitions>
+                                                                    <ColumnDefinition Width="*" />
+                                                                    <ColumnDefinition Width="Auto" />
+                                                                </Grid.ColumnDefinitions>
+                                                                <StackPanel Spacing="2" VerticalAlignment="Center">
+                                                                    <TextBlock FontSize="14" FontWeight="Bold" Foreground="{ThemeResource TextFillColorPrimaryBrush}" Text="{Binding Header, ElementName=DisableDitherToggle}" />
+                                                                    <TextBlock Style="{StaticResource FieldHintStyle}" Text="{Binding OnContent, ElementName=DisableDitherToggle}" />
+                                                                </StackPanel>
+                                                                <ToggleSwitch
+                                                                    x:Name="DisableDitherToggle"
+                                                                    Grid.Column="1"
+                                                                    Header="移除角色近距离虚化"
+                                                                    OffContent="保留原效果"
+                                                                    OnContent="关闭虚化"
+                                                                    Style="{StaticResource CompactToggleSwitchStyle}"
+                                                                    Toggled="CameraEnhancementToggle_Toggled" />
+                                                            </Grid>
+                                                        </StackPanel>
+                                                    </Border>
+
                                                     <Border Style="{StaticResource SectionStyle}">
                                                         <StackPanel Spacing="14">
                                                             <Grid ColumnSpacing="12" Padding="0,2">
@@ -2535,38 +2530,6 @@
                                                                         </DataTemplate>
                                                                     </NumberBox.HeaderTemplate>
                                                                 </NumberBox>
-                                                            </Grid>
-                                                        </StackPanel>
-                                                    </Border>
-
-                                                    <Border Style="{StaticResource SectionStyle}">
-                                                        <StackPanel Spacing="14">
-                                                            <StackPanel Spacing="3">
-                                                                <TextBlock x:Name="CameraVisualSectionTitle" Style="{StaticResource SectionTitleStyle}" Text="镜头画面" />
-                                                                <TextBlock
-                                                                    x:Name="CameraVisualSectionHint"
-                                                                    Style="{StaticResource FieldHintStyle}"
-                                                                    Text="调用游戏自身的清理逻辑，移除镜头贴近角色时出现的半透明虚化。"
-                                                                    TextWrapping="Wrap" />
-                                                            </StackPanel>
-                                                            <Border Height="1" Background="{ThemeResource SubtleDividerBrush}" />
-                                                            <Grid ColumnSpacing="12" Padding="0,2">
-                                                                <Grid.ColumnDefinitions>
-                                                                    <ColumnDefinition Width="*" />
-                                                                    <ColumnDefinition Width="Auto" />
-                                                                </Grid.ColumnDefinitions>
-                                                                <StackPanel Spacing="2" VerticalAlignment="Center">
-                                                                    <TextBlock FontSize="14" FontWeight="Bold" Foreground="{ThemeResource TextFillColorPrimaryBrush}" Text="{Binding Header, ElementName=DisableDitherToggle}" />
-                                                                    <TextBlock Style="{StaticResource FieldHintStyle}" Text="{Binding OnContent, ElementName=DisableDitherToggle}" />
-                                                                </StackPanel>
-                                                                <ToggleSwitch
-                                                                    x:Name="DisableDitherToggle"
-                                                                    Grid.Column="1"
-                                                                    Header="移除角色近距离虚化"
-                                                                    OffContent="保留原效果"
-                                                                    OnContent="关闭虚化"
-                                                                    Style="{StaticResource CompactToggleSwitchStyle}"
-                                                                    Toggled="CameraEnhancementToggle_Toggled" />
                                                             </Grid>
                                                         </StackPanel>
                                                     </Border>

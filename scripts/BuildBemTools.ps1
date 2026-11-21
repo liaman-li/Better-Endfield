@@ -2,7 +2,16 @@
 param(
     [string]$Destination = "",
     [string]$WorkspaceConfig = "",
-    [string]$ArchiveBackend = ""
+    [string]$ArchiveBackend = "",
+
+    # Set by scripts/ci/*.ps1: the tools are signed on the release host together
+    # with everything else, so an agent has no certificate to sign with.
+    [switch]$SkipSigning,
+
+    # The DSH bundle is a separate release asset owned by its own job; the job
+    # that builds the player does not need it and should not pay for the CLI
+    # tree it requires.
+    [switch]$SkipDshPlugin
 )
 $ErrorActionPreference = "Stop"
 . (Join-Path $PSScriptRoot 'Workspace.ps1')
@@ -38,12 +47,20 @@ if ($LASTEXITCODE -ne 0 -or ($toolVersionText -join ' ') -notmatch '(\d+\.\d+\.\
 $toolVersion = $Matches[1]
 # The standalone creator ZIP must carry the same native engine as the player.
 $composerBuild = Join-Path $ws.paths.build 'next\windows\win-x64\Release\native'
-& $ws.tools.cmake -S (Join-Path $repo 'native') -B $composerBuild -G 'Visual Studio 17 2022' -A x64
+$composerConfigure = @('-S', (Join-Path $repo 'native'), '-B', $composerBuild, '-G', 'Visual Studio 17 2022', '-A', 'x64')
+if ($env:BE_CMAKE_LAUNCHER) {
+    $composerConfigure += "-DCMAKE_C_COMPILER_LAUNCHER=$env:BE_CMAKE_LAUNCHER"
+    $composerConfigure += "-DCMAKE_CXX_COMPILER_LAUNCHER=$env:BE_CMAKE_LAUNCHER"
+    $composerConfigure += '-DCMAKE_MSVC_DEBUG_INFORMATION_FORMAT=Embedded'
+}
+& $ws.tools.cmake @composerConfigure
 if ($LASTEXITCODE -ne 0) { throw 'Native composer configuration failed.' }
 & $ws.tools.cmake --build $composerBuild --config Release --target BetterEndfieldNext.BemCompose --parallel 4
 if ($LASTEXITCODE -ne 0) { throw 'Native composer build failed.' }
 $composerDirectory = Join-Path $composerBuild 'stage\Release\tools\BemCompose'
-& (Join-Path $PSScriptRoot 'SignNextRelease.ps1') -Path $composerDirectory -WorkspaceConfig $WorkspaceConfig
+if (-not $SkipSigning) {
+    & (Join-Path $PSScriptRoot 'SignNextRelease.ps1') -Path $composerDirectory -WorkspaceConfig $WorkspaceConfig
+}
 # Creator tools are self-contained at runtime. Build dependencies are explicit.
 & $python -c "import PyInstaller, zstandard"
 if ($LASTEXITCODE -ne 0) { throw "Install tools/CustomModel/requirements-build.txt into the build Python environment first." }
@@ -95,8 +112,10 @@ $guiPublishDir = Join-Path $Destination 'gui-publish'
     "-p:BEWorkspaceBuildRoot=$($ws.paths.build)" `
     "-p:Version=$toolVersion" "-p:InformationalVersion=$toolVersion"
 if ($LASTEXITCODE -ne 0) { throw "BEM creator GUI build failed." }
-& (Join-Path $PSScriptRoot 'SignNextRelease.ps1') -Path $guiPublishDir -WorkspaceConfig $WorkspaceConfig
-& (Join-Path $PSScriptRoot 'SignNextRelease.ps1') -Path (Join-Path $Destination 'dist\BetterEndfieldNext.BemConverter') -WorkspaceConfig $WorkspaceConfig
+if (-not $SkipSigning) {
+    & (Join-Path $PSScriptRoot 'SignNextRelease.ps1') -Path $guiPublishDir -WorkspaceConfig $WorkspaceConfig
+    & (Join-Path $PSScriptRoot 'SignNextRelease.ps1') -Path (Join-Path $Destination 'dist\BetterEndfieldNext.BemConverter') -WorkspaceConfig $WorkspaceConfig
+}
 $packageArgs = @((Join-Path $repo 'tools\CustomModel\package_toolchain.py'),
     (Join-Path $Destination 'dist\BetterEndfieldNext.BemConverter'),
     '--gui-directory', $guiPublishDir,
@@ -116,12 +135,15 @@ Write-Host "BEM toolchain ZIP: $releaseArchive"
 
 # The DeepSeek Harness bundle carries the same skill the ZIP ships, packaged so
 # `dsh plugin add` can install it. It does not depend on the GUI, so it is built
-# beside the ZIP rather than inside it.
-$pluginArgs = @((Join-Path $repo 'scripts\BuildDshPlugin.py'))
-if ($ws.config_file) { $pluginArgs += @('--workspace-config', $ws.config_file) }
-& $python @pluginArgs
-if ($LASTEXITCODE -ne 0) { throw "DSH plugin packaging failed." }
-Write-Host "DSH plugin bundle: $(Join-Path $releaseDir "dsh-bem-creator-$toolVersion.tgz")"
+# beside the ZIP rather than inside it. It does need the Python CLI tree, which
+# is why the release pipeline builds this only in the job that owns that tree.
+if (-not $SkipDshPlugin) {
+    $pluginArgs = @((Join-Path $repo 'scripts\BuildDshPlugin.py'))
+    if ($ws.config_file) { $pluginArgs += @('--workspace-config', $ws.config_file) }
+    & $python @pluginArgs
+    if ($LASTEXITCODE -ne 0) { throw "DSH plugin packaging failed." }
+    Write-Host "DSH plugin bundle: $(Join-Path $releaseDir "dsh-bem-creator-$toolVersion.tgz")"
+}
 
 Write-Host "BEM creator GUI: BEM-Tools/BetterEndfieldNext.BemTools.exe inside the ZIP"
 Write-Host "BEM converter: $Destination\dist\BetterEndfieldNext.BemConverter"
